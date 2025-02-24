@@ -1,0 +1,18 @@
+black
+flake8
+graphviz
+ipywidgets
+isort
+jupyterlab
+matplotlib
+notebook
+numpy
+pandas
+pip
+python-dotenv
+scikit-learn
+seaborn
+tables
+
+# Uncomment this to include the current project
+# -e .
