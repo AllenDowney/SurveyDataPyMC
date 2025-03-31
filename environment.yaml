@@ -1,0 +1,26 @@
+name: SurveyDataPyMC
+channels:
+  - defaults
+dependencies:
+  - python=3.12
+  - conda-forge::pymc>=5.21.0
+  - conda-forge::nutpie
+  - arviz
+  - numpyro
+  - blackjax
+  - optax
+  - pip:
+      - black
+      - flake8
+      - graphviz
+      - isort
+      - jupyterlab
+      - ipywidgets
+      - matplotlib
+      - notebook
+      - numpy
+      - pandas
+      - python-dotenv
+      - scikit-learn
+      - seaborn
+      - tables
