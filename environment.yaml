@@ -1,4 +1,4 @@
-name: odsc_workshop
+name: SurveyDataPyMC
 channels:
   - defaults
 dependencies:
