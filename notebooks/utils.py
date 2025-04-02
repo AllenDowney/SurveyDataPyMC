@@ -1,7 +1,11 @@
+import os
 import warnings
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+
+import arviz as az
+import pymc as pm
 
 
 def value_counts(series):
@@ -81,3 +85,40 @@ def joint_contour(x, y):
     kde_values = kde(positions).reshape(X.shape)
 
     plt.contour(X, Y, kde_values, cmap='Blues')
+
+
+def load_idata_or_sample(
+    model: pm.Model, filename: str, force_run: bool = False, **sample_options
+) -> az.InferenceData:
+    """
+    Runs PyMC sampling and saves the results to a NetCDF file, or loads existing results from the file.
+
+    Load existing idata if the file exists and force_run is False.
+    Runs the sampler and saves the idata if the file doesn't exist or force_run is True.
+
+    Args:
+        model (pm.Model):
+            The PyMC model object to sample from.
+        filename (str):
+            Path to the NetCDF file to save to or load from.
+        force_run (bool):
+            If true, run the sampler even if the file exists.
+        **sample_options:
+            Additional keyword arguments passed directly to `pm.sample()`.
+
+    Returns:
+        az.InferenceData:
+            The idata (posterior samples) as an ArviZ InferenceData object.
+
+    """
+    if os.path.exists(filename) and not force_run:
+        idata = az.from_netcdf(filename)
+        print(f"Loaded idata from {filename}")
+    else:
+        with model:
+            idata = pm.sample(**sample_options)
+
+        az.to_netcdf(idata, filename)
+        print(f"Saved new idata to {filename}")
+
+    return idata
