@@ -4,19 +4,35 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def value_counts(series):
-    """Make a series of values and the number of times they appear.
+# def value_counts(series):
+#     """Make a series of values and the number of times they appear.
+
+#     Returns a DataFrame because they get rendered better in Jupyter.
+
+#     series: Pandas Series
+
+#     returns: Pandas DataFrame
+#     """
+#     series = series.value_counts(dropna=False).sort_index()
+#     series.index.name = "values"
+#     series.name = "counts"
+#     return pd.DataFrame(series)
+
+
+def value_counts(series, normalize=False):
+    """Make a series of values and the number (or proportion) of times they appear.
 
     Returns a DataFrame because they get rendered better in Jupyter.
 
     series: Pandas Series
+    normalize: If True, return proportions instead of counts
 
     returns: Pandas DataFrame
     """
-    series = series.value_counts(dropna=False).sort_index()
-    series.index.name = "values"
-    series.name = "counts"
-    return pd.DataFrame(series)
+    series_counts = series.value_counts(dropna=False, normalize=normalize).sort_index()
+    series_counts.index.name = "values"
+    series_counts.name = "proportion" if normalize else "counts"
+    return pd.DataFrame(series_counts)
 
 
 def underride(d, **options):
@@ -63,6 +79,7 @@ def decorate(**options):
 
 from scipy.stats import gaussian_kde
 
+
 def joint_contour(x, y):
     """Plot a joint KDE contour plot.
 
@@ -75,9 +92,9 @@ def joint_contour(x, y):
 
     xs = np.linspace(x.min(), x.max(), 101)
     ys = np.linspace(y.min(), y.max(), 101)
-    X, Y = np.meshgrid(xs, ys, indexing='ij')
+    X, Y = np.meshgrid(xs, ys, indexing="ij")
 
     positions = np.vstack([X.ravel(), Y.ravel()])
     kde_values = kde(positions).reshape(X.shape)
 
-    plt.contour(X, Y, kde_values, cmap='Blues')
+    plt.contour(X, Y, kde_values, cmap="Blues")
