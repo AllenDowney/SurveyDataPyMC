@@ -1,7 +1,11 @@
+import os
 import warnings
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+
+import arviz as az
+import pymc as pm
 
 
 def value_counts(series):
@@ -80,53 +84,41 @@ def joint_contour(x, y):
 
     positions = np.vstack([X.ravel(), Y.ravel()])
     kde_values = kde(positions).reshape(X.shape)
-
     plt.contour(X, Y, kde_values, cmap="Blues")
 
 
-def round_into_bins(values, bin_width, low=None):
-    """Round values to the nearest bin center of specified width.
+def load_idata_or_sample(
+    model: pm.Model, filename: str, force_run: bool = False, **sample_options
+) -> az.InferenceData:
+    """
+    Runs PyMC sampling and saves the results to a NetCDF file, or loads existing results from the file.
+
+    Load existing idata if the file exists and force_run is False.
+    Runs the sampler and saves the idata if the file doesn't exist or force_run is True.
 
     Args:
-        values: array-like of numbers to bin (e.g., ages)
-        bin_width: positive number specifying the size of each bin
-        low: optional minimum value to start binning from. Values below this
-             will be rounded up to this value before binning.
+        model (pm.Model):
+            The PyMC model object to sample from.
+        filename (str):
+            Path to the NetCDF file to save to or load from.
+        force_run (bool):
+            If true, run the sampler even if the file exists.
+        **sample_options:
+            Additional keyword arguments passed directly to `pm.sample()`.
 
     Returns:
-        numpy array of values rounded to nearest bin center
+        az.InferenceData:
+            The idata (posterior samples) as an ArviZ InferenceData object.
 
-    Examples:
-        >>> round_into_bins([13, 15, 18, 20, 23], 5, low=13)
-        array([15, 15, 20, 20, 25])  # rounds to nearest 5-year group center
-
-        >>> round_into_bins([32, 37, 41], 10)
-        array([35, 35, 45])  # rounds to nearest decade center
     """
-    # Handle NaN values by imputing with mean
-    values_clean = np.array(values)
-    if np.isnan(values_clean).any():
-        mean_value = np.nanmean(values_clean)
-        values_clean = np.where(np.isnan(values_clean), mean_value, values_clean)
+    if os.path.exists(filename) and not force_run:
+        idata = az.from_netcdf(filename)
+        print(f"Loaded idata from {filename}")
+    else:
+        with model:
+            idata = pm.sample(**sample_options)
 
-    # Input validation
-    if not bin_width > 0:
-        raise ValueError("bin_width must be positive")
+        az.to_netcdf(idata, filename)
+        print(f"Saved new idata to {filename}")
 
-    # Convert input to numpy array
-    try:
-        values = np.asarray(values_clean, dtype=float)
-    except (ValueError, TypeError):
-        raise TypeError("values must be convertible to numeric array")
-
-    # If low is provided, clip values to not go below it
-    if low is not None:
-        values = np.maximum(values, low)
-
-    # Calculate bin centers
-    # First get the bin number
-    bin_numbers = np.floor((values - (bin_width / 2)) / bin_width)
-    # Then convert back to actual values
-    binned_values = (bin_numbers * bin_width) + (bin_width / 2) + 1
-
-    return binned_values.astype(int)
+    return idata
