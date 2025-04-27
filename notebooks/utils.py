@@ -67,6 +67,7 @@ def decorate(**options):
 
 from scipy.stats import gaussian_kde
 
+
 def joint_contour(x, y):
     """Plot a joint KDE contour plot.
 
@@ -79,12 +80,11 @@ def joint_contour(x, y):
 
     xs = np.linspace(x.min(), x.max(), 101)
     ys = np.linspace(y.min(), y.max(), 101)
-    X, Y = np.meshgrid(xs, ys, indexing='ij')
+    X, Y = np.meshgrid(xs, ys, indexing="ij")
 
     positions = np.vstack([X.ravel(), Y.ravel()])
     kde_values = kde(positions).reshape(X.shape)
-
-    plt.contour(X, Y, kde_values, cmap='Blues')
+    plt.contour(X, Y, kde_values, cmap="Blues")
 
 
 def load_idata_or_sample(
