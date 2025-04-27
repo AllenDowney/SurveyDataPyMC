@@ -136,3 +136,19 @@ def load_idata_or_sample(
         print(f"Saved new idata to {filename}")
 
     return idata
+
+
+def round_into_bins(series, bin_width, low=0, high=None):
+    """Rounds values down to the bin they belong in.
+
+    series: pd.Series
+    bin_width: number, width of the bins
+
+    returns: array of bin values
+    """
+    if high is None:
+        high = series.max()
+
+    bins = np.arange(low, high + bin_width, bin_width)
+    indices = np.digitize(series, bins)
+    return bins[indices - 1]
