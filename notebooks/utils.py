@@ -3,24 +3,41 @@ import warnings
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from scipy.stats import gaussian_kde
 
 import arviz as az
 import pymc as pm
 
 
-def value_counts(series):
-    """Make a series of values and the number of times they appear.
+# def value_counts(series):
+#     """Make a series of values and the number of times they appear.
+
+#     Returns a DataFrame because they get rendered better in Jupyter.
+
+#     series: Pandas Series
+
+#     returns: Pandas DataFrame
+#     """
+#     series = series.value_counts(dropna=False).sort_index()
+#     series.index.name = "values"
+#     series.name = "counts"
+#     return pd.DataFrame(series)
+
+
+def value_counts(series, normalize=False):
+    """Make a series of values and the number (or proportion) of times they appear.
 
     Returns a DataFrame because they get rendered better in Jupyter.
 
     series: Pandas Series
+    normalize: If True, return proportions instead of counts
 
     returns: Pandas DataFrame
     """
-    series = series.value_counts(dropna=False).sort_index()
-    series.index.name = "values"
-    series.name = "counts"
-    return pd.DataFrame(series)
+    series_counts = series.value_counts(dropna=False, normalize=normalize).sort_index()
+    series_counts.index.name = "values"
+    series_counts.name = "proportion" if normalize else "counts"
+    return pd.DataFrame(series_counts)
 
 
 def underride(d, **options):
@@ -63,9 +80,6 @@ def decorate(**options):
 
     with SuppressWarning():
         plt.tight_layout()
-
-
-from scipy.stats import gaussian_kde
 
 
 def joint_contour(x, y):
