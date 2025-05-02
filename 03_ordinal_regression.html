@@ -1,0 +1,2056 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Ordinal Regression &#8212; Survey Data with PyMC</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]]}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '03_ordinal_regression';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Hierarchical Categorical Regression" href="04_hierarchical.html" />
+    <link rel="prev" title="Categorical Regression" href="02_categorical_regression.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Survey Data with PyMC</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    SurveyDataPyMC
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_logistic_regression.html">Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_categorical_regression.html">Categorical Regression</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Ordinal Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_hierarchical.html">Hierarchical Categorical Regression</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/AllenDowney/SurveyDataPyMC" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/03_ordinal_regression.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Ordinal Regression</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Ordinal Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Ordinal Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-results">Interpreting the results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-a-second-predictor">Adding a second predictor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-results">Plotting the results</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="ordinal-regression">
+<h1>Ordinal Regression<a class="headerlink" href="#ordinal-regression" title="Link to this heading">#</a></h1>
+<p>This is the second notebook for a tutorial on “Practical Bayesian Modeling with PyMC”</p>
+<p><a class="reference external" href="https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/02_categorical_regression.ipynb">Click here to run this notebook on Colab</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get utils.py</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">os.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">basename</span><span class="p">,</span> <span class="n">exists</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">download</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">basename</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">urllib.request</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlretrieve</span>
+
+        <span class="n">local</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Downloaded &quot;</span> <span class="o">+</span> <span class="n">local</span><span class="p">)</span>
+
+<span class="n">download</span><span class="p">(</span><span class="s2">&quot;https://github.com/AllenDowney/SurveyDataPyMC/raw/main/notebooks/utils.py&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pymc</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">value_counts</span><span class="p">,</span> <span class="n">decorate</span><span class="p">,</span> <span class="n">load_idata_or_sample</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make the figures smaller to save some screen real estate</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">75</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.titlelocation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;left&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="data">
+<h2>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h2>
+<p>The dataset we’ll use is an extract from the General Social Survey.
+The following cell downloads it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This dataset is prepared in GssExtract/notebooks/02_make_extract-2022_4.ipynb</span>
+<span class="c1"># It has been resampled to correct for stratified sampling</span>
+
+<span class="n">DATA_PATH</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/AllenDowney/GssExtract/raw/main/data/interim/&quot;</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;gss_extract_2022_4.hdf&quot;</span>
+<span class="n">download</span><span class="p">(</span><span class="n">DATA_PATH</span> <span class="o">+</span> <span class="n">filename</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gss</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_hdf</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;gss&quot;</span><span class="p">)</span>
+<span class="n">gss</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;age&#39;, &#39;attend&#39;, &#39;ballot&#39;, &#39;class&#39;, &#39;clmtcaus&#39;, &#39;clmtusa&#39;, &#39;clmtwrld&#39;,
+       &#39;cohort&#39;, &#39;commun&#39;, &#39;conarmy&#39;, &#39;conbus&#39;, &#39;conclerg&#39;, &#39;coneduc&#39;,
+       &#39;confed&#39;, &#39;confinan&#39;, &#39;coninc&#39;, &#39;conjudge&#39;, &#39;conlabor&#39;, &#39;conlegis&#39;,
+       &#39;conmedic&#39;, &#39;conpress&#39;, &#39;conrinc&#39;, &#39;consci&#39;, &#39;contv&#39;, &#39;degree&#39;, &#39;educ&#39;,
+       &#39;eqwlth&#39;, &#39;fair&#39;, &#39;fear&#39;, &#39;fund&#39;, &#39;goodlife&#39;, &#39;hapmar&#39;, &#39;happy&#39;,
+       &#39;health&#39;, &#39;helpful&#39;, &#39;id&#39;, &#39;life&#39;, &#39;partyid&#39;, &#39;polviews&#39;, &#39;pres16&#39;,
+       &#39;pres20&#39;, &#39;race&#39;, &#39;realinc&#39;, &#39;realrinc&#39;, &#39;reg16&#39;, &#39;region&#39;, &#39;relig&#39;,
+       &#39;relig16&#39;, &#39;reliten&#39;, &#39;res16&#39;, &#39;rincome&#39;, &#39;satfin&#39;, &#39;satjob&#39;, &#39;sex&#39;,
+       &#39;sexbirth&#39;, &#39;sexbirth1&#39;, &#39;sexnow&#39;, &#39;sexnow1&#39;, &#39;srcbelt&#39;, &#39;trust&#39;,
+       &#39;wtssall&#39;, &#39;year&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id1">
+<h2>Ordinal Regression<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>In an ordinal regression model, the dependent variable is discrete and ordered.</p>
+<p>As an example, we’ll consider responses to <a class="reference external" href="https://gssdataexplorer.norc.org/variables/434/vshow">this question</a>:</p>
+<blockquote>
+<div><p>Taken all together, how would you say things are these days–would you say that you are very happy, pretty happy, or not too happy?</p>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="n">Very</span> <span class="n">happy</span>
+<span class="mi">2</span> <span class="n">Pretty</span> <span class="n">happy</span>
+<span class="mi">3</span> <span class="n">Not</span> <span class="n">too</span> <span class="n">happy</span>
+</pre></div>
+</div>
+<p>This question has been asked almost every year since the first iterations of the survey.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">value_counts</span><span class="p">(</span><span class="n">gss</span><span class="p">[</span><span class="s2">&quot;happy&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>counts</th>
+    </tr>
+    <tr>
+      <th>values</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1.0</th>
+      <td>21550</td>
+    </tr>
+    <tr>
+      <th>2.0</th>
+      <td>37446</td>
+    </tr>
+    <tr>
+      <th>3.0</th>
+      <td>8681</td>
+    </tr>
+    <tr>
+      <th>NaN</th>
+      <td>4713</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>To work with the PyMC implementation of ordinal regression, we need to recode the responses using the values <code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code>, and <code class="docutils literal notranslate"><span class="pre">2</span></code>.
+While we’re at it, we’ll reverse the order so higher numbers mean more happy.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gss</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gss</span><span class="p">[</span><span class="s2">&quot;happy&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">value_counts</span><span class="p">(</span><span class="n">gss</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">],</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>proportion</th>
+    </tr>
+    <tr>
+      <th>values</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0.0</th>
+      <td>11.991988</td>
+    </tr>
+    <tr>
+      <th>1.0</th>
+      <td>51.728139</td>
+    </tr>
+    <tr>
+      <th>2.0</th>
+      <td>29.769305</td>
+    </tr>
+    <tr>
+      <th>NaN</th>
+      <td>6.510568</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>And we’ll use this dictionary to map from codes to strings.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">happy_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Very happy&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Pretty happy&quot;</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;Not too happy&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the regression model, we’ll use respondents’ ages as a predictor.
+But first we’ll visualize the relationship by making 5-year age groups.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">round_into_bins</span>
+
+<span class="n">gss</span><span class="p">[</span><span class="s2">&quot;age_group&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">round_into_bins</span><span class="p">(</span><span class="n">gss</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">],</span> <span class="mi">5</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And computing the proportion of responses in each group.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">age_table</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">gss</span><span class="p">[</span><span class="s2">&quot;age_group&quot;</span><span class="p">],</span> <span class="n">gss</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">],</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">happy_map</span><span class="p">)</span>
+    <span class="o">*</span> <span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">age_table</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>y</th>
+      <th>Not too happy</th>
+      <th>Pretty happy</th>
+      <th>Very happy</th>
+    </tr>
+    <tr>
+      <th>age_group</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>20.0</th>
+      <td>14.754098</td>
+      <td>60.232681</td>
+      <td>25.013221</td>
+    </tr>
+    <tr>
+      <th>25.0</th>
+      <td>13.913290</td>
+      <td>57.778407</td>
+      <td>28.308303</td>
+    </tr>
+    <tr>
+      <th>30.0</th>
+      <td>11.215502</td>
+      <td>57.706988</td>
+      <td>31.077510</td>
+    </tr>
+    <tr>
+      <th>35.0</th>
+      <td>11.491515</td>
+      <td>55.894611</td>
+      <td>32.613873</td>
+    </tr>
+    <tr>
+      <th>40.0</th>
+      <td>12.492298</td>
+      <td>55.653112</td>
+      <td>31.854590</td>
+    </tr>
+    <tr>
+      <th>45.0</th>
+      <td>12.417871</td>
+      <td>56.964520</td>
+      <td>30.617608</td>
+    </tr>
+    <tr>
+      <th>50.0</th>
+      <td>12.726350</td>
+      <td>54.543916</td>
+      <td>32.729734</td>
+    </tr>
+    <tr>
+      <th>55.0</th>
+      <td>14.437804</td>
+      <td>53.119163</td>
+      <td>32.443033</td>
+    </tr>
+    <tr>
+      <th>60.0</th>
+      <td>12.406736</td>
+      <td>54.103603</td>
+      <td>33.489661</td>
+    </tr>
+    <tr>
+      <th>65.0</th>
+      <td>11.907243</td>
+      <td>51.615425</td>
+      <td>36.477332</td>
+    </tr>
+    <tr>
+      <th>70.0</th>
+      <td>11.902588</td>
+      <td>50.593607</td>
+      <td>37.503805</td>
+    </tr>
+    <tr>
+      <th>75.0</th>
+      <td>13.546300</td>
+      <td>49.130611</td>
+      <td>37.323089</td>
+    </tr>
+    <tr>
+      <th>80.0</th>
+      <td>13.867596</td>
+      <td>50.313589</td>
+      <td>35.818815</td>
+    </tr>
+    <tr>
+      <th>85.0</th>
+      <td>15.057915</td>
+      <td>48.906049</td>
+      <td>36.036036</td>
+    </tr>
+    <tr>
+      <th>90.0</th>
+      <td>12.078652</td>
+      <td>59.831461</td>
+      <td>28.089888</td>
+    </tr>
+    <tr>
+      <th>95.0</th>
+      <td>15.320334</td>
+      <td>56.545961</td>
+      <td>28.133705</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Here are the results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;C3&quot;</span><span class="p">,</span> <span class="s2">&quot;C1&quot;</span><span class="p">,</span> <span class="s2">&quot;C2&quot;</span><span class="p">]</span>
+<span class="n">age_table</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+
+<span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Percent giving each response&quot;</span>
+<span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Are you very happy, pretty happy, or not too happy?&quot;</span>
+<span class="n">decorate</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/a0cd9c3f2a66d63439f65ab9575ed41e2b30c2b3f9eaa251621ff56455c6d1f4.png" src="_images/a0cd9c3f2a66d63439f65ab9575ed41e2b30c2b3f9eaa251621ff56455c6d1f4.png" />
+</div>
+</div>
+<p>It looks like older people are more likely to say “very happy” and less likely to say “pretty happy”.</p>
+<p>It is tempting to conclude that people get happier as they get older, but with this figure alone, we can’t tell whether these trends are an age effect or a cohort effect.</p>
+<p>We can get a clearer picture by looking at birth years.
+As we did with age, we’ll group people into 5-year birth cohorts.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gss</span><span class="p">[</span><span class="s2">&quot;cohort&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gss</span><span class="p">[</span><span class="s2">&quot;cohort&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="mi">9999</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gss</span><span class="p">[</span><span class="s2">&quot;birth_group&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">round_into_bins</span><span class="p">(</span><span class="n">gss</span><span class="p">[</span><span class="s2">&quot;cohort&quot;</span><span class="p">],</span> <span class="mi">5</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mi">1903</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span>
+<span class="n">gss</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;birth_group&quot;</span><span class="p">)[</span><span class="s2">&quot;cohort&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>min</th>
+      <th>25%</th>
+      <th>50%</th>
+      <th>75%</th>
+      <th>max</th>
+    </tr>
+    <tr>
+      <th>birth_group</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1905.0</th>
+      <td>830.0</td>
+      <td>1905.213253</td>
+      <td>1.430857</td>
+      <td>1903.0</td>
+      <td>1904.0</td>
+      <td>1905.0</td>
+      <td>1907.0</td>
+      <td>1907.0</td>
+    </tr>
+    <tr>
+      <th>1910.0</th>
+      <td>1275.0</td>
+      <td>1910.114510</td>
+      <td>1.452892</td>
+      <td>1908.0</td>
+      <td>1909.0</td>
+      <td>1910.0</td>
+      <td>1911.5</td>
+      <td>1912.0</td>
+    </tr>
+    <tr>
+      <th>1915.0</th>
+      <td>1909.0</td>
+      <td>1915.102148</td>
+      <td>1.422174</td>
+      <td>1913.0</td>
+      <td>1914.0</td>
+      <td>1915.0</td>
+      <td>1916.0</td>
+      <td>1917.0</td>
+    </tr>
+    <tr>
+      <th>1920.0</th>
+      <td>2522.0</td>
+      <td>1920.087629</td>
+      <td>1.429506</td>
+      <td>1918.0</td>
+      <td>1919.0</td>
+      <td>1920.0</td>
+      <td>1921.0</td>
+      <td>1922.0</td>
+    </tr>
+    <tr>
+      <th>1925.0</th>
+      <td>3102.0</td>
+      <td>1925.071889</td>
+      <td>1.431998</td>
+      <td>1923.0</td>
+      <td>1924.0</td>
+      <td>1925.0</td>
+      <td>1926.0</td>
+      <td>1927.0</td>
+    </tr>
+    <tr>
+      <th>1930.0</th>
+      <td>3102.0</td>
+      <td>1930.059961</td>
+      <td>1.403783</td>
+      <td>1928.0</td>
+      <td>1929.0</td>
+      <td>1930.0</td>
+      <td>1931.0</td>
+      <td>1932.0</td>
+    </tr>
+    <tr>
+      <th>1935.0</th>
+      <td>3566.0</td>
+      <td>1935.065059</td>
+      <td>1.375492</td>
+      <td>1933.0</td>
+      <td>1934.0</td>
+      <td>1935.0</td>
+      <td>1936.0</td>
+      <td>1937.0</td>
+    </tr>
+    <tr>
+      <th>1940.0</th>
+      <td>4343.0</td>
+      <td>1940.103155</td>
+      <td>1.433124</td>
+      <td>1938.0</td>
+      <td>1939.0</td>
+      <td>1940.0</td>
+      <td>1941.0</td>
+      <td>1942.0</td>
+    </tr>
+    <tr>
+      <th>1945.0</th>
+      <td>5656.0</td>
+      <td>1945.124470</td>
+      <td>1.449801</td>
+      <td>1943.0</td>
+      <td>1944.0</td>
+      <td>1945.0</td>
+      <td>1946.0</td>
+      <td>1947.0</td>
+    </tr>
+    <tr>
+      <th>1950.0</th>
+      <td>6769.0</td>
+      <td>1950.080810</td>
+      <td>1.424249</td>
+      <td>1948.0</td>
+      <td>1949.0</td>
+      <td>1950.0</td>
+      <td>1951.0</td>
+      <td>1952.0</td>
+    </tr>
+    <tr>
+      <th>1955.0</th>
+      <td>7218.0</td>
+      <td>1954.999307</td>
+      <td>1.415144</td>
+      <td>1953.0</td>
+      <td>1954.0</td>
+      <td>1955.0</td>
+      <td>1956.0</td>
+      <td>1957.0</td>
+    </tr>
+    <tr>
+      <th>1960.0</th>
+      <td>6934.0</td>
+      <td>1959.978223</td>
+      <td>1.426284</td>
+      <td>1958.0</td>
+      <td>1959.0</td>
+      <td>1960.0</td>
+      <td>1961.0</td>
+      <td>1962.0</td>
+    </tr>
+    <tr>
+      <th>1965.0</th>
+      <td>5603.0</td>
+      <td>1964.902731</td>
+      <td>1.405857</td>
+      <td>1963.0</td>
+      <td>1964.0</td>
+      <td>1965.0</td>
+      <td>1966.0</td>
+      <td>1967.0</td>
+    </tr>
+    <tr>
+      <th>1970.0</th>
+      <td>4582.0</td>
+      <td>1969.855303</td>
+      <td>1.392833</td>
+      <td>1968.0</td>
+      <td>1969.0</td>
+      <td>1970.0</td>
+      <td>1971.0</td>
+      <td>1972.0</td>
+    </tr>
+    <tr>
+      <th>1975.0</th>
+      <td>3738.0</td>
+      <td>1974.921883</td>
+      <td>1.419237</td>
+      <td>1973.0</td>
+      <td>1974.0</td>
+      <td>1975.0</td>
+      <td>1976.0</td>
+      <td>1977.0</td>
+    </tr>
+    <tr>
+      <th>1980.0</th>
+      <td>3276.0</td>
+      <td>1979.925214</td>
+      <td>1.368197</td>
+      <td>1978.0</td>
+      <td>1979.0</td>
+      <td>1980.0</td>
+      <td>1981.0</td>
+      <td>1982.0</td>
+    </tr>
+    <tr>
+      <th>1985.0</th>
+      <td>2417.0</td>
+      <td>1984.859743</td>
+      <td>1.381263</td>
+      <td>1983.0</td>
+      <td>1984.0</td>
+      <td>1985.0</td>
+      <td>1986.0</td>
+      <td>1987.0</td>
+    </tr>
+    <tr>
+      <th>1990.0</th>
+      <td>1759.0</td>
+      <td>1989.891984</td>
+      <td>1.388126</td>
+      <td>1988.0</td>
+      <td>1989.0</td>
+      <td>1990.0</td>
+      <td>1991.0</td>
+      <td>1992.0</td>
+    </tr>
+    <tr>
+      <th>1995.0</th>
+      <td>1239.0</td>
+      <td>1994.819209</td>
+      <td>1.415214</td>
+      <td>1993.0</td>
+      <td>1994.0</td>
+      <td>1995.0</td>
+      <td>1996.0</td>
+      <td>1997.0</td>
+    </tr>
+    <tr>
+      <th>2000.0</th>
+      <td>766.0</td>
+      <td>1999.875979</td>
+      <td>1.367799</td>
+      <td>1998.0</td>
+      <td>1999.0</td>
+      <td>2000.0</td>
+      <td>2001.0</td>
+      <td>2002.0</td>
+    </tr>
+    <tr>
+      <th>2005.0</th>
+      <td>102.0</td>
+      <td>2003.245098</td>
+      <td>0.432270</td>
+      <td>2003.0</td>
+      <td>2003.0</td>
+      <td>2003.0</td>
+      <td>2003.0</td>
+      <td>2004.0</td>
+    </tr>
+    <tr>
+      <th>2010.0</th>
+      <td>927.0</td>
+      <td>1897.776699</td>
+      <td>3.918552</td>
+      <td>1883.0</td>
+      <td>1896.0</td>
+      <td>1899.0</td>
+      <td>1901.0</td>
+      <td>1902.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cohort_table</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">gss</span><span class="p">[</span><span class="s2">&quot;birth_group&quot;</span><span class="p">],</span> <span class="n">gss</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">],</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="n">happy_map</span>
+    <span class="p">)</span>
+    <span class="o">*</span> <span class="mi">100</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is the distribution of responses as a function of year of birth.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cohort_table</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+<span class="n">decorate</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/5406f889552939085136b4751edaaf9f5f108726e0de3f7429ed6c0f47b71c54.png" src="_images/5406f889552939085136b4751edaaf9f5f108726e0de3f7429ed6c0f47b71c54.png" />
+</div>
+</div>
+<p>It looks like people born later are less likely to say “very happy”.</p>
+<p>Now that we’ve explored the data, let’s make a model.</p>
+</section>
+<section id="id2">
+<h2>Ordinal Regression<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>For the first model, we’ll use age as the predictor.
+So we’ll drop rows that are missing responses to <code class="docutils literal notranslate"><span class="pre">happy</span></code> or <code class="docutils literal notranslate"><span class="pre">age</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">gss</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">])</span>
+<span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(66959, 65)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Because this dataset is large, the sampler takes a while to run.
+While debugging, it is often useful to work with a random subset of the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># data = data.sample(5000)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To prepare the data for the model, we’ll make NumPy arrays and center age.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">age</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+<span class="c1"># Center age</span>
+<span class="n">age_shift</span> <span class="o">=</span> <span class="n">age</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">age_centered</span> <span class="o">=</span> <span class="n">age</span> <span class="o">-</span> <span class="n">age_shift</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s talk about the idea behind ordinal regression.</p>
+<p>Like previous models, it’s based on the assumption that each person has a latent propensity to give answers at a particular point on a scale, and that this propensity determines their probability of giving each response.
+As in the previous models, these propensities are represented on a log-odds scale.</p>
+<p>What’s new in ordinal regression is the additional assumption that there are “cutpoints” at unknown locations on the scale that divide the scale into segments.
+If someone’s propensity is less than the lowest cutpoint, they are most likely to give the lowest response.
+If their propensity exceeds the highest cutpoint, they are most likely to give the highest response.</p>
+<p>Specifically, here’s how we compute the probability of each response.</p>
+<p>First, we compute a latent value for each person based on their age:</p>
+<div class="math notranslate nohighlight">
+\[
+\eta_i = \beta_{\text{age}} \cdot \text{age}_{i}
+\]</div>
+<p>Next, we compute the <strong>cumulative probabilities</strong> using the cutpoints:</p>
+<ul class="simple">
+<li><p>Probability of responding in category 0 or lower:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+P(y_i \leq 0) = \text{expit}(c_1 - \eta_i)
+\]</div>
+<ul class="simple">
+<li><p>Probability of responding in category 1 or lower:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+P(y_i \leq 1) = \text{expit}(c_2 - \eta_i)
+\]</div>
+<p>Then we subtract to get the <strong>marginal probabilities</strong> for each response category:</p>
+<ul class="simple">
+<li><p>Probability of response = 0:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+P(y_i = 0) = P(y_i \leq 0)
+\]</div>
+<ul class="simple">
+<li><p>Probability of response = 1:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+P(y_i = 1) = P(y_i \leq 1) - P(y_i \leq 0)
+\]</div>
+<ul class="simple">
+<li><p>Probability of response = 2:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+P(y_i = 2) = 1 - P(y_i \leq 1)
+\]</div>
+<p>When we sample the model, it estimates the cutpoints and the coefficient of age simultaneously.
+But we can get a general idea of where the cutpoints are by computing the proportions in each category on a log-odds scale.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">logit</span>
+
+<span class="n">cutpoint_0</span> <span class="o">=</span> <span class="n">logit</span><span class="p">(</span><span class="mf">0.12</span><span class="p">)</span>  <span class="c1"># Cutpoint between &quot;Not too happy&quot; and &quot;Pretty happy&quot;</span>
+<span class="n">cutpoint_1</span> <span class="o">=</span> <span class="n">logit</span><span class="p">(</span><span class="mf">0.64</span><span class="p">)</span>  <span class="c1"># Cutpoint between &quot;Pretty happy&quot; and &quot;Very happy&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">cutpoint_0</span><span class="p">,</span> <span class="n">cutpoint_1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-1.9924301646902063 0.5753641449035619
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can use this peek at the data to choose a prior for the cutpoints.
+This helps the sampler get started – other than that, it doesn’t affect the results much.</p>
+<p>Here’s the DIY implementation of the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">ordinal_model_diy</span><span class="p">:</span>
+    <span class="c1"># Priors for the cutpoints (thresholds) between categories</span>
+    <span class="n">cutpoints</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span>
+        <span class="s2">&quot;cutpoints&quot;</span><span class="p">,</span>
+        <span class="n">mu</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]),</span>
+        <span class="n">sigma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">ordered</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Age slope</span>
+    <span class="n">beta_age</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_age&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+
+    <span class="c1"># Linear predictor for each respondent (this is just age effect)</span>
+    <span class="n">eta</span> <span class="o">=</span> <span class="n">beta_age</span> <span class="o">*</span> <span class="n">age_centered</span>  <span class="c1"># shape (n,)</span>
+
+    <span class="c1"># Compute cumulative logits for each observation and each cutpoint</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">cutpoints</span> <span class="o">-</span> <span class="n">eta</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>  <span class="c1"># shape (n, 2)</span>
+
+    <span class="c1"># Convert logits to cumulative probabilities</span>
+    <span class="n">cdf_0</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>  <span class="c1"># P(y ≤ 0)</span>
+    <span class="n">cdf_1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>  <span class="c1"># P(y ≤ 1)</span>
+
+    <span class="c1"># Convert cumulative probabilities to category probabilities</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="n">cdf_0</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">cdf_1</span> <span class="o">-</span> <span class="n">cdf_0</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">cdf_1</span>
+
+    <span class="c1"># Stack into final probability matrix</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Likelihood using explicit p</span>
+    <span class="n">y_obs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="s2">&quot;y_obs&quot;</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The transform sorts the cutpoints so they are in order – otherwise the cumulative probabilities would not be ordered and their differences could be negative.</p>
+<p>Here’s an equivalent model using the built-in <code class="docutils literal notranslate"><span class="pre">OrderedLogistic</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">ordinal_model</span><span class="p">:</span>
+    <span class="c1"># Priors for the cutpoints (thresholds) between categories</span>
+    <span class="n">cutpoints</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span>
+        <span class="s2">&quot;cutpoints&quot;</span><span class="p">,</span>
+        <span class="n">mu</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]),</span>
+        <span class="n">sigma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">ordered</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Age slope</span>
+    <span class="n">beta_age</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_age&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+
+    <span class="c1"># Compute cumulative logits</span>
+    <span class="n">eta</span> <span class="o">=</span> <span class="n">beta_age</span> <span class="o">*</span> <span class="n">age_centered</span>
+
+    <span class="c1"># Hide the details of the calculation</span>
+    <span class="n">y_obs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">OrderedLogistic</span><span class="p">(</span>
+        <span class="s2">&quot;y_obs&quot;</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="n">eta</span><span class="p">,</span> <span class="n">cutpoints</span><span class="o">=</span><span class="n">cutpoints</span><span class="p">,</span> <span class="n">compute_p</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">y</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s what it looks like.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">ordinal_model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/f5f25ca75fd4f4db5da1196c9145e9432803efe76387ac93ae6104a8ce66032e.svg" src="_images/f5f25ca75fd4f4db5da1196c9145e9432803efe76387ac93ae6104a8ce66032e.svg" />
+</div>
+</div>
+<p>Now let’s run the sampler.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;ordinal_model_idata.nc&#39;</span>
+<span class="n">idata</span> <span class="o">=</span> <span class="n">load_idata_or_sample</span><span class="p">(</span><span class="n">ordinal_model_diy</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">draws</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded idata from ordinal_model_idata.nc
+</pre></div>
+</div>
+</div>
+</div>
+<p>The posterior distribution of the cutpoints is consistent with our estimates based on the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cutpoints&quot;</span><span class="p">])</span>
+<span class="n">decorate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/5a23ecd8169f16b9823f0f0599092ef272078ffc3b957142a4846822cf94e1a6.png" src="_images/5a23ecd8169f16b9823f0f0599092ef272078ffc3b957142a4846822cf94e1a6.png" />
+</div>
+</div>
+<p>And here’s the coefficient of age.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;beta_age&quot;</span><span class="p">])</span>
+<span class="n">decorate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/63d803590bf48fa9fec9f5534ad76805d239d24104b036ad9ecb653cb25ad81e.png" src="_images/63d803590bf48fa9fec9f5534ad76805d239d24104b036ad9ecb653cb25ad81e.png" />
+</div>
+</div>
+<p>The traces look good.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">idata</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">decorate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/cb653ce70c30027416ac7b3a53d717808bfd0c6e822e075f3c0cea0699d3fb5e.png" src="_images/cb653ce70c30027416ac7b3a53d717808bfd0c6e822e075f3c0cea0699d3fb5e.png" />
+</div>
+</div>
+<p>And the diagnostics are  good.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">idata</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+      <th>mcse_mean</th>
+      <th>mcse_sd</th>
+      <th>ess_bulk</th>
+      <th>ess_tail</th>
+      <th>r_hat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>beta_age</th>
+      <td>0.005</td>
+      <td>0.000</td>
+      <td>0.005</td>
+      <td>0.006</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1306.0</td>
+      <td>1146.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>cutpoints[0]</th>
+      <td>-1.923</td>
+      <td>0.012</td>
+      <td>-1.946</td>
+      <td>-1.902</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1080.0</td>
+      <td>1041.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>cutpoints[1]</th>
+      <td>0.760</td>
+      <td>0.008</td>
+      <td>0.745</td>
+      <td>0.776</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2954.0</td>
+      <td>1789.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="interpreting-the-results">
+<h2>Interpreting the results<a class="headerlink" href="#interpreting-the-results" title="Link to this heading">#</a></h2>
+<p>We’ll generate predictions over a range of ages.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Center the age range</span>
+<span class="n">age_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">95</span><span class="p">)</span>
+<span class="n">age_range_centered</span> <span class="o">=</span> <span class="n">age_range</span> <span class="o">-</span> <span class="n">age_shift</span>
+<span class="n">n_ages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">age_range</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">idata</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+
+<span class="n">cutpoints</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="s2">&quot;cutpoints&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">cutpoints</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2, 100)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beta_age</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="s2">&quot;beta_age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">beta_age</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(100,)
+</pre></div>
+</div>
+</div>
+</div>
+<p>For each set of cutpoints and age coefficient, we compute the probabilities for each of the three categories over a range of ages.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">expit</span>
+
+<span class="c1"># Predicted probabilities: shape (n_samples, n_ages, 3)</span>
+<span class="n">predicted_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_ages</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
+    <span class="n">cp0</span><span class="p">,</span> <span class="n">cp1</span> <span class="o">=</span> <span class="n">cutpoints</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">slope</span> <span class="o">=</span> <span class="n">beta_age</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="n">eta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cp0</span><span class="p">,</span> <span class="n">cp1</span><span class="p">])</span> <span class="o">-</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">age_range_centered</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
+
+    <span class="c1"># Convert to cumulative probabilities</span>
+    <span class="n">cdf_0</span> <span class="o">=</span> <span class="n">expit</span><span class="p">(</span><span class="n">eta</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">cdf_1</span> <span class="o">=</span> <span class="n">expit</span><span class="p">(</span><span class="n">eta</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># Convert to category probabilities</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="n">cdf_0</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">cdf_1</span> <span class="o">-</span> <span class="n">cdf_0</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">cdf_1</span>
+
+    <span class="n">predicted_probs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s what the results look like.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">age_table</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">happy_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">mean_prob</span> <span class="o">=</span> <span class="n">predicted_probs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">hdi_low</span><span class="p">,</span> <span class="n">hdi_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">predicted_probs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">k</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">age_range</span><span class="p">,</span> <span class="n">mean_prob</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">age_range</span><span class="p">,</span> <span class="n">hdi_low</span><span class="p">,</span> <span class="n">hdi_high</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+<span class="n">decorate</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ecd04835eb5967d2d9a8380dd621349128b620f1f9c865d42b804c4ce383508e.png" src="_images/ecd04835eb5967d2d9a8380dd621349128b620f1f9c865d42b804c4ce383508e.png" />
+</div>
+</div>
+<p>It looks like the model does a pretty good job capturing the trends in the data.</p>
+</section>
+<section id="adding-a-second-predictor">
+<h2>Adding a second predictor<a class="headerlink" href="#adding-a-second-predictor" title="Link to this heading">#</a></h2>
+<p>To estimate the effect of age and cohort separately, we’ll add birth year as a second predictor.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">gss</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;cohort&quot;</span><span class="p">])</span>
+<span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(66958, 65)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again, you might want to run with a subset of the data so the sampler runs faster.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># data = data.sample(5000)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again, we’ll prepare the data and center both predictors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">age</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">cohort</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;cohort&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Center age</span>
+<span class="n">age_shift</span> <span class="o">=</span> <span class="n">age</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">age_centered</span> <span class="o">=</span> <span class="n">age</span> <span class="o">-</span> <span class="n">age_shift</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Center cohort</span>
+<span class="n">cohort_shift</span> <span class="o">=</span> <span class="n">cohort</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">cohort_centered</span> <span class="o">=</span> <span class="n">cohort</span> <span class="o">-</span> <span class="n">cohort_shift</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s the model with the added predictor.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">ordinal_model2</span><span class="p">:</span>
+    <span class="c1"># Priors for cutpoints (thresholds)</span>
+    <span class="n">cutpoints</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span>
+        <span class="s2">&quot;cutpoints&quot;</span><span class="p">,</span>
+        <span class="n">mu</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]),</span>
+        <span class="n">sigma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">ordered</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Slopes for age and cohort</span>
+    <span class="n">beta_age</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_age&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">beta_cohort</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_cohort&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+
+    <span class="c1"># Linear predictor (age effect + cohort effect)</span>
+    <span class="n">eta</span> <span class="o">=</span> <span class="n">beta_age</span> <span class="o">*</span> <span class="n">age_centered</span> <span class="o">+</span> <span class="n">beta_cohort</span> <span class="o">*</span> <span class="n">cohort_centered</span>
+
+    <span class="c1"># Ordinal likelihood</span>
+    <span class="n">y_obs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">OrderedLogistic</span><span class="p">(</span>
+        <span class="s2">&quot;y_obs&quot;</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="n">eta</span><span class="p">,</span> <span class="n">cutpoints</span><span class="o">=</span><span class="n">cutpoints</span><span class="p">,</span> <span class="n">compute_p</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">y</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s what it looks like.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">ordinal_model2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/4318413c00f360b00b2af8aabe50d444df50747fa333092e5b0b823d2402a533.svg" src="_images/4318413c00f360b00b2af8aabe50d444df50747fa333092e5b0b823d2402a533.svg" />
+</div>
+</div>
+<p>Run that sampler…</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;ordinal_model2_idata.nc&#39;</span>
+<span class="n">idata2</span> <span class="o">=</span> <span class="n">load_idata_or_sample</span><span class="p">(</span><span class="n">ordinal_model2</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">draws</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded idata from ordinal_model2_idata.nc
+</pre></div>
+</div>
+</div>
+</div>
+<p>The traces and diagnostics look good.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">idata2</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">decorate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/40ea0556cb0c918f8fd1abd0d3576d79a48778155edfc686883832cb714b933e.png" src="_images/40ea0556cb0c918f8fd1abd0d3576d79a48778155edfc686883832cb714b933e.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">idata2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+      <th>mcse_mean</th>
+      <th>mcse_sd</th>
+      <th>ess_bulk</th>
+      <th>ess_tail</th>
+      <th>r_hat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>beta_age</th>
+      <td>-0.004</td>
+      <td>0.001</td>
+      <td>-0.005</td>
+      <td>-0.003</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1194.0</td>
+      <td>1269.0</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>beta_cohort</th>
+      <td>-0.010</td>
+      <td>0.000</td>
+      <td>-0.011</td>
+      <td>-0.009</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1115.0</td>
+      <td>1306.0</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>cutpoints[0]</th>
+      <td>-1.931</td>
+      <td>0.011</td>
+      <td>-1.953</td>
+      <td>-1.911</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>958.0</td>
+      <td>1289.0</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>cutpoints[1]</th>
+      <td>0.765</td>
+      <td>0.008</td>
+      <td>0.749</td>
+      <td>0.781</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2889.0</td>
+      <td>1712.0</td>
+      <td>1.01</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The posterior distribution of the cutpoints is not much different.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata2</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cutpoints&#39;</span><span class="p">])</span>
+<span class="n">decorate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/cea8dcfb813539e471f6d7790367b04b119601a4af22a6b668f9b7d974563dc5.png" src="_images/cea8dcfb813539e471f6d7790367b04b119601a4af22a6b668f9b7d974563dc5.png" />
+</div>
+</div>
+<p>The posterior distributions for both coefficients are negative, which suggests that the age effect and cohort effect point in the same direction: people get less happy with age (during this period) and successive cohorts are less happy.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata2</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;beta_age&#39;</span><span class="p">,</span> <span class="s1">&#39;beta_cohort&#39;</span><span class="p">])</span>
+<span class="n">decorate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/3aa971b5a3c09d9a299e2d45402fd98f3654d22572f3f8cf6506829802eb380b.png" src="_images/3aa971b5a3c09d9a299e2d45402fd98f3654d22572f3f8cf6506829802eb380b.png" />
+</div>
+</div>
+<p>And the cohort effect appears to be about two times bigger.</p>
+</section>
+<section id="plotting-the-results">
+<h2>Plotting the results<a class="headerlink" href="#plotting-the-results" title="Link to this heading">#</a></h2>
+<p>Since we have two predictors, we’ll visualize the results two ways: varying age while holding birth year constant, and the other way around.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>44.982750380835746
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;cohort&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1952.1698527435108
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ll extract a sample from the posterior distribution as we’ve done before.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">idata2</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+
+<span class="n">cutpoints</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="s2">&quot;cutpoints&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">cutpoints</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2, 100)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beta_age</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="s2">&quot;beta_age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">beta_age</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(100,)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beta_cohort</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="s2">&quot;beta_cohort&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">beta_cohort</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(100,)
+</pre></div>
+</div>
+</div>
+</div>
+<p>It is a little more complicated now to compute the predicted probabilities.
+The following function encapsulates the logic.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_predicted_probs</span><span class="p">(</span><span class="n">cutpoints</span><span class="p">,</span> <span class="n">beta_age</span><span class="p">,</span> <span class="n">beta_cohort</span><span class="p">,</span> <span class="n">age_centered</span><span class="p">,</span> <span class="n">cohort_centered</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute predicted probabilities for each age/cohort combination.</span>
+
+<span class="sd">    cutpoints: array of shape (2, n_samples)</span>
+<span class="sd">    beta_age: array of shape (n_samples,)</span>
+<span class="sd">    beta_cohort: array of shape (n_samples,)</span>
+<span class="sd">    age_centered: array of shape (n_ages,)</span>
+<span class="sd">    cohort_centered: array of shape (n_cohorts,)</span>
+
+<span class="sd">    Returns: array of shape (n_samples, n_ages, n_cohorts, 3)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="n">beta_age</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">n_ages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">age_centered</span><span class="p">)</span>
+    <span class="n">n_cohorts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cohort_centered</span><span class="p">)</span>
+
+    <span class="c1"># Broadcast to shape (n_samples, n_ages, n_cohorts)</span>
+    <span class="n">eta</span> <span class="o">=</span> <span class="p">(</span><span class="n">beta_age</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">age_centered</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span>
+           <span class="n">beta_cohort</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">cohort_centered</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:])</span>
+
+    <span class="c1"># Broadcast cutpoints to match shape</span>
+    <span class="n">cut_0</span> <span class="o">=</span> <span class="n">cutpoints</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="n">cut_1</span> <span class="o">=</span> <span class="n">cutpoints</span><span class="p">[</span><span class="mi">1</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
+    <span class="c1"># Compute cumulative logits</span>
+    <span class="n">cdf_0</span> <span class="o">=</span> <span class="n">expit</span><span class="p">(</span><span class="n">cut_0</span> <span class="o">-</span> <span class="n">eta</span><span class="p">)</span>
+    <span class="n">cdf_1</span> <span class="o">=</span> <span class="n">expit</span><span class="p">(</span><span class="n">cut_1</span> <span class="o">-</span> <span class="n">eta</span><span class="p">)</span>
+
+    <span class="c1"># Compute category probabilities</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="n">cdf_0</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">cdf_1</span> <span class="o">-</span> <span class="n">cdf_0</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">cdf_1</span>
+
+    <span class="c1"># Stack along last axis and scale to percentages</span>
+    <span class="n">predicted_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+
+    <span class="k">return</span> <span class="n">predicted_probs</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>First we’ll compute probabilities for a range of ages with cohort fixed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Center the age range</span>
+<span class="n">age_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">95</span><span class="p">)</span>
+<span class="n">age_centered</span> <span class="o">=</span> <span class="n">age_range</span> <span class="o">-</span> <span class="n">age_shift</span>
+
+<span class="c1"># Fixed cohort value</span>
+<span class="n">cohort_fixed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1960</span><span class="p">])</span>
+<span class="n">cohort_centered</span> <span class="o">=</span> <span class="n">cohort_fixed</span> <span class="o">-</span> <span class="n">cohort_shift</span>
+
+<span class="n">predicted_probs</span> <span class="o">=</span> <span class="n">compute_predicted_probs</span><span class="p">(</span>
+    <span class="n">cutpoints</span><span class="p">,</span> <span class="n">beta_age</span><span class="p">,</span> <span class="n">beta_cohort</span><span class="p">,</span> <span class="n">age_centered</span><span class="p">,</span> <span class="n">cohort_centered</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s what it looks like.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">age_table</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">predicted_probs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
+    <span class="n">mean_prob</span> <span class="o">=</span> <span class="n">prob</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">hdi_low</span><span class="p">,</span> <span class="n">hdi_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">age_range</span><span class="p">,</span> <span class="n">mean_prob</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">age_range</span><span class="p">,</span> <span class="n">hdi_low</span><span class="p">,</span> <span class="n">hdi_high</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+<span class="n">decorate</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/04bd019df5242ea96047967c274a1d9479ba9c422d4765ff28e03a84e95a77cf.png" src="_images/04bd019df5242ea96047967c274a1d9479ba9c422d4765ff28e03a84e95a77cf.png" />
+</div>
+</div>
+<p>We don’t expect the results to match the data perfectly, because the predictions are for a specific birth year and the data contain a mixture of birth years.</p>
+<p>Here are the probabilities for a range of birth years – with a little bit of extrapolation – with age fixed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Center the cohort range</span>
+<span class="n">cohort_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1905</span><span class="p">,</span> <span class="mi">2020</span><span class="p">)</span>
+<span class="n">cohort_centered</span> <span class="o">=</span> <span class="n">cohort_range</span> <span class="o">-</span> <span class="n">cohort_shift</span>
+
+<span class="c1"># Fixed age</span>
+<span class="n">age_fixed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">40</span><span class="p">])</span>
+<span class="n">age_centered</span> <span class="o">=</span> <span class="n">age_fixed</span> <span class="o">-</span> <span class="n">age_shift</span>
+
+<span class="n">predicted_probs</span> <span class="o">=</span> <span class="n">compute_predicted_probs</span><span class="p">(</span>
+    <span class="n">cutpoints</span><span class="p">,</span> <span class="n">beta_age</span><span class="p">,</span> <span class="n">beta_cohort</span><span class="p">,</span> <span class="n">age_centered</span><span class="p">,</span> <span class="n">cohort_centered</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And here’s what the results look like.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cohort_table</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">happy_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">predicted_probs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="n">k</span><span class="p">]</span>
+    <span class="n">mean_prob</span> <span class="o">=</span> <span class="n">prob</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">hdi_low</span><span class="p">,</span> <span class="n">hdi_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cohort_range</span><span class="p">,</span> <span class="n">mean_prob</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">cohort_range</span><span class="p">,</span> <span class="n">hdi_low</span><span class="p">,</span> <span class="n">hdi_high</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+<span class="n">decorate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/7e1e26a778a2ac907d89261259bb5992323806cdd09bf99f0cea77149b6e2431.png" src="_images/7e1e26a778a2ac907d89261259bb5992323806cdd09bf99f0cea77149b6e2431.png" />
+</div>
+</div>
+<p>One use of a model like this is to generate projections and counterfactuals.</p>
+<p>As a next step, we could consider adding predictors like gender, marital status, education, and income.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02_categorical_regression.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Categorical Regression</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04_hierarchical.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Hierarchical Categorical Regression</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Ordinal Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Ordinal Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-results">Interpreting the results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-a-second-predictor">Adding a second predictor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-results">Plotting the results</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Allen B. Downey and Alexander Fengler
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
