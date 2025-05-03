@@ -1,0 +1,7 @@
+format: jb-book
+root: index
+chapters:
+- file: 00_intro.ipynb
+- file: 01_logistic_regression
+- file: 02_categorical_regression
+- file: 03_ordinal_regression
