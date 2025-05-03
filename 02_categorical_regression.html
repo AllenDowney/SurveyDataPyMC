@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -179,7 +179,6 @@
 <li class="toctree-l1"><a class="reference internal" href="01_logistic_regression.html">Logistic Regression</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Categorical Regression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_ordinal_regression.html">Ordinal Regression</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04_hierarchical.html">Hierarchical Categorical Regression</a></li>
 </ul>
 
     </div>
@@ -809,9 +808,37 @@ As we did with <code class="docutils literal notranslate"><span class="pre">year
 <p>Once we have probabilities we can compute the likelihood of the data with <code class="docutils literal notranslate"><span class="pre">Categorical</span></code>, which is the generalization of <code class="docutils literal notranslate"><span class="pre">Bernoulli</span></code> to more than two outcomes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">categorical_model</span><span class="p">:</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;alpha&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Biden, Trump (relative to Other)</span>
-    <span class="n">beta_age</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_age&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Biden, Trump (relative to Other)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Modify this</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">categorical_model</span><span class="p">:</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;alpha&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>        <span class="c1"># Biden, Trump (relative to Other)</span>
+    <span class="n">beta_age</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_age&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  
+
+    <span class="n">logit_other</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">age</span><span class="p">))</span>
+    <span class="n">logit_biden</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">logit_trump</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">logits</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    
+    <span class="n">y_obs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="s2">&quot;y_obs&quot;</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Solution</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">categorical_model</span><span class="p">:</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;alpha&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>        <span class="c1"># Biden, Trump (relative to Other)</span>
+    <span class="n">beta_age</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_age&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="n">logit_other</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">age</span><span class="p">))</span>
     <span class="n">logit_biden</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">beta_age</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">age_centered</span>
@@ -820,10 +847,12 @@ As we did with <code class="docutils literal notranslate"><span class="pre">year
     <span class="n">logits</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">logit_other</span><span class="p">,</span> <span class="n">logit_biden</span><span class="p">,</span> <span class="n">logit_trump</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="n">p</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
     <span class="n">y_obs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="s2">&quot;y_obs&quot;</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <p>Here’s what the model looks like.</p>
 <div class="cell docutils container">
@@ -833,7 +862,7 @@ As we did with <code class="docutils literal notranslate"><span class="pre">year
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5d657eb0f7cb8c9e6621d85af5a39deeb76c614e5506c1de11ed06580504cd35.svg" src="_images/5d657eb0f7cb8c9e6621d85af5a39deeb76c614e5506c1de11ed06580504cd35.svg" />
+<img alt="_images/4c07c338d0a208a6e1e7b8b09b7fb4a3543d9d285ea77bc85517bb2d357fe23e.svg" src="_images/4c07c338d0a208a6e1e7b8b09b7fb4a3543d9d285ea77bc85517bb2d357fe23e.svg" />
 </div>
 </div>
 <p>Here’s how we can sample it.</p>
@@ -850,30 +879,6 @@ As we did with <code class="docutils literal notranslate"><span class="pre">year
 </div>
 </div>
 </div>
-<p>And here’s what the posterior distribution looks like.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata_categorical</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">])</span>
-<span class="n">decorate</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/83c9c65f1ff0e4ce93cfe464f78b32395e055634b1c4f14e205957fc525ffc96.png" src="_images/83c9c65f1ff0e4ce93cfe464f78b32395e055634b1c4f14e205957fc525ffc96.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata_categorical</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;beta_age&quot;</span><span class="p">])</span>
-<span class="n">decorate</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/982e80641b0fbf1086469631bdea287cbc0d98748f8c782ce7a39795d475be68.png" src="_images/982e80641b0fbf1086469631bdea287cbc0d98748f8c782ce7a39795d475be68.png" />
-</div>
-</div>
-<p>The posterior distribution contains two values for <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and <code class="docutils literal notranslate"><span class="pre">beta_age</span></code>, one for Biden relative to Other and one for Trump relative to Other.</p>
 <p>The traces and diagnostic summary look good.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -883,7 +888,7 @@ As we did with <code class="docutils literal notranslate"><span class="pre">year
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/02142cb2e81d76b2fc9a7942f06b142ed8d17b3e3c90c311f74164dc9280aac7.png" src="_images/02142cb2e81d76b2fc9a7942f06b142ed8d17b3e3c90c311f74164dc9280aac7.png" />
+<img alt="_images/35c90a8d41674460a0b95e8e9debbc7a3e13499718dccf76a90b49284c8df705.png" src="_images/35c90a8d41674460a0b95e8e9debbc7a3e13499718dccf76a90b49284c8df705.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -925,56 +930,80 @@ As we did with <code class="docutils literal notranslate"><span class="pre">year
   <tbody>
     <tr>
       <th>alpha[0]</th>
-      <td>2.480</td>
-      <td>0.102</td>
-      <td>2.285</td>
-      <td>2.662</td>
+      <td>2.484</td>
+      <td>0.105</td>
+      <td>2.293</td>
+      <td>2.681</td>
       <td>0.003</td>
       <td>0.002</td>
-      <td>1094.0</td>
-      <td>1091.0</td>
-      <td>1.01</td>
+      <td>986.0</td>
+      <td>1006.0</td>
+      <td>1.0</td>
     </tr>
     <tr>
       <th>alpha[1]</th>
-      <td>2.213</td>
-      <td>0.104</td>
-      <td>2.027</td>
-      <td>2.415</td>
+      <td>2.216</td>
+      <td>0.106</td>
+      <td>2.019</td>
+      <td>2.410</td>
       <td>0.003</td>
-      <td>0.003</td>
-      <td>1067.0</td>
-      <td>1044.0</td>
-      <td>1.00</td>
+      <td>0.002</td>
+      <td>1046.0</td>
+      <td>933.0</td>
+      <td>1.0</td>
     </tr>
     <tr>
       <th>beta_age[0]</th>
       <td>0.002</td>
       <td>0.006</td>
-      <td>-0.010</td>
-      <td>0.013</td>
+      <td>-0.009</td>
+      <td>0.014</td>
       <td>0.000</td>
       <td>0.000</td>
-      <td>926.0</td>
-      <td>872.0</td>
-      <td>1.00</td>
+      <td>1056.0</td>
+      <td>963.0</td>
+      <td>1.0</td>
     </tr>
     <tr>
       <th>beta_age[1]</th>
       <td>0.010</td>
       <td>0.006</td>
-      <td>-0.002</td>
-      <td>0.021</td>
+      <td>-0.001</td>
+      <td>0.022</td>
       <td>0.000</td>
       <td>0.000</td>
-      <td>867.0</td>
-      <td>842.0</td>
-      <td>1.00</td>
+      <td>1031.0</td>
+      <td>957.0</td>
+      <td>1.0</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
+<p>And here’s what the posterior distribution looks like.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata_categorical</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">])</span>
+<span class="n">decorate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/595206b8b7d154948194f1a5a7fcfdd2a2bb1fb0505452b21f1cfae31f3e2791.png" src="_images/595206b8b7d154948194f1a5a7fcfdd2a2bb1fb0505452b21f1cfae31f3e2791.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata_categorical</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;beta_age&quot;</span><span class="p">])</span>
+<span class="n">decorate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/1d83d25ef68b4f64c28ba60d14fa0f4140bf93687b42a4dadfbd10d6cd0fce31.png" src="_images/1d83d25ef68b4f64c28ba60d14fa0f4140bf93687b42a4dadfbd10d6cd0fce31.png" />
+</div>
+</div>
+<p>The posterior distribution contains two values for <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and <code class="docutils literal notranslate"><span class="pre">beta_age</span></code>, one for Biden relative to Other and one for Trump relative to Other.</p>
 </section>
 <section id="interpreting-the-results">
 <h2>Interpreting the results<a class="headerlink" href="#interpreting-the-results" title="Link to this heading">#</a></h2>
@@ -1064,7 +1093,7 @@ As we did with <code class="docutils literal notranslate"><span class="pre">year
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a995292b63787e840d5c15c6b60b08e4c55c21841bf7975e237693ebc3645cab.png" src="_images/a995292b63787e840d5c15c6b60b08e4c55c21841bf7975e237693ebc3645cab.png" />
+<img alt="_images/98737625aee2cb7d11a7c38a9caf964162ea86e5ebdc3125c3ae89cb67ea19b4.png" src="_images/98737625aee2cb7d11a7c38a9caf964162ea86e5ebdc3125c3ae89cb67ea19b4.png" />
 </div>
 </div>
 <p>It looks like the regression model does a good job of capturing the trends in the data.</p>
@@ -1251,7 +1280,35 @@ As an aside, a hierarchical model would be a good way to conduct this analysis w
 <p>And here’s the model with gender as an additional categorical predictor.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">categorical_model2</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Modify this</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">categorical_model</span><span class="p">:</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;alpha&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">beta_age</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_age&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">logit_other</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">age</span><span class="p">))</span>
+    <span class="n">logit_biden</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">beta_age</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">age_centered</span>
+    <span class="n">logit_trump</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">beta_age</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">age_centered</span>
+
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">logit_other</span><span class="p">,</span> <span class="n">logit_biden</span><span class="p">,</span> <span class="n">logit_trump</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">p</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="n">y_obs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="s2">&quot;y_obs&quot;</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Solution</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">categorical_model2</span><span class="p">:</span>
     <span class="c1"># Biden, Trump (relative to Other)</span>
     <span class="n">alpha</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;alpha&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
@@ -1274,6 +1331,7 @@ As an aside, a hierarchical model would be a good way to conduct this analysis w
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1282,7 +1340,7 @@ As an aside, a hierarchical model would be a good way to conduct this analysis w
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d90381936e6fb40c15bbc08df8f20f023dad2134773006341170bd8e01887462.svg" src="_images/d90381936e6fb40c15bbc08df8f20f023dad2134773006341170bd8e01887462.svg" />
+<img alt="_images/81620b85f585703ec32eae846e4e6a42e5516917fbed8d03b863bedc91daf010.svg" src="_images/81620b85f585703ec32eae846e4e6a42e5516917fbed8d03b863bedc91daf010.svg" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1294,20 +1352,20 @@ As an aside, a hierarchical model would be a good way to conduct this analysis w
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded idata from categorical_model2_idata.nc
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [alpha, beta_age, beta_gender]
 </pre></div>
 </div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata_categorical2</span><span class="p">)</span>
-<span class="n">decorate</span><span class="p">()</span>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "97332bd5654349579a67acab955a8278", "version_major": 2, "version_minor": 0}</script><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">
+</pre>
+</div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sampling 4 chains for 500 tune and 500 draw iterations (2_000 + 2_000 draws total) took 19 seconds.
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saved new idata to categorical_model2_idata.nc
+</pre></div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/7d27ee433af853d2fb3e30719bdc6cc57d082151704a48e84031828396ccad7f.png" src="_images/7d27ee433af853d2fb3e30719bdc6cc57d082151704a48e84031828396ccad7f.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1318,7 +1376,7 @@ As an aside, a hierarchical model would be a good way to conduct this analysis w
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/38047230eb0b0c997858de754e9613bf687fb2be6813376362cbbf3f20a752b5.png" src="_images/38047230eb0b0c997858de754e9613bf687fb2be6813376362cbbf3f20a752b5.png" />
+<img alt="_images/2f0ceae1225e7c7db6c1410730b963d068065b7fb87831c590754f58d726ccd3.png" src="_images/2f0ceae1225e7c7db6c1410730b963d068065b7fb87831c590754f58d726ccd3.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1361,78 +1419,89 @@ As an aside, a hierarchical model would be a good way to conduct this analysis w
     <tr>
       <th>alpha[0]</th>
       <td>2.291</td>
-      <td>0.141</td>
-      <td>2.042</td>
-      <td>2.561</td>
+      <td>0.142</td>
+      <td>2.031</td>
+      <td>2.560</td>
       <td>0.005</td>
       <td>0.003</td>
-      <td>825.0</td>
-      <td>962.0</td>
+      <td>897.0</td>
+      <td>790.0</td>
       <td>1.0</td>
     </tr>
     <tr>
       <th>alpha[1]</th>
-      <td>2.232</td>
-      <td>0.140</td>
-      <td>1.963</td>
+      <td>2.234</td>
+      <td>0.141</td>
+      <td>1.969</td>
       <td>2.490</td>
       <td>0.005</td>
       <td>0.003</td>
-      <td>809.0</td>
-      <td>1059.0</td>
+      <td>878.0</td>
+      <td>893.0</td>
       <td>1.0</td>
     </tr>
     <tr>
       <th>beta_age[0]</th>
-      <td>0.002</td>
+      <td>0.003</td>
       <td>0.006</td>
-      <td>-0.010</td>
+      <td>-0.008</td>
       <td>0.014</td>
       <td>0.000</td>
       <td>0.000</td>
-      <td>981.0</td>
-      <td>1134.0</td>
+      <td>1061.0</td>
+      <td>1192.0</td>
       <td>1.0</td>
     </tr>
     <tr>
       <th>beta_age[1]</th>
       <td>0.010</td>
       <td>0.006</td>
-      <td>-0.001</td>
+      <td>-0.000</td>
       <td>0.022</td>
       <td>0.000</td>
       <td>0.000</td>
-      <td>879.0</td>
-      <td>942.0</td>
+      <td>1012.0</td>
+      <td>1178.0</td>
       <td>1.0</td>
     </tr>
     <tr>
       <th>beta_gender[0]</th>
-      <td>0.348</td>
-      <td>0.197</td>
+      <td>0.355</td>
+      <td>0.202</td>
       <td>-0.018</td>
-      <td>0.704</td>
+      <td>0.722</td>
       <td>0.007</td>
       <td>0.004</td>
-      <td>847.0</td>
-      <td>1179.0</td>
+      <td>796.0</td>
+      <td>1163.0</td>
       <td>1.0</td>
     </tr>
     <tr>
       <th>beta_gender[1]</th>
-      <td>-0.031</td>
-      <td>0.202</td>
-      <td>-0.384</td>
-      <td>0.374</td>
+      <td>-0.025</td>
+      <td>0.205</td>
+      <td>-0.410</td>
+      <td>0.352</td>
       <td>0.007</td>
-      <td>0.004</td>
-      <td>846.0</td>
-      <td>1133.0</td>
+      <td>0.005</td>
+      <td>819.0</td>
+      <td>1036.0</td>
       <td>1.0</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata_categorical2</span><span class="p">)</span>
+<span class="n">decorate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/e9c1a702887b41efb813250b91b3db2a30ee8fe814fb49f3b3581e9ec174ae70.png" src="_images/e9c1a702887b41efb813250b91b3db2a30ee8fe814fb49f3b3581e9ec174ae70.png" />
+</div>
 </div>
 </section>
 <section id="plotting-the-results">
@@ -1595,7 +1664,7 @@ As an aside, a hierarchical model would be a good way to conduct this analysis w
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6ec254aafb352e89d70b2358af357a51bc94ec4d1d75f971d8322ebcd248dfeb.png" src="_images/6ec254aafb352e89d70b2358af357a51bc94ec4d1d75f971d8322ebcd248dfeb.png" />
+<img alt="_images/cbc9216780bb580d68eda0bdb99dbe0a7d3868288303a0bc8786c6ed23c98301.png" src="_images/cbc9216780bb580d68eda0bdb99dbe0a7d3868288303a0bc8786c6ed23c98301.png" />
 </div>
 </div>
 <p>At all ages, women were more likely to vote for Biden and less likely to vote for Trump.
