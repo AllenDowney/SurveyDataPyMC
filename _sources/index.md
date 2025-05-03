@@ -12,6 +12,8 @@ In this hands-on tutorial, we will dive into the world of Bayesian regression us
 
 Use these links to run the notebooks on Colab:
 
+* [Notebook 0: Introduction to Bayesian Sampling](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/00_intro.ipynb)
+
 * [Notebook 1: Logistic Regression](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/01_logistic_regression.ipynb)
 
 * [Notebook 2: Categorical Regression](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/02_categorical_regression.ipynb)
