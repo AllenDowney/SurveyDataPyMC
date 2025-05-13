@@ -362,7 +362,7 @@ document.write(`
   <section id="ordinal-regression">
 <h1>Ordinal Regression<a class="headerlink" href="#ordinal-regression" title="Link to this heading">#</a></h1>
 <p>This notebook is part of a tutorial on “Practical Bayesian Modeling with PyMC”</p>
-<p><a class="reference external" href="https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/02_categorical_regression.ipynb">Click here to run this notebook on Colab</a></p>
+<p><a class="reference external" href="https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/03_ordinal_regression.ipynb">Click here to run this notebook on Colab</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
@@ -662,7 +662,55 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 <p>Here’s the DIY implementation of the model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">ordinal_model_diy</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Modify this</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">ordinal_model_diy</span><span class="p">:</span>
+    <span class="c1"># Priors for the cutpoints (thresholds) between categories</span>
+    <span class="n">cutpoints</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span>
+        <span class="s2">&quot;cutpoints&quot;</span><span class="p">,</span>
+        <span class="n">mu</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]),</span>
+        <span class="n">sigma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">ordered</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Age slope</span>
+    <span class="n">beta_age</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_age&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+
+    <span class="c1"># Linear predictor for each respondent (this is just age effect)</span>
+    <span class="n">eta</span> <span class="o">=</span> <span class="n">beta_age</span> <span class="o">*</span> <span class="n">age_centered</span>  <span class="c1"># shape (n,)</span>
+
+    <span class="c1"># Compute cumulative logits for each observation and each cutpoint</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">cutpoints</span> <span class="o">-</span> <span class="n">eta</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>  <span class="c1"># shape (n, 2)</span>
+
+    <span class="c1"># Convert logits to cumulative probabilities</span>
+    <span class="n">cdf_0</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">cdf_1</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Convert cumulative probabilities to category probabilities</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Stack into final probability matrix</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Likelihood using explicit p</span>
+    <span class="n">y_obs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="s2">&quot;y_obs&quot;</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Solution</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">ordinal_model_diy</span><span class="p">:</span>
     <span class="c1"># Priors for the cutpoints (thresholds) between categories</span>
     <span class="n">cutpoints</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span>
         <span class="s2">&quot;cutpoints&quot;</span><span class="p">,</span>
@@ -698,6 +746,7 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <p>The transform sorts the cutpoints so they are in order – otherwise the cumulative probabilities would not be ordered and their differences could be negative.</p>
 <p>Here’s an equivalent model using the built-in <code class="docutils literal notranslate"><span class="pre">OrderedLogistic</span></code> function.</p>

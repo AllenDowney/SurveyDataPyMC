@@ -23,4 +23,3 @@ Use these links to run the notebooks on Colab:
 **Note:** The notebooks use data from the General Social Survey (GSS).
 The notebooks will download the data when needed.
 
-[The slides for the tutorial are here](https://docs.google.com/presentation/d/e/2PACX-1vSjMfp2TotFMnfpqoefutAEGue3p94qmbSshnnyZH0cs6o33JiGiSH5FxRPQ9qO30G12HDIhQI-vQkH/pub).
