@@ -361,7 +361,7 @@ document.write(`
                   
   <section id="ordinal-regression">
 <h1>Ordinal Regression<a class="headerlink" href="#ordinal-regression" title="Link to this heading">#</a></h1>
-<p>This is the second notebook for a tutorial on “Practical Bayesian Modeling with PyMC”</p>
+<p>This notebook is part of a tutorial on “Practical Bayesian Modeling with PyMC”</p>
 <p><a class="reference external" href="https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/02_categorical_regression.ipynb">Click here to run this notebook on Colab</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -437,21 +437,6 @@ The following cell downloads it.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;age&#39;, &#39;attend&#39;, &#39;ballot&#39;, &#39;class&#39;, &#39;clmtcaus&#39;, &#39;clmtusa&#39;, &#39;clmtwrld&#39;,
-       &#39;cohort&#39;, &#39;commun&#39;, &#39;conarmy&#39;, &#39;conbus&#39;, &#39;conclerg&#39;, &#39;coneduc&#39;,
-       &#39;confed&#39;, &#39;confinan&#39;, &#39;coninc&#39;, &#39;conjudge&#39;, &#39;conlabor&#39;, &#39;conlegis&#39;,
-       &#39;conmedic&#39;, &#39;conpress&#39;, &#39;conrinc&#39;, &#39;consci&#39;, &#39;contv&#39;, &#39;degree&#39;, &#39;educ&#39;,
-       &#39;eqwlth&#39;, &#39;fair&#39;, &#39;fear&#39;, &#39;fund&#39;, &#39;goodlife&#39;, &#39;hapmar&#39;, &#39;happy&#39;,
-       &#39;health&#39;, &#39;helpful&#39;, &#39;id&#39;, &#39;life&#39;, &#39;partyid&#39;, &#39;polviews&#39;, &#39;pres16&#39;,
-       &#39;pres20&#39;, &#39;race&#39;, &#39;realinc&#39;, &#39;realrinc&#39;, &#39;reg16&#39;, &#39;region&#39;, &#39;relig&#39;,
-       &#39;relig16&#39;, &#39;reliten&#39;, &#39;res16&#39;, &#39;rincome&#39;, &#39;satfin&#39;, &#39;satjob&#39;, &#39;sex&#39;,
-       &#39;sexbirth&#39;, &#39;sexbirth1&#39;, &#39;sexnow&#39;, &#39;sexnow1&#39;, &#39;srcbelt&#39;, &#39;trust&#39;,
-       &#39;wtssall&#39;, &#39;year&#39;],
-      dtype=&#39;object&#39;)
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="id1">
@@ -473,52 +458,6 @@ The following cell downloads it.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>counts</th>
-    </tr>
-    <tr>
-      <th>values</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1.0</th>
-      <td>21550</td>
-    </tr>
-    <tr>
-      <th>2.0</th>
-      <td>37446</td>
-    </tr>
-    <tr>
-      <th>3.0</th>
-      <td>8681</td>
-    </tr>
-    <tr>
-      <th>NaN</th>
-      <td>4713</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>To work with the PyMC implementation of ordinal regression, we need to recode the responses using the values <code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code>, and <code class="docutils literal notranslate"><span class="pre">2</span></code>.
 While we’re at it, we’ll reverse the order so higher numbers mean more happy.</p>
@@ -529,52 +468,6 @@ While we’re at it, we’ll reverse the order so higher numbers mean more happy
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>proportion</th>
-    </tr>
-    <tr>
-      <th>values</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0.0</th>
-      <td>11.991988</td>
-    </tr>
-    <tr>
-      <th>1.0</th>
-      <td>51.728139</td>
-    </tr>
-    <tr>
-      <th>2.0</th>
-      <td>29.769305</td>
-    </tr>
-    <tr>
-      <th>NaN</th>
-      <td>6.510568</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>And we’ll use this dictionary to map from codes to strings.</p>
 <div class="cell docutils container">
@@ -610,136 +503,6 @@ But first we’ll visualize the relationship by making 5-year age groups.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>y</th>
-      <th>Not too happy</th>
-      <th>Pretty happy</th>
-      <th>Very happy</th>
-    </tr>
-    <tr>
-      <th>age_group</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>20.0</th>
-      <td>14.754098</td>
-      <td>60.232681</td>
-      <td>25.013221</td>
-    </tr>
-    <tr>
-      <th>25.0</th>
-      <td>13.913290</td>
-      <td>57.778407</td>
-      <td>28.308303</td>
-    </tr>
-    <tr>
-      <th>30.0</th>
-      <td>11.215502</td>
-      <td>57.706988</td>
-      <td>31.077510</td>
-    </tr>
-    <tr>
-      <th>35.0</th>
-      <td>11.491515</td>
-      <td>55.894611</td>
-      <td>32.613873</td>
-    </tr>
-    <tr>
-      <th>40.0</th>
-      <td>12.492298</td>
-      <td>55.653112</td>
-      <td>31.854590</td>
-    </tr>
-    <tr>
-      <th>45.0</th>
-      <td>12.417871</td>
-      <td>56.964520</td>
-      <td>30.617608</td>
-    </tr>
-    <tr>
-      <th>50.0</th>
-      <td>12.726350</td>
-      <td>54.543916</td>
-      <td>32.729734</td>
-    </tr>
-    <tr>
-      <th>55.0</th>
-      <td>14.437804</td>
-      <td>53.119163</td>
-      <td>32.443033</td>
-    </tr>
-    <tr>
-      <th>60.0</th>
-      <td>12.406736</td>
-      <td>54.103603</td>
-      <td>33.489661</td>
-    </tr>
-    <tr>
-      <th>65.0</th>
-      <td>11.907243</td>
-      <td>51.615425</td>
-      <td>36.477332</td>
-    </tr>
-    <tr>
-      <th>70.0</th>
-      <td>11.902588</td>
-      <td>50.593607</td>
-      <td>37.503805</td>
-    </tr>
-    <tr>
-      <th>75.0</th>
-      <td>13.546300</td>
-      <td>49.130611</td>
-      <td>37.323089</td>
-    </tr>
-    <tr>
-      <th>80.0</th>
-      <td>13.867596</td>
-      <td>50.313589</td>
-      <td>35.818815</td>
-    </tr>
-    <tr>
-      <th>85.0</th>
-      <td>15.057915</td>
-      <td>48.906049</td>
-      <td>36.036036</td>
-    </tr>
-    <tr>
-      <th>90.0</th>
-      <td>12.078652</td>
-      <td>59.831461</td>
-      <td>28.089888</td>
-    </tr>
-    <tr>
-      <th>95.0</th>
-      <td>15.320334</td>
-      <td>56.545961</td>
-      <td>28.133705</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>Here are the results.</p>
 <div class="cell docutils container">
@@ -752,9 +515,6 @@ But first we’ll visualize the relationship by making 5-year age groups.</p>
 <span class="n">decorate</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/a0cd9c3f2a66d63439f65ab9575ed41e2b30c2b3f9eaa251621ff56455c6d1f4.png" src="_images/a0cd9c3f2a66d63439f65ab9575ed41e2b30c2b3f9eaa251621ff56455c6d1f4.png" />
 </div>
 </div>
 <p>It looks like older people are more likely to say “very happy” and less likely to say “pretty happy”.</p>
@@ -775,292 +535,6 @@ As we did with age, we’ll group people into 5-year birth cohorts.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>count</th>
-      <th>mean</th>
-      <th>std</th>
-      <th>min</th>
-      <th>25%</th>
-      <th>50%</th>
-      <th>75%</th>
-      <th>max</th>
-    </tr>
-    <tr>
-      <th>birth_group</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1905.0</th>
-      <td>830.0</td>
-      <td>1905.213253</td>
-      <td>1.430857</td>
-      <td>1903.0</td>
-      <td>1904.0</td>
-      <td>1905.0</td>
-      <td>1907.0</td>
-      <td>1907.0</td>
-    </tr>
-    <tr>
-      <th>1910.0</th>
-      <td>1275.0</td>
-      <td>1910.114510</td>
-      <td>1.452892</td>
-      <td>1908.0</td>
-      <td>1909.0</td>
-      <td>1910.0</td>
-      <td>1911.5</td>
-      <td>1912.0</td>
-    </tr>
-    <tr>
-      <th>1915.0</th>
-      <td>1909.0</td>
-      <td>1915.102148</td>
-      <td>1.422174</td>
-      <td>1913.0</td>
-      <td>1914.0</td>
-      <td>1915.0</td>
-      <td>1916.0</td>
-      <td>1917.0</td>
-    </tr>
-    <tr>
-      <th>1920.0</th>
-      <td>2522.0</td>
-      <td>1920.087629</td>
-      <td>1.429506</td>
-      <td>1918.0</td>
-      <td>1919.0</td>
-      <td>1920.0</td>
-      <td>1921.0</td>
-      <td>1922.0</td>
-    </tr>
-    <tr>
-      <th>1925.0</th>
-      <td>3102.0</td>
-      <td>1925.071889</td>
-      <td>1.431998</td>
-      <td>1923.0</td>
-      <td>1924.0</td>
-      <td>1925.0</td>
-      <td>1926.0</td>
-      <td>1927.0</td>
-    </tr>
-    <tr>
-      <th>1930.0</th>
-      <td>3102.0</td>
-      <td>1930.059961</td>
-      <td>1.403783</td>
-      <td>1928.0</td>
-      <td>1929.0</td>
-      <td>1930.0</td>
-      <td>1931.0</td>
-      <td>1932.0</td>
-    </tr>
-    <tr>
-      <th>1935.0</th>
-      <td>3566.0</td>
-      <td>1935.065059</td>
-      <td>1.375492</td>
-      <td>1933.0</td>
-      <td>1934.0</td>
-      <td>1935.0</td>
-      <td>1936.0</td>
-      <td>1937.0</td>
-    </tr>
-    <tr>
-      <th>1940.0</th>
-      <td>4343.0</td>
-      <td>1940.103155</td>
-      <td>1.433124</td>
-      <td>1938.0</td>
-      <td>1939.0</td>
-      <td>1940.0</td>
-      <td>1941.0</td>
-      <td>1942.0</td>
-    </tr>
-    <tr>
-      <th>1945.0</th>
-      <td>5656.0</td>
-      <td>1945.124470</td>
-      <td>1.449801</td>
-      <td>1943.0</td>
-      <td>1944.0</td>
-      <td>1945.0</td>
-      <td>1946.0</td>
-      <td>1947.0</td>
-    </tr>
-    <tr>
-      <th>1950.0</th>
-      <td>6769.0</td>
-      <td>1950.080810</td>
-      <td>1.424249</td>
-      <td>1948.0</td>
-      <td>1949.0</td>
-      <td>1950.0</td>
-      <td>1951.0</td>
-      <td>1952.0</td>
-    </tr>
-    <tr>
-      <th>1955.0</th>
-      <td>7218.0</td>
-      <td>1954.999307</td>
-      <td>1.415144</td>
-      <td>1953.0</td>
-      <td>1954.0</td>
-      <td>1955.0</td>
-      <td>1956.0</td>
-      <td>1957.0</td>
-    </tr>
-    <tr>
-      <th>1960.0</th>
-      <td>6934.0</td>
-      <td>1959.978223</td>
-      <td>1.426284</td>
-      <td>1958.0</td>
-      <td>1959.0</td>
-      <td>1960.0</td>
-      <td>1961.0</td>
-      <td>1962.0</td>
-    </tr>
-    <tr>
-      <th>1965.0</th>
-      <td>5603.0</td>
-      <td>1964.902731</td>
-      <td>1.405857</td>
-      <td>1963.0</td>
-      <td>1964.0</td>
-      <td>1965.0</td>
-      <td>1966.0</td>
-      <td>1967.0</td>
-    </tr>
-    <tr>
-      <th>1970.0</th>
-      <td>4582.0</td>
-      <td>1969.855303</td>
-      <td>1.392833</td>
-      <td>1968.0</td>
-      <td>1969.0</td>
-      <td>1970.0</td>
-      <td>1971.0</td>
-      <td>1972.0</td>
-    </tr>
-    <tr>
-      <th>1975.0</th>
-      <td>3738.0</td>
-      <td>1974.921883</td>
-      <td>1.419237</td>
-      <td>1973.0</td>
-      <td>1974.0</td>
-      <td>1975.0</td>
-      <td>1976.0</td>
-      <td>1977.0</td>
-    </tr>
-    <tr>
-      <th>1980.0</th>
-      <td>3276.0</td>
-      <td>1979.925214</td>
-      <td>1.368197</td>
-      <td>1978.0</td>
-      <td>1979.0</td>
-      <td>1980.0</td>
-      <td>1981.0</td>
-      <td>1982.0</td>
-    </tr>
-    <tr>
-      <th>1985.0</th>
-      <td>2417.0</td>
-      <td>1984.859743</td>
-      <td>1.381263</td>
-      <td>1983.0</td>
-      <td>1984.0</td>
-      <td>1985.0</td>
-      <td>1986.0</td>
-      <td>1987.0</td>
-    </tr>
-    <tr>
-      <th>1990.0</th>
-      <td>1759.0</td>
-      <td>1989.891984</td>
-      <td>1.388126</td>
-      <td>1988.0</td>
-      <td>1989.0</td>
-      <td>1990.0</td>
-      <td>1991.0</td>
-      <td>1992.0</td>
-    </tr>
-    <tr>
-      <th>1995.0</th>
-      <td>1239.0</td>
-      <td>1994.819209</td>
-      <td>1.415214</td>
-      <td>1993.0</td>
-      <td>1994.0</td>
-      <td>1995.0</td>
-      <td>1996.0</td>
-      <td>1997.0</td>
-    </tr>
-    <tr>
-      <th>2000.0</th>
-      <td>766.0</td>
-      <td>1999.875979</td>
-      <td>1.367799</td>
-      <td>1998.0</td>
-      <td>1999.0</td>
-      <td>2000.0</td>
-      <td>2001.0</td>
-      <td>2002.0</td>
-    </tr>
-    <tr>
-      <th>2005.0</th>
-      <td>102.0</td>
-      <td>2003.245098</td>
-      <td>0.432270</td>
-      <td>2003.0</td>
-      <td>2003.0</td>
-      <td>2003.0</td>
-      <td>2003.0</td>
-      <td>2004.0</td>
-    </tr>
-    <tr>
-      <th>2010.0</th>
-      <td>927.0</td>
-      <td>1897.776699</td>
-      <td>3.918552</td>
-      <td>1883.0</td>
-      <td>1896.0</td>
-      <td>1899.0</td>
-      <td>1901.0</td>
-      <td>1902.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1082,9 +556,6 @@ As we did with age, we’ll group people into 5-year birth cohorts.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/5406f889552939085136b4751edaaf9f5f108726e0de3f7429ed6c0f47b71c54.png" src="_images/5406f889552939085136b4751edaaf9f5f108726e0de3f7429ed6c0f47b71c54.png" />
-</div>
 </div>
 <p>It looks like people born later are less likely to say “very happy”.</p>
 <p>Now that we’ve explored the data, let’s make a model.</p>
@@ -1097,11 +568,6 @@ So we’ll drop rows that are missing responses to <code class="docutils literal
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">gss</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">])</span>
 <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(66959, 65)
 </pre></div>
 </div>
 </div>
@@ -1190,11 +656,6 @@ But we can get a general idea of where the cutpoints are by computing the propor
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-1.9924301646902063 0.5753641449035619
-</pre></div>
-</div>
-</div>
 </div>
 <p>We can use this peek at the data to choose a prior for the cutpoints.
 This helps the sampler get started – other than that, it doesn’t affect the results much.</p>
@@ -1273,20 +734,12 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/f5f25ca75fd4f4db5da1196c9145e9432803efe76387ac93ae6104a8ce66032e.svg" src="_images/f5f25ca75fd4f4db5da1196c9145e9432803efe76387ac93ae6104a8ce66032e.svg" />
-</div>
 </div>
 <p>Now let’s run the sampler.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;ordinal_model_idata.nc&#39;</span>
 <span class="n">idata</span> <span class="o">=</span> <span class="n">load_idata_or_sample</span><span class="p">(</span><span class="n">ordinal_model_diy</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">draws</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded idata from ordinal_model_idata.nc
 </pre></div>
 </div>
 </div>
@@ -1299,9 +752,6 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/5a23ecd8169f16b9823f0f0599092ef272078ffc3b957142a4846822cf94e1a6.png" src="_images/5a23ecd8169f16b9823f0f0599092ef272078ffc3b957142a4846822cf94e1a6.png" />
-</div>
 </div>
 <p>And here’s the coefficient of age.</p>
 <div class="cell docutils container">
@@ -1310,9 +760,6 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 <span class="n">decorate</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/63d803590bf48fa9fec9f5534ad76805d239d24104b036ad9ecb653cb25ad81e.png" src="_images/63d803590bf48fa9fec9f5534ad76805d239d24104b036ad9ecb653cb25ad81e.png" />
 </div>
 </div>
 <p>The traces look good.</p>
@@ -1323,9 +770,6 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/cb653ce70c30027416ac7b3a53d717808bfd0c6e822e075f3c0cea0699d3fb5e.png" src="_images/cb653ce70c30027416ac7b3a53d717808bfd0c6e822e075f3c0cea0699d3fb5e.png" />
-</div>
 </div>
 <p>And the diagnostics are  good.</p>
 <div class="cell docutils container">
@@ -1334,76 +778,6 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>mean</th>
-      <th>sd</th>
-      <th>hdi_3%</th>
-      <th>hdi_97%</th>
-      <th>mcse_mean</th>
-      <th>mcse_sd</th>
-      <th>ess_bulk</th>
-      <th>ess_tail</th>
-      <th>r_hat</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>beta_age</th>
-      <td>0.005</td>
-      <td>0.000</td>
-      <td>0.005</td>
-      <td>0.006</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1306.0</td>
-      <td>1146.0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>cutpoints[0]</th>
-      <td>-1.923</td>
-      <td>0.012</td>
-      <td>-1.946</td>
-      <td>-1.902</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1080.0</td>
-      <td>1041.0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>cutpoints[1]</th>
-      <td>0.760</td>
-      <td>0.008</td>
-      <td>0.745</td>
-      <td>0.776</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>2954.0</td>
-      <td>1789.0</td>
-      <td>1.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 </section>
 <section id="interpreting-the-results">
@@ -1429,21 +803,11 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2, 100)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beta_age</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="s2">&quot;beta_age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
 <span class="n">beta_age</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(100,)
 </pre></div>
 </div>
 </div>
@@ -1492,9 +856,6 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/ecd04835eb5967d2d9a8380dd621349128b620f1f9c865d42b804c4ce383508e.png" src="_images/ecd04835eb5967d2d9a8380dd621349128b620f1f9c865d42b804c4ce383508e.png" />
-</div>
 </div>
 <p>It looks like the model does a pretty good job capturing the trends in the data.</p>
 </section>
@@ -1505,11 +866,6 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">gss</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;cohort&quot;</span><span class="p">])</span>
 <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(66958, 65)
 </pre></div>
 </div>
 </div>
@@ -1585,20 +941,12 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/4318413c00f360b00b2af8aabe50d444df50747fa333092e5b0b823d2402a533.svg" src="_images/4318413c00f360b00b2af8aabe50d444df50747fa333092e5b0b823d2402a533.svg" />
-</div>
 </div>
 <p>Run that sampler…</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;ordinal_model2_idata.nc&#39;</span>
 <span class="n">idata2</span> <span class="o">=</span> <span class="n">load_idata_or_sample</span><span class="p">(</span><span class="n">ordinal_model2</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">draws</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded idata from ordinal_model2_idata.nc
 </pre></div>
 </div>
 </div>
@@ -1611,9 +959,6 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/40ea0556cb0c918f8fd1abd0d3576d79a48778155edfc686883832cb714b933e.png" src="_images/40ea0556cb0c918f8fd1abd0d3576d79a48778155edfc686883832cb714b933e.png" />
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1621,88 +966,6 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>mean</th>
-      <th>sd</th>
-      <th>hdi_3%</th>
-      <th>hdi_97%</th>
-      <th>mcse_mean</th>
-      <th>mcse_sd</th>
-      <th>ess_bulk</th>
-      <th>ess_tail</th>
-      <th>r_hat</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>beta_age</th>
-      <td>-0.004</td>
-      <td>0.001</td>
-      <td>-0.005</td>
-      <td>-0.003</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1194.0</td>
-      <td>1269.0</td>
-      <td>1.00</td>
-    </tr>
-    <tr>
-      <th>beta_cohort</th>
-      <td>-0.010</td>
-      <td>0.000</td>
-      <td>-0.011</td>
-      <td>-0.009</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1115.0</td>
-      <td>1306.0</td>
-      <td>1.00</td>
-    </tr>
-    <tr>
-      <th>cutpoints[0]</th>
-      <td>-1.931</td>
-      <td>0.011</td>
-      <td>-1.953</td>
-      <td>-1.911</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>958.0</td>
-      <td>1289.0</td>
-      <td>1.00</td>
-    </tr>
-    <tr>
-      <th>cutpoints[1]</th>
-      <td>0.765</td>
-      <td>0.008</td>
-      <td>0.749</td>
-      <td>0.781</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>2889.0</td>
-      <td>1712.0</td>
-      <td>1.01</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>The posterior distribution of the cutpoints is not much different.</p>
 <div class="cell docutils container">
@@ -1712,9 +975,6 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/cea8dcfb813539e471f6d7790367b04b119601a4af22a6b668f9b7d974563dc5.png" src="_images/cea8dcfb813539e471f6d7790367b04b119601a4af22a6b668f9b7d974563dc5.png" />
-</div>
 </div>
 <p>The posterior distributions for both coefficients are negative, which suggests that the age effect and cohort effect point in the same direction: people get less happy with age (during this period) and successive cohorts are less happy.</p>
 <div class="cell docutils container">
@@ -1723,9 +983,6 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 <span class="n">decorate</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/3aa971b5a3c09d9a299e2d45402fd98f3654d22572f3f8cf6506829802eb380b.png" src="_images/3aa971b5a3c09d9a299e2d45402fd98f3654d22572f3f8cf6506829802eb380b.png" />
 </div>
 </div>
 <p>And the cohort effect appears to be about two times bigger.</p>
@@ -1739,20 +996,10 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>44.982750380835746
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;cohort&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1952.1698527435108
 </pre></div>
 </div>
 </div>
@@ -1768,11 +1015,6 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2, 100)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1781,21 +1023,11 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(100,)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beta_cohort</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="s2">&quot;beta_cohort&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
 <span class="n">beta_cohort</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(100,)
 </pre></div>
 </div>
 </div>
@@ -1879,9 +1111,6 @@ The following function encapsulates the logic.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/04bd019df5242ea96047967c274a1d9479ba9c422d4765ff28e03a84e95a77cf.png" src="_images/04bd019df5242ea96047967c274a1d9479ba9c422d4765ff28e03a84e95a77cf.png" />
-</div>
 </div>
 <p>We don’t expect the results to match the data perfectly, because the predictions are for a specific birth year and the data contain a mixture of birth years.</p>
 <p>Here are the probabilities for a range of birth years – with a little bit of extrapolation – with age fixed.</p>
@@ -1918,9 +1147,6 @@ The following function encapsulates the logic.</p>
 <span class="n">decorate</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/7e1e26a778a2ac907d89261259bb5992323806cdd09bf99f0cea77149b6e2431.png" src="_images/7e1e26a778a2ac907d89261259bb5992323806cdd09bf99f0cea77149b6e2431.png" />
 </div>
 </div>
 <p>One use of a model like this is to generate projections and counterfactuals.</p>
