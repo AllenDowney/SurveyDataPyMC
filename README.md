@@ -1,5 +1,9 @@
 # SurveyDataPyMC
 
+
+Material for a tutorial at ODSC East 2025, with Alexander Fengler. [The tutorial site](https://allendowney.github.io/SurveyDataPyMC/) has the notebooks. This is one of [my workshops and tutorials](https://allendowney.github.io/#workshops).
+
+
 **Abstract**
 
 In this tutorial, we explore Bayesian regression using PyMC -- the primary library for Bayesian sampling in Python -- focusing on survey data and other datasets with categorical outcomes. Starting with logistic regression, we'll build up to categorical and ordered logistic regression, showcasing how Bayesian approaches provide versatile tools for developing and evaluating complex models. Participants will leave with practical skills for implementing Bayesian regression models in PyMC, along with a deeper appreciation for the power of Bayesian inference in real-world data analysis. Participants should be familiar with Python, the SciPy ecosystem, and basic statistics, but no experience with Bayesian methods is required.
