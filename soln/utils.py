@@ -85,6 +85,7 @@ def load_idata_or_sample(
             If true, run the sampler even if the file exists.
         **sample_options:
             Additional keyword arguments passed directly to `pm.sample()`.
+            The sampler is nutpie unless `nuts_sampler` says otherwise.
 
     Returns:
         az.InferenceData:
@@ -95,8 +96,14 @@ def load_idata_or_sample(
         idata = az.from_netcdf(filename)
         print(f"Loaded idata from {filename}")
     else:
+        sample_options.setdefault("nuts_sampler", "nutpie")
         with model:
             idata = pm.sample(**sample_options)
+
+        # nutpie stores some attributes as a dict, which NetCDF can't save
+        for key, value in idata.attrs.items():
+            if isinstance(value, dict):
+                idata.attrs[key] = str(value)
 
         az.to_netcdf(idata, filename)
         print(f"Saved new idata to {filename}")

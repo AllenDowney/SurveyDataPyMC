@@ -6,3 +6,4 @@ tables
 pymc>=5.28,<6
 arviz<1
 graphviz
+nutpie

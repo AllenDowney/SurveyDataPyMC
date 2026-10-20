@@ -12,6 +12,7 @@ dependencies:
   - pymc>=5.28,<6
   - arviz<1
   - python-graphviz
+  - nutpie
   # for testing
   - pytest
   - nbmake
