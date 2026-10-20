@@ -1,28 +1,33 @@
 import sys
 import nbformat as nbf
 
-filename = sys.argv[1]
-ntbk = nbf.read(filename, nbf.NO_CONVERT)
 
-keep_cells = []
+def remove_soln(filename):
+    ntbk = nbf.read(filename, nbf.NO_CONVERT)
 
-for cell in ntbk.cells:
-    # skip empty cells
-    source = cell['source']
-    if len(source) == 0:
-        continue
+    keep_cells = []
 
-    # skip solutions
-    if source.startswith('# Solution'):
-        continue
+    for cell in ntbk.cells:
+        # skip empty cells
+        source = cell['source']
+        if len(source) == 0:
+            continue
 
-    # remove the output of code cells
-    if cell['cell_type'] == 'code':
-        cell['outputs'] = []
+        # skip solutions
+        if source.startswith('# Solution'):
+            continue
 
-    keep_cells.append(cell)
+        # remove the output of code cells
+        if cell['cell_type'] == 'code':
+            cell['outputs'] = []
 
-ntbk.cells = keep_cells
+        keep_cells.append(cell)
 
-print('Removing solutions from', filename)
-nbf.write(ntbk, filename)
+    ntbk.cells = keep_cells
+
+    print('Removing solutions from', filename)
+    nbf.write(ntbk, filename)
+
+
+for filename in sys.argv[1:]:
+    remove_soln(filename)

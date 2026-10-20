@@ -1,22 +1,8 @@
-black
-flake8
-graphviz
-ipywidgets
-isort
-jupyterlab
-matplotlib
-notebook
 numpy
 pandas
-pip
-python-dotenv
-scikit-learn
-seaborn
+matplotlib
+scipy
 tables
-arviz
-numpyro
-blackjax
-optax
-
-# Uncomment this to include the current project
-# -e .
+pymc>=5.28,<6
+arviz<1
+graphviz

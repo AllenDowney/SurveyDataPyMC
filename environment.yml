@@ -1,0 +1,22 @@
+name: SurveyDataPyMC
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - jupyter
+  - numpy
+  - pandas
+  - matplotlib
+  - scipy
+  - pytables
+  - pymc>=5.28,<6
+  - arviz<1
+  - python-graphviz
+  # for testing
+  - pytest
+  - nbmake
+  # for building the site (jb/build.sh)
+  - jupyter-book<2
+  - sphinx-sitemap
+  - sphinxext-opengraph
+  - ghp-import

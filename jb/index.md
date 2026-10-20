@@ -23,3 +23,29 @@ Use these links to run the notebooks on Colab:
 **Note:** The notebooks use data from the General Social Survey (GSS).
 The notebooks will download the data when needed.
 
+
+## Running the notebooks
+
+The easiest way to run the notebooks is on Colab: click one of the links above. You need a Google account, but you don't have to install anything. The notebooks download the data they need.
+
+To run them on your own computer, clone the [repository](https://github.com/AllenDowney/SurveyDataPyMC):
+
+```bash
+git clone https://github.com/AllenDowney/SurveyDataPyMC.git
+cd SurveyDataPyMC
+```
+
+Then install the packages with pip:
+
+```bash
+pip install -r requirements.txt jupyter
+```
+
+Or create a conda environment with [mamba](https://mamba.readthedocs.io/) (or conda):
+
+```bash
+mamba env create -f environment.yml
+conda activate SurveyDataPyMC
+```
+
+Then run `jupyter lab` and open the notebooks in the `notebooks` folder.

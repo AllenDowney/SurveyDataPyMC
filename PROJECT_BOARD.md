@@ -18,14 +18,15 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 - [x] Tags: `odsc-east-2025` at `6008d7a` (2025-05-13 09:34 EDT, the last commit before the tutorial; no recording, but tagged as in SurveyDataPandas), `pre-refresh-2026` at `64bccf8`. Both pushed (2026-10-20)
 - [x] Leftovers (Decisions): `gender_id/` moved to `~/GenderId`; cookiecutter scaffolding, `pyproject.toml`, `setup.cfg`, `soln/00_intro.py`, `nlsy-lifetime-outcomes.zip` deleted (backed up to the session scratchpad); `.nc`, `.hdf`, `.vscode/`, `jb/_build/` and the copied `jb` notebooks ignored; `jb/_config.yml`, `soln/build.sh`, `soln/remove_soln.py` committed
 - [x] Inventory (below)
-- [ ] Environment: recreate the `SurveyDataPyMC` mamba env from the new `environment.yml` (step 1; the existing env is from 2025, Python 3.11 per `environment.yaml`)
+- [x] Environment: `mamba env create -f environment.yml` (name `SurveyDataPyMC`, recreated 2026-10-20; Python 3.12.15, PyMC 5.28.5, ArviZ 0.23.4, PyTensor 2.38.3, NumPy 2.4, pandas 3.0, Matplotlib 3.11, SciPy 1.18, PyTables 3.11)
 
 **1. Runs in a current environment**
-- [ ] `environment.yml` (Python 3.12, conda-forge), `requirements.txt`, `requirements-dev.txt`; replace `environment.yaml`; update the `Makefile` (kept, Decisions)
-- [ ] First code cell: `%pip install` what Colab lacks (check PyMC, ArviZ, nutpie versions on Colab)
-- [ ] Breakage and warnings (PyMC 5 / ArviZ / pandas 3 / NumPy 2), with warnings as errors in scratch copies
-- [ ] Data URLs (GssExtract)
-- [ ] Running instructions: Colab, then pip or mamba (README and `jb/index.md` still describe the Makefile and conda)
+- [x] `environment.yml` (Python 3.12, conda-forge, Jupyter, the libraries, `pymc>=5.28,<6`, `arviz<1`, python-graphviz, pytest, nbmake, the site build tools) replaces `environment.yaml` (Python 3.11, `defaults`, numpyro/blackjax/optax/nutpie, none used); `requirements.txt` (numpy, pandas, matplotlib, scipy, tables, `pymc>=5.28,<6`, `arviz<1`, graphviz; dev tools dropped); `requirements-dev.txt` (adds jupyter, pytest, nbmake); `Makefile` rewritten as in SurveyDataPandas (`make tests` runs `soln/0*` and `notebooks/0*`) (2026-10-20)
+- [x] First code cell: nothing to install. Colab has everything (backend-info, 2026-10-20: PyMC 5.28.5, ArviZ 0.22.0, PyTensor 2.38.3, pandas 2.2.3, NumPy 2.1.3, Matplotlib 3.10.0, SciPy 1.16.3, tables 3.10.2, graphviz 0.21). The notebooks already download `utils.py` and the data
+- [x] Breakage and warnings (2026-10-20): none in our code. All five solution notebooks run in scratch copies with Deprecation/Future/PendingDeprecation/User/Runtime warnings as errors, both in a Colab-matched env (PyMC 5.28.5, ArviZ 0.22, pandas 2.2, Matplotlib 3.10) and in the new env (pandas 3.0, NumPy 2.4). Expected exceptions: the `# Modify this` placeholder in `03` (`p = 0`, "`p` parameters sum to 0"); ArviZ 0.23's import notice about its 1.0 refactor; a `MatplotlibDeprecationWarning` from inside ArviZ 0.x plotting with Matplotlib 3.11 (not on Colab's 3.10). Times (run in parallel): 00 ~0.5 min, 01 ~4.5, 02 ~1, 03 ~6, 04 ~3
+- [x] Data URL: `GssExtract/raw/main/data/interim/gss_extract_2022_4.hdf` works (2026-10-20)
+- [x] Running instructions: Colab, then pip or mamba, in `jb/index.md` and the README (the README's Makefile/`environment.yaml` section replaced) (2026-10-20)
+- [x] `soln/remove_soln.py` processed only its first argument, so `build.sh` stripped solutions from `00_intro` only (Content issues 3); now it processes every file (2026-10-20). Student versions not regenerated yet (step 3)
 
 **2. Tests and CI**
 - [ ] `pytest --nbmake` on the solution and student versions (sampling time matters: check how long each notebook takes)
@@ -91,9 +92,12 @@ Allen, 2026-10-20:
 - `gender_id/` moves to its own repo: `~/GenderId` (local git repo, initial commit with the uncommitted `plan.md` edit; the ANES `.dta`, `.zip`, `.xlsx` and `.pdf` files are ignored there). Removed from main here; still in history and in `pre-refresh-2026`.
 - Tag the ODSC version `odsc-east-2025` at `6008d7a` and `pre-refresh-2026`; push both.
 - `04_hierarchical` is a bonus notebook on the site: add it to the TOC, fix its Colab link, test it in CI.
-- `force-run`: not merged (no `force_run=True`); branch left as is. The `odsc-east-2025` tag stays at `6008d7a` (the tutorial's start time is unknown).
+- `force-run`: not merged (no `force_run=True`); remote branch deleted. The `odsc-east-2025` tag stays at `6008d7a` (the tutorial's start time is unknown).
 - `af-review-notebook-3-v2`: tagged `af-review-notebook-3-v2` (pushed), remote branch deleted.
 - `~/GenderId` stays a local repo for now (no GitHub repo).
+- Target Colab's PyMC 5 / ArviZ 0.x: pin `pymc>=5.28,<6` and `arviz<1` (PyMC 6.3 / ArviZ 1.3 break every notebook: `az.plot_posterior`, `az.to_netcdf` and others are gone). Porting is Content issue 4.
+- The notebooks already have cell ids (an nbformat warning in the scratch runs came from the test cell, not the notebooks).
+- Cross-links to SurveyDataPandas: site `https://allendowney.github.io/SurveyDataPandas/`, hub `https://allendowney.github.io/#workshops` (SurveyDataPandas refresh done, 2026-10-20).
 - Delete the leftovers listed above (backed up to the session scratchpad); ignore caches, data and the `jb` build; commit `jb/_config.yml`. Keep the `Makefile`, updated for `environment.yml` (as in SurveyDataPandas).
 
 ### Content issues
@@ -102,3 +106,6 @@ Allen, 2026-10-20:
 
 1. Resolved 2026-10-20 (Decisions): `04_hierarchical` is a bonus on the site.
 2. Resolved 2026-10-20 (Decisions): the unmerged branches.
+3. **The student versions of 01–04 contain the solutions.** `notebooks/01`–`04` have the same cell sources as `soln/` (only `00_intro` had its `# Solution` cells removed), because `remove_soln.py` read only `sys.argv[1]`. This has been live since 2025-05-13 (README and site Colab links). Script fixed; regenerate in step 3.
+4. Port to PyMC 6 / ArviZ 1 when Colab moves to them (ArviZ 1.0 reorganized its API; plotting moved to `arviz_plots`).
+5. The solution notebooks are saved without outputs (except `04_hierarchical`), and the site builds with execution off, so the published pages have no plots, tables or sampler output. Options: commit executed solution notebooks (as in SurveyDataPandas), or have Jupyter Book execute them (slow: about 15 minutes of sampling).

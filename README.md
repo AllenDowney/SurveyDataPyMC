@@ -85,42 +85,29 @@ It will be downloaded automatically when you run the notebooks.
 If you want to run the notebooks on your own computer, follow the instructions in the next section.
 
 
-### Environment Setup
+### Running on your own computer
 
-#### Option 1: Using Make (Recommended)
-1. Create and activate the conda environment:
+Clone the repository:
+
 ```bash
-make create_environment
+git clone https://github.com/AllenDowney/SurveyDataPyMC.git
+cd SurveyDataPyMC
+```
+
+Then install the packages with pip:
+
+```bash
+pip install -r requirements.txt jupyter
+```
+
+Or create a conda environment with [mamba](https://mamba.readthedocs.io/) (or conda):
+
+```bash
+mamba env create -f environment.yml
 conda activate SurveyDataPyMC
 ```
 
-2. Install Python dependencies:
-```bash
-make requirements
-```
-
-#### Option 2: Using environment.yaml
-Alternatively, you can create the environment directly from the environment.yaml file:
-```bash
-conda env create -f environment.yaml
-conda activate SurveyDataPyMC
-```
-
-This will install all required packages including:
-- PyMC (≥5.0)
-- JupyterLab and Notebook
-- Data analysis libraries (numpy, pandas)
-- Visualization tools (matplotlib, seaborn)
-- Development tools (black, flake8, isort)
-
-### Running the Notebooks
-
-1. Start JupyterLab:
-```bash
-jupyter lab
-```
-
-2. Navigate to the notebooks directory and open the desired notebook.
+Then run `jupyter lab` and open the notebooks in the `notebooks` folder.
 
 ## Resources
 
