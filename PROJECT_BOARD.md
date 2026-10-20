@@ -46,7 +46,7 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 
 **6. Site and visibility**
 - [ ] Rebuild the existing site (`jb/`, `gh-pages`), with `prep_notebooks.py` from the template; delete the old `jb/_build/` first
-- [ ] Decide whether `04_hierarchical` is on the site (it is published but not in the TOC)
+- [ ] Add `04_hierarchical` to `_toc.yml` (bonus; Decisions)
 - [ ] SEO checklist
 - [ ] Publish; `Sitemap:` line in `~/AllenDowney.github.io/robots.txt`; Search Console; GreenTeaPress Task 22
 - [ ] Cross-links with SurveyDataPandas (README and site, both ways); hub entry; repo description and topics
@@ -74,7 +74,7 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 
 **Site:** `allendowney.github.io/SurveyDataPyMC/`, Pages source `gh-pages` (last published 2025-05-13). `jb/` was half tracked (`_toc.yml`, `index.md`, `build.sh`, `prep_notebooks.py`; `_config.yml` untracked). `build.sh` copies `../soln/0*.ipynb`, runs `prep_notebooks.py` (adds `hide-cell` to solution cells), `jb build`, then always `ghp-import -n -p -f`. Execution is off. `04_hierarchical.html` is published though it isn't in the TOC (stale `_build`).
 
-**Remote branches:** `force-run` (1 commit ahead of main, "added force_run parameter everywhere", 2025-05-13) and `af-review-notebook-3-v2` (2 ahead, 2025-04-27). The others are merged.
+**Remote branches:** `force-run` (1 commit ahead of main: Alexander, 2025-05-13 10:20 EDT, adds `force_run=True` to every `load_idata_or_sample` call and renames one kernel to `odsc_2025`) and `af-review-notebook-3-v2` (2 ahead, 2025-04-27: Alexander's review of notebook 3, superseded by the rewrite in main; only 1 of the 35 cells it changed is in main). The others are merged.
 
 **Local state that was not in git (2026-10-20):**
 
@@ -90,11 +90,15 @@ Allen, 2026-10-20:
 - This thread refreshes SurveyDataPyMC (venue ODSC East 2025, not recorded); SurveyDataPandas is its companion.
 - `gender_id/` moves to its own repo: `~/GenderId` (local git repo, initial commit with the uncommitted `plan.md` edit; the ANES `.dta`, `.zip`, `.xlsx` and `.pdf` files are ignored there). Removed from main here; still in history and in `pre-refresh-2026`.
 - Tag the ODSC version `odsc-east-2025` at `6008d7a` and `pre-refresh-2026`; push both.
+- `04_hierarchical` is a bonus notebook on the site: add it to the TOC, fix its Colab link, test it in CI.
+- `force-run`: not merged (no `force_run=True`); branch left as is. The `odsc-east-2025` tag stays at `6008d7a` (the tutorial's start time is unknown).
+- `af-review-notebook-3-v2`: tagged `af-review-notebook-3-v2` (pushed), remote branch deleted.
+- `~/GenderId` stays a local repo for now (no GitHub repo).
 - Delete the leftovers listed above (backed up to the session scratchpad); ignore caches, data and the `jb` build; commit `jb/_config.yml`. Keep the `Makefile`, updated for `environment.yml` (as in SurveyDataPandas).
 
 ### Content issues
 
 (For Allen to decide.)
 
-1. `04_hierarchical`: part of the workshop or not? It is in the README as a bonus and published on the site, but not in the TOC.
-2. Remote branches `force-run` and `af-review-notebook-3-v2` have unmerged commits; merge, or delete?
+1. Resolved 2026-10-20 (Decisions): `04_hierarchical` is a bonus on the site.
+2. Resolved 2026-10-20 (Decisions): the unmerged branches.
