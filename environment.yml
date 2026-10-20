@@ -6,7 +6,7 @@ dependencies:
   - jupyter
   - numpy
   - pandas
-  - matplotlib
+  - matplotlib<3.11
   - scipy
   - pytables
   - pymc>=5.28,<6
