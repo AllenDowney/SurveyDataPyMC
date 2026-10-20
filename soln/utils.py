@@ -67,6 +67,28 @@ def decorate(**options):
         plt.tight_layout()
 
 
+# Set this environment variable to run the notebooks quickly (for testing):
+# subsample uses a random subset of the data and load_idata_or_sample
+# draws fewer samples.
+QUICK = bool(os.environ.get("SURVEYDATAPYMC_QUICK"))
+
+
+def subsample(data, n=5000):
+    """Select a random subset of rows when running quick tests.
+
+    Args:
+        data (pd.DataFrame): The data.
+        n (int): Number of rows to keep.
+
+    Returns:
+        pd.DataFrame: A random sample of rows if SURVEYDATAPYMC_QUICK is set,
+        otherwise `data` unchanged.
+    """
+    if QUICK and len(data) > n:
+        return data.sample(n, random_state=17)
+    return data
+
+
 def load_idata_or_sample(
     model: pm.Model, filename: str, force_run: bool = False, **sample_options
 ) -> az.InferenceData:
@@ -86,6 +108,7 @@ def load_idata_or_sample(
         **sample_options:
             Additional keyword arguments passed directly to `pm.sample()`.
             The sampler is nutpie unless `nuts_sampler` says otherwise.
+            If SURVEYDATAPYMC_QUICK is set, it draws 100 samples after 100 tuning steps.
 
     Returns:
         az.InferenceData:
@@ -97,6 +120,8 @@ def load_idata_or_sample(
         print(f"Loaded idata from {filename}")
     else:
         sample_options.setdefault("nuts_sampler", "nutpie")
+        if QUICK:
+            sample_options.update(draws=100, tune=100)
         with model:
             idata = pm.sample(**sample_options)
 

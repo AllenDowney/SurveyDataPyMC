@@ -30,7 +30,8 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 - [x] `soln/remove_soln.py` processed only its first argument, so `build.sh` stripped solutions from `00_intro` only (Content issues 3); now it processes every file (2026-10-20). Student versions not regenerated yet (step 3)
 
 **2. Tests and CI**
-- [ ] `pytest --nbmake` on the solution and student versions (sampling time matters: check how long each notebook takes)
+- [x] Quick mode for tests (Decisions) (2026-10-20)
+- [ ] `pytest --nbmake` on the solution and student versions (after the student versions are regenerated)
 - [ ] `.github/workflows/tests.yml`; watch the first run
 - [ ] Status badge in the README
 
@@ -98,7 +99,7 @@ Allen, 2026-10-20:
 - `~/GenderId` stays a local repo for now (no GitHub repo).
 - Target Colab's PyMC 5 / ArviZ 0.x: pin `pymc>=5.28,<6` and `arviz<1` (PyMC 6.3 / ArviZ 1.3 break every notebook: `az.plot_posterior`, `az.to_netcdf` and others are gone). Porting is Content issue 4.
 - Sampler: nutpie (the default in current PyMC), set in `utils.py`; `%pip install` cell for Colab. Keep the per-respondent models (collapsing to counts is Content issue 6). Save only the parameters where a model has per-respondent Deterministics (`logistic_model3`).
-- CI: quick mode only (fewer draws), every run.
+- CI: quick mode only, every run. `SURVEYDATAPYMC_QUICK` set: `subsample(data)` (a visible line after each `data = gss.dropna(...)` in 01–04) keeps 5,000 random rows (seed 17), and `load_idata_or_sample` uses `draws=100, tune=100`. Solutions in quick mode, one after another, with warnings as errors: 115 s in all (2026-10-20).
 - Student versions regenerated in step 3, with the Colab-cell rewrite (not pushed sooner).
 - Site outputs: commit the solution notebooks executed (as in SurveyDataPandas); the site keeps execution off.
 - Pin `matplotlib<3.11` (Colab has 3.10): with 3.11, ArviZ 0.x plots emit a `MatplotlibDeprecationWarning`. Remove the pin with the ArviZ 1 port (Content issue 4).
