@@ -1,5 +1,7 @@
 # SurveyDataPyMC
 
+[![tests](https://github.com/AllenDowney/SurveyDataPyMC/actions/workflows/tests.yml/badge.svg)](https://github.com/AllenDowney/SurveyDataPyMC/actions/workflows/tests.yml)
+
 
 Material for a tutorial at ODSC East 2025, with Alexander Fengler. [The tutorial site](https://allendowney.github.io/SurveyDataPyMC/) has the notebooks. This is one of [my workshops and tutorials](https://allendowney.github.io/#workshops).
 

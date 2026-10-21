@@ -31,12 +31,13 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 
 **2. Tests and CI**
 - [x] Quick mode for tests (Decisions) (2026-10-20)
-- [ ] `pytest --nbmake` on the solution and student versions (after the student versions are regenerated)
-- [ ] `.github/workflows/tests.yml`; watch the first run
-- [ ] Status badge in the README
+- [x] `make tests` (2026-10-20): `check_student` regenerates the versions with blanks in a temp folder and compares them with `notebooks/` (and `utils.py`), then `pytest --nbmake soln/0*.ipynb`. The versions with blanks don't run top to bottom: each blank breaks its model (`p = 0`), and the cells that use the model's results fail after it (45 error cells in 00–03), so they are checked for sync instead of run. Quick mode: 5 passed in 83 s. Quick mode doesn't load or save the `.nc` caches (stale 2025 caches in `soln/` and `notebooks/` had been loaded instead of sampling; deleted)
+- [x] `.github/workflows/tests.yml` (push to main, PR, monthly, manual; Python 3.12; apt graphviz; pip with `requirements-dev.txt`; `SURVEYDATAPYMC_QUICK=1`; 30-minute timeout; checkout@v5, setup-python@v6) (2026-10-20)
+- [ ] Watch the first run
+- [x] Status badge in the README
 
 **3. Colab**
-- [ ] Colab cells: the solution version opens itself and links to the version with blanks; `remove_soln.py` rewrites it for the student version; fix `04_hierarchical`'s link (it points to notebook 02)
+- [x] Colab cells (2026-10-20): the solution version opens itself and links to the version with blanks; `remove_soln.py` points it at the student version (this fixes `04_hierarchical`'s link to notebook 02). Student versions regenerated: no `# Solution` cells, no outputs (Content issue 3 fixed)
 - [ ] Allen runs one notebook on Colab end to end
 
 **4. Text**
@@ -99,7 +100,7 @@ Allen, 2026-10-20:
 - `~/GenderId` stays a local repo for now (no GitHub repo).
 - Target Colab's PyMC 5 / ArviZ 0.x: pin `pymc>=5.28,<6` and `arviz<1` (PyMC 6.3 / ArviZ 1.3 break every notebook: `az.plot_posterior`, `az.to_netcdf` and others are gone). Porting is Content issue 4.
 - Sampler: nutpie (the default in current PyMC), set in `utils.py`; `%pip install` cell for Colab. Keep the per-respondent models (collapsing to counts is Content issue 6). Save only the parameters where a model has per-respondent Deterministics (`logistic_model3`).
-- CI: quick mode only, every run. `SURVEYDATAPYMC_QUICK` set: `subsample(data)` (a visible line after each `data = gss.dropna(...)` in 01–04) keeps 5,000 random rows (seed 17), and `load_idata_or_sample` uses `draws=100, tune=100`. Solutions in quick mode, one after another, with warnings as errors: 115 s in all (2026-10-20).
+- CI: pip with `requirements-dev.txt` (checklist default); quick mode only, every run. `SURVEYDATAPYMC_QUICK` set: `subsample(data)` (a visible line after each `data = gss.dropna(...)` in 01–04) keeps 5,000 random rows (seed 17), and `load_idata_or_sample` uses `draws=100, tune=100`. Solutions in quick mode, one after another, with warnings as errors: 115 s in all (2026-10-20).
 - Student versions regenerated in step 3, with the Colab-cell rewrite (not pushed sooner).
 - Site outputs: commit the solution notebooks executed (as in SurveyDataPandas); the site keeps execution off.
 - Pin `matplotlib<3.11` (Colab has 3.10): with 3.11, ArviZ 0.x plots emit a `MatplotlibDeprecationWarning`. Remove the pin with the ArviZ 1 port (Content issue 4).
@@ -113,7 +114,7 @@ Allen, 2026-10-20:
 
 1. Resolved 2026-10-20 (Decisions): `04_hierarchical` is a bonus on the site.
 2. Resolved 2026-10-20 (Decisions): the unmerged branches.
-3. **The student versions of 01–04 contain the solutions.** `notebooks/01`–`04` have the same cell sources as `soln/` (only `00_intro` had its `# Solution` cells removed), because `remove_soln.py` read only `sys.argv[1]`. This has been live since 2025-05-13 (README and site Colab links). Script fixed; regenerate in step 3.
+3. Fixed 2026-10-20 (student versions regenerated). **The student versions of 01–04 contained the solutions.** `notebooks/01`–`04` have the same cell sources as `soln/` (only `00_intro` had its `# Solution` cells removed), because `remove_soln.py` read only `sys.argv[1]`. This has been live since 2025-05-13 (README and site Colab links). Script fixed; regenerate in step 3.
 4. Port to PyMC 6 / ArviZ 1 when Colab moves to them (ArviZ 1.0 reorganized its API; plotting moved to `arviz_plots`).
 5. Resolved 2026-10-20 (Decisions: commit executed solutions). The solution notebooks are saved without outputs (except `04_hierarchical`), and the site builds with execution off, so the published pages have no plots, tables or sampler output. Options: commit executed solution notebooks (as in SurveyDataPandas), or have Jupyter Book execute them (slow: about 15 minutes of sampling).
 6. Collapsing the data into counts (Binomial by year and party in 01, Multinomial by age and gender in 02, by age and cohort in 03) samples about 25 times faster with the same posterior, but changes the likelihoods and exercises. Not done (Allen, 2026-10-20); maybe for a later revision, or as an aside.

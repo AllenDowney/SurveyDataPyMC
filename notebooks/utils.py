@@ -108,14 +108,15 @@ def load_idata_or_sample(
         **sample_options:
             Additional keyword arguments passed directly to `pm.sample()`.
             The sampler is nutpie unless `nuts_sampler` says otherwise.
-            If SURVEYDATAPYMC_QUICK is set, it draws 100 samples after 100 tuning steps.
+            If SURVEYDATAPYMC_QUICK is set, it draws 100 samples after 100 tuning
+            steps, and doesn't load or save the file.
 
     Returns:
         az.InferenceData:
             The idata (posterior samples) as an ArviZ InferenceData object.
 
     """
-    if os.path.exists(filename) and not force_run:
+    if os.path.exists(filename) and not force_run and not QUICK:
         idata = az.from_netcdf(filename)
         print(f"Loaded idata from {filename}")
     else:
@@ -124,6 +125,10 @@ def load_idata_or_sample(
             sample_options.update(draws=100, tune=100)
         with model:
             idata = pm.sample(**sample_options)
+
+        # don't save quick results, so they don't get loaded later
+        if QUICK:
+            return idata
 
         # nutpie stores some attributes as a dict, which NetCDF can't save
         for key, value in idata.attrs.items():
