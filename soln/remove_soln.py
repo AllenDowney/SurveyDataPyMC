@@ -26,13 +26,18 @@ def remove_soln(filename):
         if source.startswith('[Click here to run this notebook on Colab]'):
             cell['source'] = colab_cell
 
-        # remove the output of code cells
+        # remove the output, execution count, and timing of code cells
         if cell['cell_type'] == 'code':
             cell['outputs'] = []
+            cell['execution_count'] = None
+            cell['metadata'].pop('execution', None)
 
         keep_cells.append(cell)
 
     ntbk.cells = keep_cells
+
+    # remove saved widget state (e.g. progress bars)
+    ntbk.metadata.pop('widgets', None)
 
     print('Removing solutions from', filename)
     nbf.write(ntbk, filename)

@@ -1,64 +1,47 @@
+"""Copy the solution notebooks into jb/ and prepare them for the book.
+
+For each ../soln/NN_name.ipynb, writes NN_name.ipynb here:
+- code cells that start with "# Solution" get the hide-cell tag,
+  so the solutions are collapsed on the page;
+- warnings in stderr outputs are removed (e.g. ArviZ's notice about
+  its 1.0 refactor, with a local path in it);
+- the page description goes in the notebook metadata (see GreenTeaPress plans/seo.md).
+
+The solution notebooks are committed with their outputs, so the book doesn't run them.
 """
-This script prepares notebooks for JupyterBook by adding appropriate tags to hide solution cells.
-It processes all notebooks in the current directory that start with 01, 02, 03, or 04.
-"""
 
-import nbformat as nbf
-from glob import glob
+import nbformat
 
-
-def process_cell(cell):
-    """
-    Process a single notebook cell, adding 'hide-cell' tag to solution cells.
-    
-    Args:
-        cell: A notebook cell dictionary containing cell metadata and content
-    
-    Returns:
-        None (modifies cell in place)
-    """
-    # Get existing tags from cell metadata, or empty list if none exist
-    cell_tags = cell.get('metadata', {}).get('tags', [])
-
-    # If this is a code cell that starts with '# Solution',
-    # add the 'hide-cell' tag to hide it in the JupyterBook
-    if cell['cell_type'] == 'code':
-        source = cell['source']
-        if source.startswith('# Solution'):
-            tag = 'hide-cell'
-            if tag not in cell_tags:
-                cell_tags.append('hide-cell')
-
-    # Update the cell's metadata with the new tags
-    if len(cell_tags) > 0:
-        cell['metadata']['tags'] = cell_tags
+DESCRIPTIONS = {
+    '00_intro': "An introduction to Bayesian sampling with PyMC: generate random data, "
+                "then build a model with an uncertain probability and a latent propensity.",
+    '01_logistic_regression': "Bayesian logistic regression with PyMC: how trust in other people "
+                              "has changed over time, by political party, in General Social Survey data.",
+    '02_categorical_regression': "Bayesian categorical regression with PyMC: model the 2020 presidential "
+                                 "vote by age and gender, using General Social Survey data.",
+    '03_ordinal_regression': "Bayesian ordinal regression with PyMC: model how happy people say they are, "
+                             "with cutpoints, by age and birth cohort, using General Social Survey data.",
+}
 
 
-def process_notebook(path):
-    """
-    Process an entire notebook file, adding tags to all cells.
-    
-    Args:
-        path: Path to the notebook file
-    
-    Returns:
-        None (modifies notebook file in place)
-    """
-    # Read the notebook
-    ntbk = nbf.read(path, nbf.NO_CONVERT)
+def prepare(name, description):
+    nb = nbformat.read(f'../soln/{name}.ipynb', 4)
 
-    # Process each cell in the notebook
-    for cell in ntbk.cells:
-        process_cell(cell)
+    for cell in nb.cells:
+        if cell.cell_type != 'code':
+            continue
+        if cell.source.startswith('# Solution'):
+            tags = cell.metadata.setdefault('tags', [])
+            if 'hide-cell' not in tags:
+                tags.append('hide-cell')
+        cell.outputs = [output for output in cell.outputs
+                        if not (output.get('name') == 'stderr' and 'Warning' in output.text)]
 
-    # Write the modified notebook back to the same file
-    nbf.write(ntbk, path)
+    nb.metadata['myst'] = {'html_meta': {'description': description}}
+    nb.metadata['og:description'] = description
+    nbformat.write(nb, f'{name}.ipynb')
+    print(f'{name} ({len(description)} characters)')
 
 
-# Find all notebooks that start with 01, 02, 03, or 04
-paths = glob("0[1234]*.ipynb")
-
-# Process each notebook in order
-for path in sorted(paths):
-    print('Preparing notebook:', path)
-    process_notebook(path)
+for name, description in DESCRIPTIONS.items():
+    prepare(name, description)

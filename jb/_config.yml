@@ -2,40 +2,40 @@
 title: Survey Data with PyMC
 author: Allen B. Downey and Alexander Fengler
 
-latex:
-  latex_documents:
-    targetname: book.tex
-
 execute:
+  # the solution notebooks are committed with their outputs (sampling takes minutes)
   execute_notebooks: 'off'
 
 repository:
   url: https://github.com/AllenDowney/SurveyDataPyMC
+  branch: main
+
 html:
+  baseurl: https://allendowney.github.io/SurveyDataPyMC/
   use_repository_button: true
+  # Page-view counter: one request per page view to greenteapress.com/gh.gif,
+  # counted from the greenteapress.com access logs (GreenTeaPress scripts/log_report.py).
+  # No cookies, no third party.
+  extra_footer: |
+    <script>new Image().src="https://greenteapress.com/gh.gif?u="+encodeURIComponent(location.href)+"&r="+encodeURIComponent(document.referrer)</script>
 
 parse:
-  # myst_extended_syntax: true  # instead enable individual features below
-  myst_enable_extensions:  # https://myst-parser.readthedocs.io/en/latest/using/syntax-optional.html
+  myst_enable_extensions:
     - amsmath
-    # - attrs_inline  # causing the conflict with dollarmath
-    - colon_fence
-    - deflist
     - dollarmath
-    - fieldlist
-    - html_admonition
-    - html_image
-    - linkify
-    - replacements
-    - smartquotes
-    - strikethrough
-    - substitution
-    - tasklist
 
 sphinx:
+  extra_extensions:
+    - sphinx_sitemap
+    - sphinxext.opengraph
   config:
     mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
-    mathjax_config:
-      tex2jax:
-        inlineMath: [["$","$"], ["\\(", "\\)"]]
-    myst_update_mathjax: false
+    html_baseurl: https://allendowney.github.io/SurveyDataPyMC/
+    sitemap_url_scheme: "{link}"
+    sitemap_excludes: [genindex.html, search.html]
+    ogp_site_url: https://allendowney.github.io/SurveyDataPyMC/
+    ogp_site_name: Survey Data with PyMC
+    ogp_image: https://greenteapress.com/wp/wp-content/uploads/2021/04/think_bayes_2e_cover_small.jpg
+    ogp_image_alt: Cover of Think Bayes by Allen B. Downey
+    # the opening text is often boilerplate, so write meta descriptions per page instead
+    ogp_enable_meta_description: false

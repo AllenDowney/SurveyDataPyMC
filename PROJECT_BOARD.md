@@ -38,7 +38,7 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 
 **3. Colab**
 - [x] Colab cells (2026-10-20): the solution version opens itself and links to the version with blanks; `remove_soln.py` points it at the student version (this fixes `04_hierarchical`'s link to notebook 02). Student versions regenerated: no `# Solution` cells, no outputs (Content issue 3 fixed)
-- [ ] Allen runs one notebook on Colab end to end. First try (2026-10-21): `import pymc` failed (`cannot import name 'concat' from 'arviz'`) because nutpie 0.16.11 requires `arviz>=0.23` and Colab has 0.22, so `pip install nutpie` upgraded ArviZ to 1.x. Fixed: the install cell pins `"arviz<1"` (gets 0.23.4, the version in the env and CI). Second try: the version with blanks fails at the first exercise (`p = 0`, "All initialization points failed"), as expected; 01 now says so before that exercise (Allen). Colab is on Python 3.13 (since 2026-08-19, backend-info), not 3.12: `environment.yml` and CI moved to 3.13 (local env not rebuilt, Allen); checklist in `workshops.md` updated
+- [x] Allen ran `soln/01_logistic_regression` on Colab end to end (2026-10-21). First try (2026-10-21): `import pymc` failed (`cannot import name 'concat' from 'arviz'`) because nutpie 0.16.11 requires `arviz>=0.23` and Colab has 0.22, so `pip install nutpie` upgraded ArviZ to 1.x. Fixed: the install cell pins `"arviz<1"` (gets 0.23.4, the version in the env and CI). Second try: the version with blanks fails at the first exercise (`p = 0`, "All initialization points failed"), as expected; 01 now says so before that exercise (Allen). Colab is on Python 3.13 (since 2026-08-19, backend-info), not 3.12: `environment.yml` and CI moved to 3.13 (local env not rebuilt, Allen); checklist in `workshops.md` updated
 
 **4. Text**
 - [x] Typos (2026-10-20): codespell ("coefficents") plus a read of all markdown, comments and docstrings. Fixed in 01: "ArViz" → "ArviZ", xarray "`DataSet`" → "`Dataset`", "Pandas" → "pandas", "Well use" → "We'll use", "`draw` indicates" → "`draws`", "`years`" → "`year`" (twice), "age effect" → "year effect" (that model has no age). 02 and 04: "table show", "each responses", stray "]" closing the GSS quotation; 02: "result look like", "third-party candidate"; 03: double space, comment "Compute cumulative logits" → "probabilities" on the `expit` lines; 04: shape comment `(n_obs, 2)` → `(2, n_obs)`; `utils.py` docstrings "Pandas" → "pandas". Not changed: `\( x \)` in 02/04 (valid MathJax)
@@ -52,9 +52,12 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 - [x] `LICENSE` (MIT): "Copyright (c) 2024–2026 Allen B. Downey and Alexander Fengler" (Allen)
 
 **6. Site and visibility**
-- [ ] Rebuild the existing site (`jb/`, `gh-pages`), with `prep_notebooks.py` from the template; delete the old `jb/_build/` first
+- [x] Solution notebooks executed at full size and committed with outputs (2026-10-21; about 5.5 minutes in all with nutpie; timing metadata stripped). `remove_soln.py` now also clears execution counts, cell timing, and saved widget state, so the versions with blanks only change when the content does
+- [x] `jb/` from the SurveyDataPandas pattern (2026-10-21): `_config.yml` (execution off, since the notebooks have outputs; sitemap, Open Graph, Think Bayes cover, page-view counter, MathJax path kept); `_toc.yml` 00–03; `build.sh [publish]`; `prep_notebooks.py` (copies `../soln`, hides `# Solution` cells, removes warnings from stderr outputs, writes descriptions); `index.md` rewritten (front matter, H1 "Bayesian Regression for Survey Data with PyMC", authors, level, length, notebooks with Colab links to the versions with blanks, slides, running instructions, next steps, license)
+- [x] Test build in a scratch copy (2026-10-21): sitemap lists only the 5 TOC pages; every page has one `name="description"`, one `og:description`, `rel="canonical"`, `og:image`, the counter; titles "Logistic Regression — Survey Data with PyMC" etc. No ArviZ notice or local paths on the pages
+- [ ] Allen reviews the descriptions
+- [ ] Delete the old `jb/_build/` and publish (`./build.sh publish`)
 - [ ] Keep `04_hierarchical` off the site (not in `_toc.yml`; the stale page goes when the old `_build` is deleted) (Decisions)
-- [ ] SEO checklist
 - [ ] Publish; `Sitemap:` line in `~/AllenDowney.github.io/robots.txt`; Search Console; GreenTeaPress Task 22
 - [ ] Cross-links with SurveyDataPandas (README and site, both ways); hub entry; repo description and topics
 
