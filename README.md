@@ -46,7 +46,7 @@ The material for the tutorial is in this repository:
 https://github.com/AllenDowney/SurveyDataPyMC/tree/main/notebooks
 
 The dataset from the General Social Survey (GSS) can be found here:
-https://gssdataexplorer.norc.org/
+https://gss.norc.org/
 
 [The slides for the tutorial are here](https://docs.google.com/presentation/d/e/2PACX-1vSjMfp2TotFMnfpqoefutAEGue3p94qmbSshnnyZH0cs6o33JiGiSH5FxRPQ9qO30G12HDIhQI-vQkH/pub).
 

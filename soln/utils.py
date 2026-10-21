@@ -146,15 +146,20 @@ def round_into_bins(series, bin_width, low=0, high=None):
 
     series: pd.Series
     bin_width: number, width of the bins
+    low: lower bound of the first bin
+    high: upper bound of the bins (default: the largest value)
 
-    returns: array of bin values
+    returns: array of bin values, NaN where the value is missing
     """
+    values = np.asarray(series, dtype=float)
     if high is None:
-        high = series.max()
+        high = np.nanmax(values)
 
     bins = np.arange(low, high + bin_width, bin_width)
-    indices = np.digitize(series, bins)
-    return bins[indices - 1]
+    indices = np.digitize(values, bins)
+    result = bins[indices - 1].astype(float)
+    result[np.isnan(values)] = np.nan
+    return result
 
 
 def plot_prior(idata, **options):
