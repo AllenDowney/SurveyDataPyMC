@@ -340,7 +340,7 @@
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Categorical Regression</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Categorical Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vote-by-age">Vote by age</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-results">Interpreting the results</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-a-categorical-predictor">Adding a categorical predictor</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-results">Plotting the results</a></li>
@@ -756,8 +756,8 @@ In the regression model, we’ll treat age as a continuous variable, but to plot
 <p>It looks like younger people were more likely to vote for Biden, and older people were more likely to vote for Trump.
 There is no obvious relationship between age and voting for a third-party candidate.</p>
 </section>
-<section id="id2">
-<h2>Categorical Regression<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="vote-by-age">
+<h2>Vote by age<a class="headerlink" href="#vote-by-age" title="Link to this heading">#</a></h2>
 <p>Now let’s make a regression model that estimates the probability of voting for each candidate as a function of age.
 We’ll select the subset of the data with valid responses.</p>
 <div class="cell docutils container">
@@ -1077,12 +1077,12 @@ As we did with <code class="docutils literal notranslate"><span class="pre">year
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">vote_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">mean_prob</span> <span class="o">=</span> <span class="n">predicted_probs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">hdi_low</span><span class="p">,</span> <span class="n">hdi_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">predicted_probs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">low</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">predicted_probs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pred_age_range</span><span class="p">,</span> <span class="n">mean_prob</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">pred_age_range</span><span class="p">,</span> 
-                     <span class="n">hdi_low</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> 
-                     <span class="n">hdi_high</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> 
+                     <span class="n">low</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> 
+                     <span class="n">high</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> 
                      <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> 
                      <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> 
                      <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -1092,15 +1092,14 @@ As we did with <code class="docutils literal notranslate"><span class="pre">year
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b69d79d5a2f9fa5d17e1403c2e33d55147ece5a47919d9d9b91590cca3dc8302.png" src="_images/b69d79d5a2f9fa5d17e1403c2e33d55147ece5a47919d9d9b91590cca3dc8302.png" />
+<img alt="_images/eb41e0317189944dc665d5ff8063b3d2606aaac68cf6a73568f69e1d6e1a8106.png" src="_images/eb41e0317189944dc665d5ff8063b3d2606aaac68cf6a73568f69e1d6e1a8106.png" />
 </div>
 </div>
 <p>It looks like the regression model does a good job of capturing the trends in the data.</p>
-<p>We can use these results to estimate the crossover point – the age below which people were more likely to vote for Biden.</p>
 </section>
 <section id="adding-a-categorical-predictor">
 <h2>Adding a categorical predictor<a class="headerlink" href="#adding-a-categorical-predictor" title="Link to this heading">#</a></h2>
-<p>Now let’s see what the interaction looks like between age and gender.</p>
+<p>Now let’s add gender as a second predictor, along with age.</p>
 <p><a class="reference external" href="https://sda.berkeley.edu/sdaweb/docs/gss21/DOC/2021XSECR1MethodologicalPrimer.pdf">Note from GSS documentation</a>:</p>
 <blockquote>
 <div><p>In the past, GSS respondents have not been asked to self-report their sex. Instead, the GSS used a combination of interviewer observation and household rosters for the variable SEX, our standard male/female variable. In 2021, as neither household roster nor interviewer observation were available, respondents were directly asked two questions: their sex assigned at birth and their current gender identity. These two items, SEXBIRTH1 and SEXNOW1, are now the standard way of measuring sex in the GSS.</p>
@@ -1340,7 +1339,7 @@ As an aside, a hierarchical model would be a good way to conduct this analysis w
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7a4ca3c2e7cf77735d68ca7185636b0fb0ead091941fca8fe8ce92818bda9624.svg" src="_images/7a4ca3c2e7cf77735d68ca7185636b0fb0ead091941fca8fe8ce92818bda9624.svg" />
+<img alt="_images/d1a2bd731b937eff7e52723a0539f5948d0c0380e7deea14218ebf2bb5ea9313.svg" src="_images/d1a2bd731b937eff7e52723a0539f5948d0c0380e7deea14218ebf2bb5ea9313.svg" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1619,7 +1618,7 @@ As an aside, a hierarchical model would be a good way to conduct this analysis w
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">vote_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">probs</span> <span class="o">=</span> <span class="n">predicted_probs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">]</span>
         <span class="n">mean_prob</span> <span class="o">=</span> <span class="n">probs</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">hdi_low</span><span class="p">,</span> <span class="n">hdi_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">low</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
             <span class="n">age_range</span><span class="p">,</span>
@@ -1630,8 +1629,8 @@ As an aside, a hierarchical model would be a good way to conduct this analysis w
         <span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
             <span class="n">age_range</span><span class="p">,</span>
-            <span class="n">hdi_low</span><span class="p">,</span>
-            <span class="n">hdi_high</span><span class="p">,</span>
+            <span class="n">low</span><span class="p">,</span>
+            <span class="n">high</span><span class="p">,</span>
             <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
             <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -1653,7 +1652,7 @@ As an aside, a hierarchical model would be a good way to conduct this analysis w
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0e3059c0aa4ab8b850b44694852f8b913fe95f220e0c1ece1bd6ed2407fa110e.png" src="_images/0e3059c0aa4ab8b850b44694852f8b913fe95f220e0c1ece1bd6ed2407fa110e.png" />
+<img alt="_images/b558dac05fd1cdd4939729a58d3b6de05b0977e46d7b94afd3dee86f566db14a.png" src="_images/b558dac05fd1cdd4939729a58d3b6de05b0977e46d7b94afd3dee86f566db14a.png" />
 </div>
 </div>
 <p>At all ages, women were more likely to vote for Biden and less likely to vote for Trump.
@@ -1732,7 +1731,7 @@ For third-party candidates, there is no clear gender gap.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Categorical Regression</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Categorical Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vote-by-age">Vote by age</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-results">Interpreting the results</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-a-categorical-predictor">Adding a categorical predictor</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-results">Plotting the results</a></li>

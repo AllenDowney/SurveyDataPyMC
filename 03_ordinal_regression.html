@@ -339,7 +339,7 @@
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Ordinal Regression</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Ordinal Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#happiness-by-age">Happiness by age</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-results">Interpreting the results</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-a-second-predictor">Adding a second predictor</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-results">Plotting the results</a></li>
@@ -1086,8 +1086,8 @@ As we did with age, we’ll group people into 5-year birth cohorts.</p>
 <p>It looks like people born later are less likely to say “very happy”.</p>
 <p>Now that we’ve explored the data, let’s make a model.</p>
 </section>
-<section id="id2">
-<h2>Ordinal Regression<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="happiness-by-age">
+<h2>Happiness by age<a class="headerlink" href="#happiness-by-age" title="Link to this heading">#</a></h2>
 <p>For the first model, we’ll use age as the predictor.
 So we’ll drop rows that are missing responses to <code class="docutils literal notranslate"><span class="pre">happy</span></code> or <code class="docutils literal notranslate"><span class="pre">age</span></code>.</p>
 <div class="cell docutils container">
@@ -1100,15 +1100,6 @@ So we’ll drop rows that are missing responses to <code class="docutils literal
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(66959, 65)
-</pre></div>
-</div>
-</div>
-</div>
-<p>Because this dataset is large, the sampler takes a while to run.
-While debugging, it is often useful to work with a random subset of the data.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># data = data.sample(5000)</span>
 </pre></div>
 </div>
 </div>
@@ -1285,7 +1276,7 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </div>
 </details>
 </div>
-<p>The transform sorts the cutpoints so they are in order – otherwise the cumulative probabilities would not be ordered and their differences could be negative.</p>
+<p>The transform constrains the cutpoints to be in order – otherwise the cumulative probabilities would not be ordered and their differences could be negative.</p>
 <p>Here’s an equivalent model using the built-in <code class="docutils literal notranslate"><span class="pre">OrderedLogistic</span></code> function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1321,19 +1312,194 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8ef586a089f4bd32d487adb90b475eb0aa4326be9e64a24ed3b2bbdec3585a2e.svg" src="_images/8ef586a089f4bd32d487adb90b475eb0aa4326be9e64a24ed3b2bbdec3585a2e.svg" />
+<img alt="_images/f6792bca8093c4bf7e137850fa8ff0b6299fb2d6787434ba1139b6e57bfbe42c.svg" src="_images/f6792bca8093c4bf7e137850fa8ff0b6299fb2d6787434ba1139b6e57bfbe42c.svg" />
 </div>
 </div>
 <p>Now let’s run the sampler.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span> <span class="o">=</span> <span class="s1">'ordinal_model_idata.nc'</span>
-<span class="n">idata</span> <span class="o">=</span> <span class="n">load_idata_or_sample</span><span class="p">(</span><span class="n">ordinal_model_diy</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">draws</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<span class="n">idata</span> <span class="o">=</span> <span class="n">load_idata_or_sample</span><span class="p">(</span><span class="n">ordinal_model</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">draws</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded idata from ordinal_model_idata.nc
+<div class="output text_html">
+<style>
+    :root {
+        --column-width-1: 40%; /* Progress column width */
+        --column-width-2: 15%; /* Chain column width */
+        --column-width-3: 15%; /* Divergences column width */
+        --column-width-4: 15%; /* Step Size column width */
+        --column-width-5: 15%; /* Gradients/Draw column width */
+    }
+
+    .nutpie {
+        max-width: 800px;
+        margin: 10px auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        //color: #333;
+        //background-color: #fff;
+        padding: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        font-size: 14px; /* Smaller font size for a more compact look */
+    }
+    .nutpie table {
+        width: 100%;
+        border-collapse: collapse; /* Remove any extra space between borders */
+    }
+    .nutpie th, .nutpie td {
+        padding: 8px 10px; /* Reduce padding to make table more compact */
+        text-align: left;
+        border-bottom: 1px solid #888;
+    }
+    .nutpie th {
+        //background-color: #f0f0f0;
+    }
+
+    .nutpie th:nth-child(1) { width: var(--column-width-1); }
+    .nutpie th:nth-child(2) { width: var(--column-width-2); }
+    .nutpie th:nth-child(3) { width: var(--column-width-3); }
+    .nutpie th:nth-child(4) { width: var(--column-width-4); }
+    .nutpie th:nth-child(5) { width: var(--column-width-5); }
+
+    .nutpie progress {
+        width: 100%;
+        height: 15px; /* Smaller progress bars */
+        border-radius: 5px;
+    }
+    progress::-webkit-progress-bar {
+        background-color: #eee;
+        border-radius: 5px;
+    }
+    progress::-webkit-progress-value {
+        background-color: #5cb85c;
+        border-radius: 5px;
+    }
+    progress::-moz-progress-bar {
+        background-color: #5cb85c;
+        border-radius: 5px;
+    }
+    .nutpie .progress-cell {
+        width: 100%;
+    }
+
+    .nutpie p strong { font-size: 16px; font-weight: bold; }
+
+    @media (prefers-color-scheme: dark) {
+        .nutpie {
+            //color: #ddd;
+            //background-color: #1e1e1e;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        .nutpie table, .nutpie th, .nutpie td {
+            border-color: #555;
+            color: #ccc;
+        }
+        .nutpie th {
+            background-color: #2a2a2a;
+        }
+        .nutpie progress::-webkit-progress-bar {
+            background-color: #444;
+        }
+        .nutpie progress::-webkit-progress-value {
+            background-color: #3178c6;
+        }
+        .nutpie progress::-moz-progress-bar {
+            background-color: #3178c6;
+        }
+    }
+</style>
+</div><div class="output text_html">
+<div class="nutpie">
+    <p><strong>Sampler Progress</strong></p>
+    <p>Total Chains: <span id="total-chains">4</span></p>
+    <p>Active Chains: <span id="active-chains">0</span></p>
+    <p>
+        Finished Chains:
+        <span id="active-chains">4</span>
+    </p>
+    <p>Sampling for 2 minutes</p>
+    <p>
+        Estimated Time to Completion:
+        <span id="eta">now</span>
+    </p>
+
+    <progress
+        id="total-progress-bar"
+        max="4000"
+        value="4000">
+    </progress>
+    <table>
+        <thead>
+            <tr>
+                <th>Progress</th>
+                <th>Draws</th>
+                <th>Divergences</th>
+                <th>Step Size</th>
+                <th>Gradients/Draw</th>
+            </tr>
+        </thead>
+        <tbody id="chain-details">
+            
+                <tr>
+                    <td class="progress-cell">
+                        <progress
+                            max="1000"
+                            value="1000">
+                        </progress>
+                    </td>
+                    <td>1000</td>
+                    <td>0</td>
+                    <td>0.88</td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td class="progress-cell">
+                        <progress
+                            max="1000"
+                            value="1000">
+                        </progress>
+                    </td>
+                    <td>1000</td>
+                    <td>0</td>
+                    <td>0.81</td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td class="progress-cell">
+                        <progress
+                            max="1000"
+                            value="1000">
+                        </progress>
+                    </td>
+                    <td>1000</td>
+                    <td>0</td>
+                    <td>0.78</td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td class="progress-cell">
+                        <progress
+                            max="1000"
+                            value="1000">
+                        </progress>
+                    </td>
+                    <td>1000</td>
+                    <td>0</td>
+                    <td>0.75</td>
+                    <td>3</td>
+                </tr>
+            
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saved new idata to ordinal_model_idata.nc
 </pre></div>
 </div>
 </div>
@@ -1347,7 +1513,7 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9e21fdcaf659e23d7debecb65dc2ec0312ace66396e213c5444293e791cf52c7.png" src="_images/9e21fdcaf659e23d7debecb65dc2ec0312ace66396e213c5444293e791cf52c7.png" />
+<img alt="_images/fdae7bc29be1063f8fbbe88712eb4cbeff167d9c8e8a093ee448a4370a157204.png" src="_images/fdae7bc29be1063f8fbbe88712eb4cbeff167d9c8e8a093ee448a4370a157204.png" />
 </div>
 </div>
 <p>And here’s the coefficient of age.</p>
@@ -1359,7 +1525,7 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d5a07d3a6e333a164ea65604a4ebfb97eb6e80f44fd80c4c1f4be8753f71d76f.png" src="_images/d5a07d3a6e333a164ea65604a4ebfb97eb6e80f44fd80c4c1f4be8753f71d76f.png" />
+<img alt="_images/9018c889a593cb92acb7f689348de216a7d6f874764459751b32f50638d131a3.png" src="_images/9018c889a593cb92acb7f689348de216a7d6f874764459751b32f50638d131a3.png" />
 </div>
 </div>
 <p>The traces look good.</p>
@@ -1371,7 +1537,7 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/197895ee5720a95b8830a1db085ff61533a45fe6e9f2a3772ee2a566ec2d8d9b.png" src="_images/197895ee5720a95b8830a1db085ff61533a45fe6e9f2a3772ee2a566ec2d8d9b.png" />
+<img alt="_images/5228a08f4b2a85f3c4d7e571e6a451cb26d9667ec6e35d0b81bf9cd8e4c63937.png" src="_images/5228a08f4b2a85f3c4d7e571e6a451cb26d9667ec6e35d0b81bf9cd8e4c63937.png" />
 </div>
 </div>
 <p>And the diagnostics are good.</p>
@@ -1420,20 +1586,20 @@ This helps the sampler get started – other than that, it doesn’t affect the 
       <td>0.006</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>1845.0</td>
-      <td>1258.0</td>
+      <td>1871.0</td>
+      <td>1354.0</td>
       <td>1.0</td>
     </tr>
     <tr>
       <th>cutpoints[0]</th>
       <td>-1.923</td>
       <td>0.012</td>
-      <td>-1.946</td>
-      <td>-1.902</td>
+      <td>-1.945</td>
+      <td>-1.901</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>694.0</td>
-      <td>1159.0</td>
+      <td>697.0</td>
+      <td>1155.0</td>
       <td>1.0</td>
     </tr>
     <tr>
@@ -1444,8 +1610,8 @@ This helps the sampler get started – other than that, it doesn’t affect the 
       <td>0.775</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>2746.0</td>
-      <td>1540.0</td>
+      <td>2608.0</td>
+      <td>1513.0</td>
       <td>1.0</td>
     </tr>
   </tbody>
@@ -1530,17 +1696,17 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 
 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">happy_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">mean_prob</span> <span class="o">=</span> <span class="n">predicted_probs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">hdi_low</span><span class="p">,</span> <span class="n">hdi_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">predicted_probs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">k</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">low</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">predicted_probs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">k</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">age_range</span><span class="p">,</span> <span class="n">mean_prob</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">age_range</span><span class="p">,</span> <span class="n">hdi_low</span><span class="p">,</span> <span class="n">hdi_high</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">age_range</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 
 <span class="n">decorate</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a4c51c10894f86ddceb0248f6b36ae936da35c40915e327d056c367372b1758b.png" src="_images/a4c51c10894f86ddceb0248f6b36ae936da35c40915e327d056c367372b1758b.png" />
+<img alt="_images/ebf2535f83d10c57cc4144041e5182f95c873cb720e14044ea35490a584b52c6.png" src="_images/ebf2535f83d10c57cc4144041e5182f95c873cb720e14044ea35490a584b52c6.png" />
 </div>
 </div>
 <p>It looks like the model does a pretty good job capturing the trends in the data.</p>
@@ -1558,14 +1724,6 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(66958, 65)
-</pre></div>
-</div>
-</div>
-</div>
-<p>Again, you might want to run with a subset of the data so the sampler runs faster.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># data = data.sample(5000)</span>
 </pre></div>
 </div>
 </div>
@@ -1634,7 +1792,7 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b56b603c8d1635cead93b1735ee91515c66e72eed64dea4f9450dcb16f3f6981.svg" src="_images/b56b603c8d1635cead93b1735ee91515c66e72eed64dea4f9450dcb16f3f6981.svg" />
+<img alt="_images/3b482b7c9e7bf63877a2942e0688b7b3b1505dd8298ef8ae09ec290c3bd44d95.svg" src="_images/3b482b7c9e7bf63877a2942e0688b7b3b1505dd8298ef8ae09ec290c3bd44d95.svg" />
 </div>
 </div>
 <p>Run that sampler…</p>
@@ -1776,7 +1934,7 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 <img alt="_images/c1f926cc70c9eb666ed7d2d1b067c9f8f8c14419dc346c62d41f1b078ede5e2f.png" src="_images/c1f926cc70c9eb666ed7d2d1b067c9f8f8c14419dc346c62d41f1b078ede5e2f.png" />
 </div>
 </div>
-<p>And the cohort effect appears to be about two times bigger.</p>
+<p>And the cohort effect appears to be about 2.5 times bigger.</p>
 </section>
 <section id="plotting-the-results">
 <h2>Plotting the results<a class="headerlink" href="#plotting-the-results" title="Link to this heading">#</a></h2>
@@ -1918,17 +2076,17 @@ The following function encapsulates the logic.</p>
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
     <span class="n">prob</span> <span class="o">=</span> <span class="n">predicted_probs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
     <span class="n">mean_prob</span> <span class="o">=</span> <span class="n">prob</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">hdi_low</span><span class="p">,</span> <span class="n">hdi_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">low</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">age_range</span><span class="p">,</span> <span class="n">mean_prob</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">age_range</span><span class="p">,</span> <span class="n">hdi_low</span><span class="p">,</span> <span class="n">hdi_high</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">age_range</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 
 <span class="n">decorate</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/cc1f1092e739030c69f71614023ef30910b26c55ecff4b29105b886549e47a57.png" src="_images/cc1f1092e739030c69f71614023ef30910b26c55ecff4b29105b886549e47a57.png" />
+<img alt="_images/d7d7a105922515839984b3cd9c3d6d77f37bc98ee877f7377eb21c23c62be35a.png" src="_images/d7d7a105922515839984b3cd9c3d6d77f37bc98ee877f7377eb21c23c62be35a.png" />
 </div>
 </div>
 <p>We don’t expect the results to match the data perfectly, because the predictions are for a specific birth year and the data contain a mixture of birth years.</p>
@@ -1958,17 +2116,17 @@ The following function encapsulates the logic.</p>
 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">happy_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">prob</span> <span class="o">=</span> <span class="n">predicted_probs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="n">k</span><span class="p">]</span>
     <span class="n">mean_prob</span> <span class="o">=</span> <span class="n">prob</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">hdi_low</span><span class="p">,</span> <span class="n">hdi_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">low</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cohort_range</span><span class="p">,</span> <span class="n">mean_prob</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">cohort_range</span><span class="p">,</span> <span class="n">hdi_low</span><span class="p">,</span> <span class="n">hdi_high</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">cohort_range</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 
 <span class="n">decorate</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6388694e94fe72def48f9f2e1d293a74075b6bf77497a3c9efc18356f74db83c.png" src="_images/6388694e94fe72def48f9f2e1d293a74075b6bf77497a3c9efc18356f74db83c.png" />
+<img alt="_images/6fcbc8ad022cfe778f85ac808d1b07659c78e9b1ff5599b3bad0fa82b5ba5304.png" src="_images/6fcbc8ad022cfe778f85ac808d1b07659c78e9b1ff5599b3bad0fa82b5ba5304.png" />
 </div>
 </div>
 <p>One use of a model like this is to generate projections and counterfactuals.</p>
@@ -2038,7 +2196,7 @@ The following function encapsulates the logic.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Ordinal Regression</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Ordinal Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#happiness-by-age">Happiness by age</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-results">Interpreting the results</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-a-second-predictor">Adding a second predictor</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-results">Plotting the results</a></li>
