@@ -33,7 +33,7 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 - [x] Quick mode for tests (Decisions) (2026-10-20)
 - [x] `make tests` (2026-10-20): `check_student` regenerates the versions with blanks in a temp folder and compares them with `notebooks/` (and `utils.py`), then `pytest --nbmake soln/0*.ipynb`. The versions with blanks don't run top to bottom: each blank breaks its model (`p = 0`), and the cells that use the model's results fail after it (45 error cells in 00–03), so they are checked for sync instead of run. Quick mode: 5 passed in 83 s. Quick mode doesn't load or save the `.nc` caches (stale 2025 caches in `soln/` and `notebooks/` had been loaded instead of sampling; deleted)
 - [x] `.github/workflows/tests.yml` (push to main, PR, monthly, manual; Python 3.12; apt graphviz; pip with `requirements-dev.txt`; `SURVEYDATAPYMC_QUICK=1`; 30-minute timeout; checkout@v5, setup-python@v6) (2026-10-20)
-- [ ] Watch the first run
+- [x] First run passed (2026-10-20, run 39518865071, 4 min 54 s with setup; pushed `53ef06e`..`bfe235c`)
 - [x] Status badge in the README
 
 **3. Colab**
