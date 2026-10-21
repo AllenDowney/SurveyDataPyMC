@@ -8,7 +8,7 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 
 ## Task 1: Refresh
 
-**Status:** In progress (2026-10-20)
+**Status:** DONE (2026-10-21). Still open: Allen submits the sitemap in Search Console; the 04 rewrite and content issues 9–14 (below)
 
 **Context:** SurveyDataPyMC is a "current" workshop (GreenTeaPress Task 24). The guide is the "Refresh checklist" in `~/GreenTeaPress/plans/workshops.md`; BayesMadeSimple and CompStats are the worked examples. Given at ODSC East 2025 (May 13, 2025), with Alexander Fengler; not recorded. 12 stars; last workshop change 2025-05-13. Companion workshop: SurveyDataPandas (same GSS data and audience, PyCon US 2025); the two should link to each other.
 
@@ -67,7 +67,7 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 - [x] Repo description "Bayesian Regression for Survey Data with PyMC: a tutorial on logistic, categorical, and ordinal regression with General Social Survey data"; topic `jupyter-book` added; both also in GreenTeaPress `scripts/repo_about.sh` (uncommitted there) (2026-10-21)
 
 **7. Close**
-- [ ] Tag `2026-refresh`; note in GreenTeaPress Task 24
+- [x] Tag `2026-refresh` at `11db69b`, pushed; summary in GreenTeaPress Task 24 (uncommitted there) (2026-10-21)
 
 ### Inventory (2026-10-20)
 
