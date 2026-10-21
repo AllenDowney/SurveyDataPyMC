@@ -38,7 +38,7 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 
 **3. Colab**
 - [x] Colab cells (2026-10-20): the solution version opens itself and links to the version with blanks; `remove_soln.py` points it at the student version (this fixes `04_hierarchical`'s link to notebook 02). Student versions regenerated: no `# Solution` cells, no outputs (Content issue 3 fixed)
-- [ ] Allen runs one notebook on Colab end to end
+- [ ] Allen runs one notebook on Colab end to end. First try (2026-10-21): `import pymc` failed (`cannot import name 'concat' from 'arviz'`) because nutpie 0.16.11 requires `arviz>=0.23` and Colab has 0.22, so `pip install nutpie` upgraded ArviZ to 1.x. Fixed: the install cell pins `"arviz<1"` (gets 0.23.4, the version in the env and CI). Also: Colab is on Python 3.13 now (backend-info: 3.13.16), not 3.12
 
 **4. Text**
 - [x] Typos (2026-10-20): codespell ("coefficents") plus a read of all markdown, comments and docstrings. Fixed in 01: "ArViz" → "ArviZ", xarray "`DataSet`" → "`Dataset`", "Pandas" → "pandas", "Well use" → "We'll use", "`draw` indicates" → "`draws`", "`years`" → "`year`" (twice), "age effect" → "year effect" (that model has no age). 02 and 04: "table show", "each responses", stray "]" closing the GSS quotation; 02: "result look like", "third-party candidate"; 03: double space, comment "Compute cumulative logits" → "probabilities" on the `expit` lines; 04: shape comment `(n_obs, 2)` → `(2, n_obs)`; `utils.py` docstrings "Pandas" → "pandas". Not changed: `\( x \)` in 02/04 (valid MathJax)
