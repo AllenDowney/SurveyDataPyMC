@@ -55,11 +55,16 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 - [x] Solution notebooks executed at full size and committed with outputs (2026-10-21; about 5.5 minutes in all with nutpie; timing metadata stripped). `remove_soln.py` now also clears execution counts, cell timing, and saved widget state, so the versions with blanks only change when the content does
 - [x] `jb/` from the SurveyDataPandas pattern (2026-10-21): `_config.yml` (execution off, since the notebooks have outputs; sitemap, Open Graph, Think Bayes cover, page-view counter, MathJax path kept); `_toc.yml` 00–03; `build.sh [publish]`; `prep_notebooks.py` (copies `../soln`, hides `# Solution` cells, removes warnings from stderr outputs, writes descriptions); `index.md` rewritten (front matter, H1 "Bayesian Regression for Survey Data with PyMC", authors, level, length, notebooks with Colab links to the versions with blanks, slides, running instructions, next steps, license)
 - [x] Test build in a scratch copy (2026-10-21): sitemap lists only the 5 TOC pages; every page has one `name="description"`, one `og:description`, `rel="canonical"`, `og:image`, the counter; titles "Logistic Regression — Survey Data with PyMC" etc. No ArviZ notice or local paths on the pages
-- [ ] Allen reviews the descriptions
-- [ ] Delete the old `jb/_build/` and publish (`./build.sh publish`)
+- [x] Allen approved the descriptions (2026-10-21)
+- [x] `np.set_printoptions(legacy='1.25')` in the import cells (checklist item from SurveyDataPandas); solution notebooks re-run (2026-10-21)
+- [x] Published (2026-10-21): old `jb/_build/` deleted (it had the stale `04_hierarchical` page), `./build.sh publish`; `build.sh` files made executable
 - [ ] Keep `04_hierarchical` off the site (not in `_toc.yml`; the stale page goes when the old `_build` is deleted) (Decisions)
-- [ ] Publish; `Sitemap:` line in `~/AllenDowney.github.io/robots.txt`; Search Console; GreenTeaPress Task 22
-- [ ] Cross-links with SurveyDataPandas (README and site, both ways); hub entry; repo description and topics
+- [x] `Sitemap:` line in `~/AllenDowney.github.io/robots.txt` (pushed, `cf1763c`) (2026-10-21)
+- [ ] Allen submits the sitemap in Search Console (`https://allendowney.github.io/SurveyDataPyMC/sitemap.xml`)
+- [x] GreenTeaPress Task 22 line updated (2026-10-21)
+- [x] Cross-links with SurveyDataPandas: this README and site link to it; its README and site link here (2026-10-21)
+- [x] Hub entry: already right (title, ODSC East 2025)
+- [x] Repo description "Bayesian Regression for Survey Data with PyMC: a tutorial on logistic, categorical, and ordinal regression with General Social Survey data"; topic `jupyter-book` added; both also in GreenTeaPress `scripts/repo_about.sh` (uncommitted there) (2026-10-21)
 
 **7. Close**
 - [ ] Tag `2026-refresh`; note in GreenTeaPress Task 24
