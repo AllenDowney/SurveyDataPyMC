@@ -8,7 +8,7 @@ Companion workshop: SurveyDataPandas (`~/SurveyDataPandas`; the same GSS data wi
 
 ## Which notebooks are the workshop
 
-- `soln/00_intro.ipynb` to `soln/03_ordinal_regression.ipynb`: the solution versions, the ones to edit. `soln/04_hierarchical.ipynb` is a bonus notebook, not on the site.
+- `soln/00_intro.ipynb` to `soln/03_ordinal_regression.ipynb`: the solution versions, the ones to edit. `soln/04_hierarchical.ipynb` is a bonus notebook, still a draft: in the repo and in CI, not on the site.
 - `notebooks/`: the versions with blanks, generated from the solution versions by `soln/build.sh` (`remove_soln.py` drops cells that start with `# Solution` and clears outputs). Don't edit them by hand.
 - `soln/utils.py` (copied to `notebooks/utils.py`): helpers the notebooks download from GitHub, including `load_idata_or_sample`, which caches sampling results in `.nc` files (ignored).
 
@@ -21,7 +21,9 @@ The notebooks download their data from the GssExtract repo (`https://github.com/
 
 ## Testing
 
-Environment: `mamba env create -f environment.yml` (name `SurveyDataPyMC`). Tests: `pytest --nbmake` on the notebooks (set up in step 2 of the refresh).
+Environment: `mamba env create -f environment.yml` (name `SurveyDataPyMC`). Tests: `SURVEYDATAPYMC_QUICK=1 make tests`. It checks that `notebooks/` matches what `remove_soln.py` makes from `soln/`, then runs the solution notebooks with `pytest --nbmake`. Quick mode (`SURVEYDATAPYMC_QUICK`, also set in CI) subsamples the data (`subsample` in `utils.py`) and draws fewer samples, about 80 s in all; without it, about 9 minutes. The versions with blanks don't run top to bottom (the blanks break the models), so they aren't run.
+
+Sampling uses nutpie (`load_idata_or_sample`); PyMC is pinned below 6 and ArviZ below 1, matching Colab.
 
 The target environment is Google Colab's current Python and libraries.
 

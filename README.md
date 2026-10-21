@@ -1,124 +1,81 @@
-# SurveyDataPyMC
+# Bayesian Regression for Survey Data with PyMC
 
 [![tests](https://github.com/AllenDowney/SurveyDataPyMC/actions/workflows/tests.yml/badge.svg)](https://github.com/AllenDowney/SurveyDataPyMC/actions/workflows/tests.yml)
 
+[Allen Downey](https://allendowney.com) and [Alexander Fengler](https://github.com/AlexanderFengler)
 
-Material for a tutorial at ODSC East 2025, with Alexander Fengler. [The tutorial site](https://allendowney.github.io/SurveyDataPyMC/) has the notebooks. This is one of [my workshops and tutorials](https://allendowney.github.io/#workshops).
+In this tutorial, we explore Bayesian regression using PyMC -- the primary library for Bayesian sampling in Python -- focusing on survey data and other datasets with categorical outcomes. Starting with logistic regression, we'll build up to categorical and ordered logistic regression, showcasing how Bayesian approaches provide versatile tools for developing and evaluating complex models. Participants will leave with practical skills for implementing Bayesian regression models in PyMC, along with a deeper appreciation for the power of Bayesian inference in real-world data analysis.
 
+The examples use data from the [General Social Survey](https://gss.norc.org/) (GSS).
 
-**Abstract**
+The [tutorial site](https://allendowney.github.io/SurveyDataPyMC/) has the notebooks with solutions. This is one of [my workshops and tutorials](https://allendowney.github.io/#workshops). Its companion, [Survey Data with Pandas](https://allendowney.github.io/SurveyDataPandas/), uses the same GSS data.
 
-In this tutorial, we explore Bayesian regression using PyMC -- the primary library for Bayesian sampling in Python -- focusing on survey data and other datasets with categorical outcomes. Starting with logistic regression, we'll build up to categorical and ordered logistic regression, showcasing how Bayesian approaches provide versatile tools for developing and evaluating complex models. Participants will leave with practical skills for implementing Bayesian regression models in PyMC, along with a deeper appreciation for the power of Bayesian inference in real-world data analysis. Participants should be familiar with Python, the SciPy ecosystem, and basic statistics, but no experience with Bayesian methods is required.
+**Level:** intermediate. You should be comfortable with Python, NumPy and pandas, and basic statistics. You don't need any experience with Bayesian methods or PyMC.
 
-**Description**
+**Length:** about 90 minutes.
 
-In this hands-on tutorial, we will dive into the world of Bayesian regression using PyMC, with a particular focus on datasets that feature categorical outcomes. PyMC provides versatile tools for iterative development of powerful models. This tutorial guides participants through the fundamentals of Bayesian regression, starting from logistic regression and extending to categorical and ordered logistic regression. It also introduces the PyMC package, its syntax and capabilities.
+## Outline
 
-Outline:
+0. **Introduction to Bayesian sampling:** using PyMC as a random number generator, then building up a model from an uncertain probability, a latent propensity, and observed data.
+1. **Logistic regression:** modeling a binary outcome, whether people say other people can be trusted, as a function of time and political party. Priors, the posterior distribution, sampling diagnostics, centering, and generating predictions.
+2. **Categorical regression:** extending logistic regression to an unordered outcome with more than two categories, the 2020 presidential vote, as a function of age and gender.
+3. **Ordinal regression:** modeling an ordered outcome, how happy people say they are, with cutpoints, as a function of age and birth cohort.
 
-* Logistic Regression with PyMC
+Each notebook comes in two versions: one with blanks for the exercises, and one with solutions.
 
-  - Overview of Bayesian inference
-  - Modeling binary outcomes with logistic regression
-  - Introduction to PyMC and its capabilities
-  - Hands-on example: Trust and political alignment
+| Notebook | Exercises | Solutions |
+|---|---|---|
+| 0. Introduction to Bayesian sampling | [Run on Colab](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/00_intro.ipynb) | [Run on Colab](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/soln/00_intro.ipynb) |
+| 1. Logistic regression | [Run on Colab](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/01_logistic_regression.ipynb) | [Run on Colab](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/soln/01_logistic_regression.ipynb) |
+| 2. Categorical regression | [Run on Colab](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/02_categorical_regression.ipynb) | [Run on Colab](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/soln/02_categorical_regression.ipynb) |
+| 3. Ordinal regression | [Run on Colab](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/03_ordinal_regression.ipynb) | [Run on Colab](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/soln/03_ordinal_regression.ipynb) |
 
-* Categorical Regression
+There is also a bonus notebook, still a draft, on a [hierarchical categorical model](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/soln/04_hierarchical.ipynb) of vote by gender identity.
 
-  - Extending logistic regression to multi-class outcomes
-  - Differences between Bayesian models and GLM
-  - Hands-on example: Age, gender, and voting patterns
+[Slides for this tutorial are here](https://docs.google.com/presentation/d/e/2PACX-1vSjMfp2TotFMnfpqoefutAEGue3p94qmbSshnnyZH0cs6o33JiGiSH5FxRPQ9qO30G12HDIhQI-vQkH/pub).
 
-* Ordered Logistic Regression
-  - Introduction to ordinal outcomes and their challenges
-  - Implementing ordered logistic regression in PyMC
-  - Hands-on example: Birth cohort and happiness
+### Data
 
-* Conclusion and Q&A
-  - Recap of key concepts
-  - Resources for further learning
-  - Open discussion and questions
+The notebooks download `gss_extract_2022_4.hdf`, an extract of the GSS (2022 release 4) made in the [GssExtract](https://github.com/AllenDowney/GssExtract) repository.
 
-This tutorial is aimed at data scientists who are comfortable with Python, the SciPy ecosystem, and basic statistics but are new to Bayesian statistics and/or PyMC. By the end of the session, participants will have hands-on experience with Bayesian regression models and a solid understanding of how to apply these techniques to real-world data analysis. 
+## Recordings
 
-Notes:
-The material for the tutorial is in this repository:
-https://github.com/AllenDowney/SurveyDataPyMC/tree/main/notebooks
+We presented this tutorial at ODSC East 2025 (May 13, 2025). It was not recorded. The version of the code we presented is tagged [`odsc-east-2025`](https://github.com/AllenDowney/SurveyDataPyMC/tree/odsc-east-2025).
 
-The dataset from the General Social Survey (GSS) can be found here:
-https://gss.norc.org/
+## Running the notebooks
 
-[The slides for the tutorial are here](https://docs.google.com/presentation/d/e/2PACX-1vSjMfp2TotFMnfpqoefutAEGue3p94qmbSshnnyZH0cs6o33JiGiSH5FxRPQ9qO30G12HDIhQI-vQkH/pub).
+The easiest way to run the notebooks is on Colab: click one of the links above. You need a Google account, but you don't have to install anything. The notebooks install [nutpie](https://github.com/pymc-devs/nutpie), the sampler they use, and download the data they need.
 
+To run them on your own computer, you need Python 3 with Jupyter, NumPy, pandas, Matplotlib, SciPy, PyTables, PyMC 5, ArviZ (before version 1), nutpie, and Graphviz. You can [download the code in this zip file](https://github.com/AllenDowney/SurveyDataPyMC/archive/main.zip), or clone the repository:
 
-## Notebooks
-
-The workshop consists of three notebooks that build on each other:
-
-1. `01_logistic_regression.ipynb` 
-   - Introduction to PyMC
-   - Bayesian logistic regression
-   - Analyzing trust and political alignment
-
-2. `02_categorical_regression.ipynb`
-   - Multi-class categorical regression
-   - Analyzing voting patterns by age and gender
-
-3. `03_ordered_regression.ipynb` 
-   - Ordered logistic regression
-   - Analyzing happiness by birth cohort
-
-## Setup Instructions
-
-The easiest option is to run the notebooks on Colab, so you don't have to install anything.
-Use the following links to open the notebooks:
-
-* [Notebook 1: Logistic Regression](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/01_logistic_regression.ipynb)
-
-* [Notebook 2: Categorical Regression](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/02_categorical_regression.ipynb) 
-
-* [Notebook 3: Ordered Regression](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/03_ordinal_regression.ipynb)
-
-* [Notebook 4: Hierarchical (Bonus)](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/04_hierarchical.ipynb)
-
-**Note:** The notebooks use data from the General Social Survey (GSS).
-It will be downloaded automatically when you run the notebooks.
-
-If you want to run the notebooks on your own computer, follow the instructions in the next section.
-
-
-### Running on your own computer
-
-Clone the repository:
-
-```bash
-git clone https://github.com/AllenDowney/SurveyDataPyMC.git
+```
+git clone https://github.com/AllenDowney/SurveyDataPyMC
 cd SurveyDataPyMC
 ```
 
 Then install the packages with pip:
 
-```bash
+```
 pip install -r requirements.txt jupyter
 ```
 
-Or create a conda environment with [mamba](https://mamba.readthedocs.io/) (or conda):
+Or, if you use conda or mamba, create an environment:
 
-```bash
+```
 mamba env create -f environment.yml
-conda activate SurveyDataPyMC
+mamba activate SurveyDataPyMC
 ```
 
 Then run `jupyter lab` and open the notebooks in the `notebooks` folder.
 
-## Resources
+## Next steps
 
-### PyMC Documentation
-- [PyMC Documentation](https://www.pymc.io/projects/docs/en/latest/)
-- [PyMC Examples](https://www.pymc.io/projects/examples/en/latest/)
+* [Survey Data with Pandas](https://allendowney.github.io/SurveyDataPandas/), the companion tutorial: exploring the same GSS data with pandas and StatsModels.
+* [*Think Bayes*](https://allendowney.github.io/ThinkBayes2/), which is free online.
+* The [PyMC documentation](https://www.pymc.io/projects/docs/en/latest/) and [example gallery](https://www.pymc.io/projects/examples/en/latest/).
+* [*Statistical Rethinking*](https://xcelab.net/rm/statistical-rethinking/) by Richard McElreath.
+* [My other workshops](https://allendowney.github.io/#workshops).
 
-### Bayesian Statistics
-- [Think Bayes](https://allendowney.github.io/ThinkBayes2/) by Allen Downey
-- [Statistical Rethinking](https://xcelab.net/rm/statistical-rethinking/) by Richard McElreath
+## License
 
-
+The code is available under the [MIT License](LICENSE). The text is available under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).

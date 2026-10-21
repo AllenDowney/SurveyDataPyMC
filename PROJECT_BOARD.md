@@ -48,7 +48,8 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 - [ ] Content issues still open (below)
 
 **5. README in the standard shape**
-- [ ] README rewritten (fix the `03_ordered_regression` name and the `.iypnb` link); `LICENSE` covers the code (MIT, exists)
+- [x] README rewritten in the standard shape (2026-10-20): title "Bayesian Regression for Survey Data with PyMC" (as SurveyDataPandas calls it); badge; both authors; abstract; level intermediate; length about 90 minutes (Allen); outline 00–03; notebook table with Colab links (exercises and solutions); 04 as a draft bonus; slides; data; recordings (ODSC East 2025, not recorded, tag `odsc-east-2025`); running instructions (Colab, pip, mamba); next steps (SurveyDataPandas, Think Bayes, PyMC docs, Statistical Rethinking, the hub); license. All links checked (200)
+- [x] `LICENSE` (MIT): "Copyright (c) 2024–2026 Allen B. Downey and Alexander Fengler" (Allen)
 
 **6. Site and visibility**
 - [ ] Rebuild the existing site (`jb/`, `gh-pages`), with `prep_notebooks.py` from the template; delete the old `jb/_build/` first
@@ -100,6 +101,7 @@ Allen, 2026-10-20:
 - `force-run`: not merged (no `force_run=True`); remote branch deleted. The `odsc-east-2025` tag stays at `6008d7a` (the tutorial's start time is unknown).
 - `af-review-notebook-3-v2`: tagged `af-review-notebook-3-v2` (pushed), remote branch deleted.
 - `~/GenderId` stays a local repo for now (no GitHub repo).
+- README: level intermediate, length about 90 minutes; push after step 5 (2026-10-20).
 - Subtitle "Part of a tutorial on Bayesian regression for survey data with PyMC." (matches the site); copyright "2025–2026 Allen B. Downey and Alexander Fengler"; text license CC BY-NC-SA 4.0 (2026-10-20).
 - Target Colab's PyMC 5 / ArviZ 0.x: pin `pymc>=5.28,<6` and `arviz<1` (PyMC 6.3 / ArviZ 1.3 break every notebook: `az.plot_posterior`, `az.to_netcdf` and others are gone). Porting is Content issue 4.
 - Sampler: nutpie (the default in current PyMC), set in `utils.py`; `%pip install` cell for Colab. Keep the per-respondent models (collapsing to counts is Content issue 6). Save only the parameters where a model has per-respondent Deterministics (`logistic_model3`).
