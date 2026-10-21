@@ -58,7 +58,7 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 - [x] Allen approved the descriptions (2026-10-21)
 - [x] `np.set_printoptions(legacy='1.25')` in the import cells (checklist item from SurveyDataPandas); solution notebooks re-run (2026-10-21)
 - [x] Published (2026-10-21): old `jb/_build/` deleted (it had the stale `04_hierarchical` page), `./build.sh publish`; `build.sh` files made executable
-- [ ] Keep `04_hierarchical` off the site (not in `_toc.yml`; the stale page goes when the old `_build` is deleted) (Decisions)
+- [x] `04_hierarchical` off the site: not in `_toc.yml`, and the stale page is gone (404, 2026-10-21) (Decisions)
 - [x] `Sitemap:` line in `~/AllenDowney.github.io/robots.txt` (pushed, `cf1763c`) (2026-10-21)
 - [ ] Allen submits the sitemap in Search Console (`https://allendowney.github.io/SurveyDataPyMC/sitemap.xml`)
 - [x] GreenTeaPress Task 22 line updated (2026-10-21)
