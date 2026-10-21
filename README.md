@@ -79,7 +79,7 @@ Use the following links to open the notebooks:
 
 * [Notebook 3: Ordered Regression](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/03_ordinal_regression.ipynb)
 
-* [Notebook 4: Hierarchical (Bonus)](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/04_hierarchical.iypnb)
+* [Notebook 4: Hierarchical (Bonus)](https://colab.research.google.com/github/AllenDowney/SurveyDataPyMC/blob/main/notebooks/04_hierarchical.ipynb)
 
 **Note:** The notebooks use data from the General Social Survey (GSS).
 It will be downloaded automatically when you run the notebooks.

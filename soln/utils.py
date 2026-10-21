@@ -14,10 +14,10 @@ def value_counts(series, normalize=False):
 
     Returns a DataFrame because they get rendered better in Jupyter.
 
-    series: Pandas Series
+    series: pandas Series
     normalize: If True, return proportions instead of counts
 
-    returns: Pandas DataFrame
+    returns: pandas DataFrame
     """
     series_counts = series.value_counts(dropna=False, normalize=normalize).sort_index()
     series_counts.index.name = "values"
@@ -54,7 +54,7 @@ def decorate(**options):
              ylabel='y')
 
     The keyword arguments can be any of the axis properties
-    https://matplotlib.org/api/axes_api.html
+    https://matplotlib.org/stable/api/axes_api.html
     """
     ax = plt.gca()
     ax.set(**options)
