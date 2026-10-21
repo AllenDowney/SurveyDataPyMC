@@ -67,7 +67,7 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 - [x] Repo description "Bayesian Regression for Survey Data with PyMC: a tutorial on logistic, categorical, and ordinal regression with General Social Survey data"; topic `jupyter-book` added; both also in GreenTeaPress `scripts/repo_about.sh` (uncommitted there) (2026-10-21)
 
 **7. Close**
-- [x] Tag `2026-refresh` at `11db69b`, pushed; summary in GreenTeaPress Task 24 (uncommitted there) (2026-10-21)
+- [x] Tag `2026-refresh` at `8c470c1` (moved from `11db69b` to include the second round of content fixes, Allen), pushed; merged branches deleted (abd-notebook01-revisions, af-review-notebook-2, af-review-notebook-3, af_dev, fix-link); summary in GreenTeaPress Task 24 (uncommitted there) (2026-10-21)
 
 ### Inventory (2026-10-20)
 
