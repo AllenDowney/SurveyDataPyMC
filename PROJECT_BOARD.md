@@ -8,7 +8,7 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 
 ## Task 1: Refresh
 
-**Status:** DONE (2026-10-21). Still open: Allen submits the sitemap in Search Console; the 04 rewrite and content issues 9–14 (below)
+**Status:** DONE (2026-10-21). Still open: the 04 rewrite and content issues 9–14 (below)
 
 **Context:** SurveyDataPyMC is a "current" workshop (GreenTeaPress Task 24). The guide is the "Refresh checklist" in `~/GreenTeaPress/plans/workshops.md`; BayesMadeSimple and CompStats are the worked examples. Given at ODSC East 2025 (May 13, 2025), with Alexander Fengler; not recorded. 12 stars; last workshop change 2025-05-13. Companion workshop: SurveyDataPandas (same GSS data and audience, PyCon US 2025); the two should link to each other.
 
@@ -60,7 +60,7 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 - [x] Published (2026-10-21): old `jb/_build/` deleted (it had the stale `04_hierarchical` page), `./build.sh publish`; `build.sh` files made executable
 - [x] `04_hierarchical` off the site: not in `_toc.yml`, and the stale page is gone (404, 2026-10-21) (Decisions)
 - [x] `Sitemap:` line in `~/AllenDowney.github.io/robots.txt` (pushed, `cf1763c`) (2026-10-21)
-- [ ] Allen submits the sitemap in Search Console (`https://allendowney.github.io/SurveyDataPyMC/sitemap.xml`)
+- [x] Allen submitted the sitemap in Search Console (`https://allendowney.github.io/SurveyDataPyMC/sitemap.xml`) (2026-10-21)
 - [x] GreenTeaPress Task 22 line updated (2026-10-21)
 - [x] Cross-links with SurveyDataPandas: this README and site link to it; its README and site link here (2026-10-21)
 - [x] Hub entry: already right (title, ODSC East 2025)
