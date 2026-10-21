@@ -13,11 +13,11 @@
 <path fill="none" stroke="black" d="M53.97,-8C53.97,-8 159.97,-8 159.97,-8 165.97,-8 171.97,-14 171.97,-20 171.97,-20 171.97,-121.75 171.97,-121.75 171.97,-127.75 165.97,-133.75 159.97,-133.75 159.97,-133.75 53.97,-133.75 53.97,-133.75 47.97,-133.75 41.97,-127.75 41.97,-121.75 41.97,-121.75 41.97,-20 41.97,-20 41.97,-14 47.97,-8 53.97,-8"/>
 <text xml:space="preserve" text-anchor="middle" x="141.47" y="-15.95" font-family="Times,serif" font-size="14.00">42639</text>
 </g>
-<!-- alpha -->
+<!-- beta -->
 <g id="node1" class="node">
-<title>alpha</title>
+<title>beta</title>
 <ellipse fill="none" stroke="black" cx="48.97" cy="-204" rx="48.97" ry="42.25"/>
-<text xml:space="preserve" text-anchor="middle" x="48.97" y="-216.57" font-family="Times,serif" font-size="14.00">alpha</text>
+<text xml:space="preserve" text-anchor="middle" x="48.97" y="-216.57" font-family="Times,serif" font-size="14.00">beta</text>
 <text xml:space="preserve" text-anchor="middle" x="48.97" y="-199.32" font-family="Times,serif" font-size="14.00">~</text>
 <text xml:space="preserve" text-anchor="middle" x="48.97" y="-182.07" font-family="Times,serif" font-size="14.00">Normal</text>
 </g>
@@ -29,23 +29,23 @@
 <text xml:space="preserve" text-anchor="middle" x="106.97" y="-78.82" font-family="Times,serif" font-size="14.00">~</text>
 <text xml:space="preserve" text-anchor="middle" x="106.97" y="-61.57" font-family="Times,serif" font-size="14.00">Bernoulli</text>
 </g>
-<!-- alpha&#45;&gt;y_obs -->
+<!-- beta&#45;&gt;y_obs -->
 <g id="edge1" class="edge">
-<title>alpha&#45;&gt;y_obs</title>
+<title>beta&#45;&gt;y_obs</title>
 <path fill="none" stroke="black" d="M67.8,-164.53C72.61,-154.69 77.85,-143.99 82.89,-133.7"/>
 <polygon fill="black" stroke="black" points="85.92,-135.47 87.17,-124.95 79.63,-132.39 85.92,-135.47"/>
 </g>
-<!-- beta -->
+<!-- alpha -->
 <g id="node2" class="node">
-<title>beta</title>
+<title>alpha</title>
 <ellipse fill="none" stroke="black" cx="164.97" cy="-204" rx="48.97" ry="42.25"/>
-<text xml:space="preserve" text-anchor="middle" x="164.97" y="-216.57" font-family="Times,serif" font-size="14.00">beta</text>
+<text xml:space="preserve" text-anchor="middle" x="164.97" y="-216.57" font-family="Times,serif" font-size="14.00">alpha</text>
 <text xml:space="preserve" text-anchor="middle" x="164.97" y="-199.32" font-family="Times,serif" font-size="14.00">~</text>
 <text xml:space="preserve" text-anchor="middle" x="164.97" y="-182.07" font-family="Times,serif" font-size="14.00">Normal</text>
 </g>
-<!-- beta&#45;&gt;y_obs -->
+<!-- alpha&#45;&gt;y_obs -->
 <g id="edge2" class="edge">
-<title>beta&#45;&gt;y_obs</title>
+<title>alpha&#45;&gt;y_obs</title>
 <path fill="none" stroke="black" d="M146.14,-164.53C141.32,-154.69 136.08,-143.99 131.05,-133.7"/>
 <polygon fill="black" stroke="black" points="134.31,-132.39 126.77,-124.95 128.02,-135.47 134.31,-132.39"/>
 </g>

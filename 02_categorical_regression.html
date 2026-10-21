@@ -400,6 +400,9 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">value_counts</span><span class="p">,</span> <span class="n">decorate</span><span class="p">,</span> <span class="n">load_idata_or_sample</span><span class="p">,</span> <span class="n">subsample</span>
+
+<span class="c1"># Show NumPy scalars as 0.36, not np.float64(0.36)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">legacy</span><span class="o">=</span><span class="s1">'1.25'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -858,7 +861,7 @@ As we did with <code class="docutils literal notranslate"><span class="pre">year
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8c9729a7f906308eb59add659672b8393bec47d35a3176af6b6f4c27c68bc53d.svg" src="_images/8c9729a7f906308eb59add659672b8393bec47d35a3176af6b6f4c27c68bc53d.svg" />
+<img alt="_images/57e8d929d97ccd1ae30efe4a9c10878352defc6f46f24f76fec5bb468a96c1eb.svg" src="_images/57e8d929d97ccd1ae30efe4a9c10878352defc6f46f24f76fec5bb468a96c1eb.svg" />
 </div>
 </div>
 <p>Here’s how we can sample it.</p>
@@ -870,182 +873,7 @@ As we did with <code class="docutils literal notranslate"><span class="pre">year
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">
-<style>
-    :root {
-        --column-width-1: 40%; /* Progress column width */
-        --column-width-2: 15%; /* Chain column width */
-        --column-width-3: 15%; /* Divergences column width */
-        --column-width-4: 15%; /* Step Size column width */
-        --column-width-5: 15%; /* Gradients/Draw column width */
-    }
-
-    .nutpie {
-        max-width: 800px;
-        margin: 10px auto;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        //color: #333;
-        //background-color: #fff;
-        padding: 10px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        border-radius: 8px;
-        font-size: 14px; /* Smaller font size for a more compact look */
-    }
-    .nutpie table {
-        width: 100%;
-        border-collapse: collapse; /* Remove any extra space between borders */
-    }
-    .nutpie th, .nutpie td {
-        padding: 8px 10px; /* Reduce padding to make table more compact */
-        text-align: left;
-        border-bottom: 1px solid #888;
-    }
-    .nutpie th {
-        //background-color: #f0f0f0;
-    }
-
-    .nutpie th:nth-child(1) { width: var(--column-width-1); }
-    .nutpie th:nth-child(2) { width: var(--column-width-2); }
-    .nutpie th:nth-child(3) { width: var(--column-width-3); }
-    .nutpie th:nth-child(4) { width: var(--column-width-4); }
-    .nutpie th:nth-child(5) { width: var(--column-width-5); }
-
-    .nutpie progress {
-        width: 100%;
-        height: 15px; /* Smaller progress bars */
-        border-radius: 5px;
-    }
-    progress::-webkit-progress-bar {
-        background-color: #eee;
-        border-radius: 5px;
-    }
-    progress::-webkit-progress-value {
-        background-color: #5cb85c;
-        border-radius: 5px;
-    }
-    progress::-moz-progress-bar {
-        background-color: #5cb85c;
-        border-radius: 5px;
-    }
-    .nutpie .progress-cell {
-        width: 100%;
-    }
-
-    .nutpie p strong { font-size: 16px; font-weight: bold; }
-
-    @media (prefers-color-scheme: dark) {
-        .nutpie {
-            //color: #ddd;
-            //background-color: #1e1e1e;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-        .nutpie table, .nutpie th, .nutpie td {
-            border-color: #555;
-            color: #ccc;
-        }
-        .nutpie th {
-            background-color: #2a2a2a;
-        }
-        .nutpie progress::-webkit-progress-bar {
-            background-color: #444;
-        }
-        .nutpie progress::-webkit-progress-value {
-            background-color: #3178c6;
-        }
-        .nutpie progress::-moz-progress-bar {
-            background-color: #3178c6;
-        }
-    }
-</style>
-</div><div class="output text_html">
-<div class="nutpie">
-    <p><strong>Sampler Progress</strong></p>
-    <p>Total Chains: <span id="total-chains">4</span></p>
-    <p>Active Chains: <span id="active-chains">0</span></p>
-    <p>
-        Finished Chains:
-        <span id="active-chains">4</span>
-    </p>
-    <p>Sampling for now</p>
-    <p>
-        Estimated Time to Completion:
-        <span id="eta">now</span>
-    </p>
-
-    <progress
-        id="total-progress-bar"
-        max="4000"
-        value="4000">
-    </progress>
-    <table>
-        <thead>
-            <tr>
-                <th>Progress</th>
-                <th>Draws</th>
-                <th>Divergences</th>
-                <th>Step Size</th>
-                <th>Gradients/Draw</th>
-            </tr>
-        </thead>
-        <tbody id="chain-details">
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.60</td>
-                    <td>3</td>
-                </tr>
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.56</td>
-                    <td>7</td>
-                </tr>
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.55</td>
-                    <td>3</td>
-                </tr>
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.59</td>
-                    <td>11</td>
-                </tr>
-            
-            </tr>
-        </tbody>
-    </table>
-</div>
-</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saved new idata to categorical_model_idata.nc
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded idata from categorical_model_idata.nc
 </pre></div>
 </div>
 </div>
@@ -1264,7 +1092,7 @@ As we did with <code class="docutils literal notranslate"><span class="pre">year
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/872e18fe8e67b85312ec60836ae49abb5dbaeaaf7b48c91918a7ac15fb1b6f8c.png" src="_images/872e18fe8e67b85312ec60836ae49abb5dbaeaaf7b48c91918a7ac15fb1b6f8c.png" />
+<img alt="_images/b69d79d5a2f9fa5d17e1403c2e33d55147ece5a47919d9d9b91590cca3dc8302.png" src="_images/b69d79d5a2f9fa5d17e1403c2e33d55147ece5a47919d9d9b91590cca3dc8302.png" />
 </div>
 </div>
 <p>It looks like the regression model does a good job of capturing the trends in the data.</p>
@@ -1512,7 +1340,7 @@ As an aside, a hierarchical model would be a good way to conduct this analysis w
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/671db779208c06197acd90a829b05691960cd37f2318dd993d498eef28323771.svg" src="_images/671db779208c06197acd90a829b05691960cd37f2318dd993d498eef28323771.svg" />
+<img alt="_images/7a4ca3c2e7cf77735d68ca7185636b0fb0ead091941fca8fe8ce92818bda9624.svg" src="_images/7a4ca3c2e7cf77735d68ca7185636b0fb0ead091941fca8fe8ce92818bda9624.svg" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1524,182 +1352,7 @@ As an aside, a hierarchical model would be a good way to conduct this analysis w
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">
-<style>
-    :root {
-        --column-width-1: 40%; /* Progress column width */
-        --column-width-2: 15%; /* Chain column width */
-        --column-width-3: 15%; /* Divergences column width */
-        --column-width-4: 15%; /* Step Size column width */
-        --column-width-5: 15%; /* Gradients/Draw column width */
-    }
-
-    .nutpie {
-        max-width: 800px;
-        margin: 10px auto;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        //color: #333;
-        //background-color: #fff;
-        padding: 10px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        border-radius: 8px;
-        font-size: 14px; /* Smaller font size for a more compact look */
-    }
-    .nutpie table {
-        width: 100%;
-        border-collapse: collapse; /* Remove any extra space between borders */
-    }
-    .nutpie th, .nutpie td {
-        padding: 8px 10px; /* Reduce padding to make table more compact */
-        text-align: left;
-        border-bottom: 1px solid #888;
-    }
-    .nutpie th {
-        //background-color: #f0f0f0;
-    }
-
-    .nutpie th:nth-child(1) { width: var(--column-width-1); }
-    .nutpie th:nth-child(2) { width: var(--column-width-2); }
-    .nutpie th:nth-child(3) { width: var(--column-width-3); }
-    .nutpie th:nth-child(4) { width: var(--column-width-4); }
-    .nutpie th:nth-child(5) { width: var(--column-width-5); }
-
-    .nutpie progress {
-        width: 100%;
-        height: 15px; /* Smaller progress bars */
-        border-radius: 5px;
-    }
-    progress::-webkit-progress-bar {
-        background-color: #eee;
-        border-radius: 5px;
-    }
-    progress::-webkit-progress-value {
-        background-color: #5cb85c;
-        border-radius: 5px;
-    }
-    progress::-moz-progress-bar {
-        background-color: #5cb85c;
-        border-radius: 5px;
-    }
-    .nutpie .progress-cell {
-        width: 100%;
-    }
-
-    .nutpie p strong { font-size: 16px; font-weight: bold; }
-
-    @media (prefers-color-scheme: dark) {
-        .nutpie {
-            //color: #ddd;
-            //background-color: #1e1e1e;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-        .nutpie table, .nutpie th, .nutpie td {
-            border-color: #555;
-            color: #ccc;
-        }
-        .nutpie th {
-            background-color: #2a2a2a;
-        }
-        .nutpie progress::-webkit-progress-bar {
-            background-color: #444;
-        }
-        .nutpie progress::-webkit-progress-value {
-            background-color: #3178c6;
-        }
-        .nutpie progress::-moz-progress-bar {
-            background-color: #3178c6;
-        }
-    }
-</style>
-</div><div class="output text_html">
-<div class="nutpie">
-    <p><strong>Sampler Progress</strong></p>
-    <p>Total Chains: <span id="total-chains">4</span></p>
-    <p>Active Chains: <span id="active-chains">0</span></p>
-    <p>
-        Finished Chains:
-        <span id="active-chains">4</span>
-    </p>
-    <p>Sampling for now</p>
-    <p>
-        Estimated Time to Completion:
-        <span id="eta">now</span>
-    </p>
-
-    <progress
-        id="total-progress-bar"
-        max="4000"
-        value="4000">
-    </progress>
-    <table>
-        <thead>
-            <tr>
-                <th>Progress</th>
-                <th>Draws</th>
-                <th>Divergences</th>
-                <th>Step Size</th>
-                <th>Gradients/Draw</th>
-            </tr>
-        </thead>
-        <tbody id="chain-details">
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.44</td>
-                    <td>15</td>
-                </tr>
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.46</td>
-                    <td>15</td>
-                </tr>
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.41</td>
-                    <td>3</td>
-                </tr>
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.44</td>
-                    <td>23</td>
-                </tr>
-            
-            </tr>
-        </tbody>
-    </table>
-</div>
-</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saved new idata to categorical_model2_idata.nc
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded idata from categorical_model2_idata.nc
 </pre></div>
 </div>
 </div>
@@ -2000,7 +1653,7 @@ As an aside, a hierarchical model would be a good way to conduct this analysis w
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/cbc7a45c66d423cdac4ef9b5acbe206df34b02a47eb4a5414987ad4a0105cab7.png" src="_images/cbc7a45c66d423cdac4ef9b5acbe206df34b02a47eb4a5414987ad4a0105cab7.png" />
+<img alt="_images/0e3059c0aa4ab8b850b44694852f8b913fe95f220e0c1ece1bd6ed2407fa110e.png" src="_images/0e3059c0aa4ab8b850b44694852f8b913fe95f220e0c1ece1bd6ed2407fa110e.png" />
 </div>
 </div>
 <p>At all ages, women were more likely to vote for Biden and less likely to vote for Trump.

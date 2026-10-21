@@ -398,6 +398,9 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">value_counts</span><span class="p">,</span> <span class="n">decorate</span><span class="p">,</span> <span class="n">plot_prior</span>
+
+<span class="c1"># Show NumPy scalars as 0.36, not np.float64(0.36)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">legacy</span><span class="o">=</span><span class="s1">'1.25'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1007,7 +1010,7 @@ dl.xr-attrs {
   stroke-width: 0.8px;
 }
 </style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray &#x27;y&#x27; ()&gt; Size: 8B
-array(0.488)</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-obj-name'>&#x27;y&#x27;</div></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-ca0205bb-c172-4aa2-affb-02ca45ca3181' class='xr-array-in' type='checkbox' checked><label for='section-ca0205bb-c172-4aa2-affb-02ca45ca3181' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>0.488</span></div><div class='xr-array-data'><pre>array(0.488)</pre></div></div></li></ul></div></div></div></div>
+array(0.498)</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-obj-name'>&#x27;y&#x27;</div></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-a0f46202-ea72-4bf6-a72c-3342e7e4d680' class='xr-array-in' type='checkbox' checked><label for='section-a0f46202-ea72-4bf6-a72c-3342e7e4d680' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>0.498</span></div><div class='xr-array-data'><pre>array(0.498)</pre></div></div></li></ul></div></div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1070,7 +1073,7 @@ We imagine that some people are more likely than others to get it right, so we c
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/abed2b6382dea448d1822fb2f9730419e28629b772b0ee007bfbfc1b482e6c5a.png" src="_images/abed2b6382dea448d1822fb2f9730419e28629b772b0ee007bfbfc1b482e6c5a.png" />
+<img alt="_images/60cec39c22fb96a327186d3fdb221b66b8ae838aa8a60c895d7cb1164179e554.png" src="_images/60cec39c22fb96a327186d3fdb221b66b8ae838aa8a60c895d7cb1164179e554.png" />
 </div>
 </div>
 </section>
@@ -1129,7 +1132,7 @@ We can imagine that each person has a latent happiness factor, which influences 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2ae1e5dcf23006730d8e2c1b0f45b07c467b5b29ac8d8441a178687de1405eec.png" src="_images/2ae1e5dcf23006730d8e2c1b0f45b07c467b5b29ac8d8441a178687de1405eec.png" />
+<img alt="_images/6314f7200e08e8025d052a245f2a6521ebeace493b2aee68dfceec83d30ecb91.png" src="_images/6314f7200e08e8025d052a245f2a6521ebeace493b2aee68dfceec83d30ecb91.png" />
 </div>
 </div>
 <p>Let’s save the result from this model and suppose it’s actual data we collected in a survey.</p>
@@ -1150,7 +1153,7 @@ We can imagine that each person has a latent happiness factor, which influences 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.008000042667076279)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.020000666706669543
 </pre></div>
 </div>
 </div>
@@ -1326,7 +1329,33 @@ We can imagine that each person has a latent happiness factor, which influences 
                     </td>
                     <td>2000</td>
                     <td>0</td>
-                    <td>1.36</td>
+                    <td>1.41</td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td class="progress-cell">
+                        <progress
+                            max="2000"
+                            value="2000">
+                        </progress>
+                    </td>
+                    <td>2000</td>
+                    <td>0</td>
+                    <td>1.40</td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td class="progress-cell">
+                        <progress
+                            max="2000"
+                            value="2000">
+                        </progress>
+                    </td>
+                    <td>2000</td>
+                    <td>0</td>
+                    <td>1.35</td>
                     <td>3</td>
                 </tr>
             
@@ -1340,32 +1369,6 @@ We can imagine that each person has a latent happiness factor, which influences 
                     <td>2000</td>
                     <td>0</td>
                     <td>1.43</td>
-                    <td>3</td>
-                </tr>
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="2000"
-                            value="2000">
-                        </progress>
-                    </td>
-                    <td>2000</td>
-                    <td>0</td>
-                    <td>1.47</td>
-                    <td>1</td>
-                </tr>
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="2000"
-                            value="2000">
-                        </progress>
-                    </td>
-                    <td>2000</td>
-                    <td>0</td>
-                    <td>1.53</td>
                     <td>1</td>
                 </tr>
             
@@ -1384,7 +1387,7 @@ We can imagine that each person has a latent happiness factor, which influences 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/095b069115bfd2cad261f291273c72759f632f372e608cbc40d8bd75921d37f7.png" src="_images/095b069115bfd2cad261f291273c72759f632f372e608cbc40d8bd75921d37f7.png" />
+<img alt="_images/54901eda7e1d91f6f279bf1fec0395ebf2b3f3fcf86a3a6f8484bf28924da27f.png" src="_images/54901eda7e1d91f6f279bf1fec0395ebf2b3f3fcf86a3a6f8484bf28924da27f.png" />
 </div>
 </div>
 <p>Copyright 2025–2026 Allen B. Downey and Alexander Fengler</p>

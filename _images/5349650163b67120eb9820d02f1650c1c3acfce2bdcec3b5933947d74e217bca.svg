@@ -35,7 +35,7 @@
 <text xml:space="preserve" text-anchor="middle" x="96" y="-61.57" font-family="Times,serif" font-size="14.00">Bernoulli</text>
 </g>
 <!-- alpha&#45;&gt;y_obs -->
-<g id="edge1" class="edge">
+<g id="edge2" class="edge">
 <title>alpha&#45;&gt;y_obs</title>
 <path fill="none" stroke="black" d="M74.55,-175.64C77.47,-163.25 80.72,-149.44 83.79,-136.4"/>
 <polygon fill="black" stroke="black" points="87.19,-137.21 86.08,-126.67 80.38,-135.6 87.19,-137.21"/>
@@ -49,7 +49,7 @@
 <text xml:space="preserve" text-anchor="middle" x="181" y="-195.32" font-family="Times,serif" font-size="14.00">Normal</text>
 </g>
 <!-- beta&#45;&gt;y_obs -->
-<g id="edge2" class="edge">
+<g id="edge1" class="edge">
 <title>beta&#45;&gt;y_obs</title>
 <path fill="none" stroke="black" d="M157.55,-179.9C147.94,-165.01 136.7,-147.59 126.48,-131.74"/>
 <polygon fill="black" stroke="black" points="129.45,-129.88 121.08,-123.38 123.56,-133.68 129.45,-129.88"/>

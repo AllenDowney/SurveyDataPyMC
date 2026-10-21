@@ -18,27 +18,13 @@
 <path fill="none" stroke="black" d="M192,-229.5C192,-229.5 282,-229.5 282,-229.5 288,-229.5 294,-235.5 294,-241.5 294,-241.5 294,-343.25 294,-343.25 294,-349.25 288,-355.25 282,-355.25 282,-355.25 192,-355.25 192,-355.25 186,-355.25 180,-349.25 180,-343.25 180,-343.25 180,-241.5 180,-241.5 180,-235.5 186,-229.5 192,-229.5"/>
 <text xml:space="preserve" text-anchor="middle" x="281.5" y="-237.45" font-family="Times,serif" font-size="14.00">3</text>
 </g>
-<!-- year -->
-<g id="node1" class="node">
-<title>year</title>
-<path fill="lightgrey" stroke="black" d="M58,-334.87C58,-334.87 28,-334.87 28,-334.87 22,-334.87 16,-328.87 16,-322.87 16,-322.87 16,-287.12 16,-287.12 16,-281.12 22,-275.12 28,-275.12 28,-275.12 58,-275.12 58,-275.12 64,-275.12 70,-281.12 70,-287.12 70,-287.12 70,-322.87 70,-322.87 70,-328.87 64,-334.87 58,-334.87"/>
-<text xml:space="preserve" text-anchor="middle" x="43" y="-317.57" font-family="Times,serif" font-size="14.00">year</text>
-<text xml:space="preserve" text-anchor="middle" x="43" y="-300.32" font-family="Times,serif" font-size="14.00">~</text>
-<text xml:space="preserve" text-anchor="middle" x="43" y="-283.07" font-family="Times,serif" font-size="14.00">Data</text>
-</g>
 <!-- p -->
-<g id="node2" class="node">
+<g id="node1" class="node">
 <title>p</title>
 <polygon fill="none" stroke="black" points="163.75,-221.5 50.25,-221.5 50.25,-161.75 163.75,-161.75 163.75,-221.5"/>
 <text xml:space="preserve" text-anchor="middle" x="107" y="-204.2" font-family="Times,serif" font-size="14.00">p</text>
 <text xml:space="preserve" text-anchor="middle" x="107" y="-186.95" font-family="Times,serif" font-size="14.00">~</text>
 <text xml:space="preserve" text-anchor="middle" x="107" y="-169.7" font-family="Times,serif" font-size="14.00">Deterministic</text>
-</g>
-<!-- year&#45;&gt;p -->
-<g id="edge3" class="edge">
-<title>year&#45;&gt;p</title>
-<path fill="none" stroke="black" d="M55.55,-274.63C60.99,-262.7 67.8,-248.75 78.3,-231.17"/>
-<polygon fill="black" stroke="black" points="81.11,-233.28 83.35,-222.93 75.14,-229.63 81.11,-233.28"/>
 </g>
 <!-- y_obs -->
 <g id="node3" class="node">
@@ -54,6 +40,20 @@
 <path fill="none" stroke="black" d="M107,-161.34C107,-153.84 107,-145.53 107,-137.23"/>
 <polygon fill="black" stroke="black" points="110.5,-137.51 107,-127.51 103.5,-137.51 110.5,-137.51"/>
 </g>
+<!-- year -->
+<g id="node2" class="node">
+<title>year</title>
+<path fill="lightgrey" stroke="black" d="M58,-334.87C58,-334.87 28,-334.87 28,-334.87 22,-334.87 16,-328.87 16,-322.87 16,-322.87 16,-287.12 16,-287.12 16,-281.12 22,-275.12 28,-275.12 28,-275.12 58,-275.12 58,-275.12 64,-275.12 70,-281.12 70,-287.12 70,-287.12 70,-322.87 70,-322.87 70,-328.87 64,-334.87 58,-334.87"/>
+<text xml:space="preserve" text-anchor="middle" x="43" y="-317.57" font-family="Times,serif" font-size="14.00">year</text>
+<text xml:space="preserve" text-anchor="middle" x="43" y="-300.32" font-family="Times,serif" font-size="14.00">~</text>
+<text xml:space="preserve" text-anchor="middle" x="43" y="-283.07" font-family="Times,serif" font-size="14.00">Data</text>
+</g>
+<!-- year&#45;&gt;p -->
+<g id="edge3" class="edge">
+<title>year&#45;&gt;p</title>
+<path fill="none" stroke="black" d="M55.55,-274.63C60.99,-262.7 67.8,-248.75 78.3,-231.17"/>
+<polygon fill="black" stroke="black" points="81.11,-233.28 83.35,-222.93 75.14,-229.63 81.11,-233.28"/>
+</g>
 <!-- partyid3 -->
 <g id="node4" class="node">
 <title>partyid3</title>
@@ -63,7 +63,7 @@
 <text xml:space="preserve" text-anchor="middle" x="126" y="-283.07" font-family="Times,serif" font-size="14.00">Data</text>
 </g>
 <!-- partyid3&#45;&gt;p -->
-<g id="edge2" class="edge">
+<g id="edge1" class="edge">
 <title>partyid3&#45;&gt;p</title>
 <path fill="none" stroke="black" d="M121.01,-274.74C118.83,-261.95 116.23,-246.74 113.87,-232.9"/>
 <polygon fill="black" stroke="black" points="117.35,-232.45 112.21,-223.18 110.44,-233.63 117.35,-232.45"/>
@@ -77,7 +77,7 @@
 <text xml:space="preserve" text-anchor="middle" x="237" y="-283.07" font-family="Times,serif" font-size="14.00">Normal</text>
 </g>
 <!-- alpha&#45;&gt;p -->
-<g id="edge1" class="edge">
+<g id="edge4" class="edge">
 <title>alpha&#45;&gt;p</title>
 <path fill="none" stroke="black" d="M212.23,-268.07C202.02,-254.9 189.43,-240.54 176,-229.5 175.06,-228.72 174.09,-227.96 173.11,-227.2"/>
 <polygon fill="black" stroke="black" points="175.32,-224.48 165.15,-221.52 171.26,-230.18 175.32,-224.48"/>
@@ -91,7 +91,7 @@
 <text xml:space="preserve" text-anchor="middle" x="353" y="-283.07" font-family="Times,serif" font-size="14.00">Normal</text>
 </g>
 <!-- beta&#45;&gt;p -->
-<g id="edge4" class="edge">
+<g id="edge2" class="edge">
 <title>beta&#45;&gt;p</title>
 <path fill="none" stroke="black" d="M333.07,-266.22C324.1,-252.66 312.28,-238.51 298,-229.5 261.47,-206.46 213.78,-197.23 175.19,-193.77"/>
 <polygon fill="black" stroke="black" points="175.8,-190.31 165.56,-193.03 175.26,-197.29 175.8,-190.31"/>

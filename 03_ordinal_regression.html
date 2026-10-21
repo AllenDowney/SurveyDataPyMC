@@ -399,6 +399,9 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">value_counts</span><span class="p">,</span> <span class="n">decorate</span><span class="p">,</span> <span class="n">load_idata_or_sample</span><span class="p">,</span> <span class="n">subsample</span>
+
+<span class="c1"># Show NumPy scalars as 0.36, not np.float64(0.36)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">legacy</span><span class="o">=</span><span class="s1">'1.25'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1330,182 +1333,7 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">
-<style>
-    :root {
-        --column-width-1: 40%; /* Progress column width */
-        --column-width-2: 15%; /* Chain column width */
-        --column-width-3: 15%; /* Divergences column width */
-        --column-width-4: 15%; /* Step Size column width */
-        --column-width-5: 15%; /* Gradients/Draw column width */
-    }
-
-    .nutpie {
-        max-width: 800px;
-        margin: 10px auto;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        //color: #333;
-        //background-color: #fff;
-        padding: 10px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        border-radius: 8px;
-        font-size: 14px; /* Smaller font size for a more compact look */
-    }
-    .nutpie table {
-        width: 100%;
-        border-collapse: collapse; /* Remove any extra space between borders */
-    }
-    .nutpie th, .nutpie td {
-        padding: 8px 10px; /* Reduce padding to make table more compact */
-        text-align: left;
-        border-bottom: 1px solid #888;
-    }
-    .nutpie th {
-        //background-color: #f0f0f0;
-    }
-
-    .nutpie th:nth-child(1) { width: var(--column-width-1); }
-    .nutpie th:nth-child(2) { width: var(--column-width-2); }
-    .nutpie th:nth-child(3) { width: var(--column-width-3); }
-    .nutpie th:nth-child(4) { width: var(--column-width-4); }
-    .nutpie th:nth-child(5) { width: var(--column-width-5); }
-
-    .nutpie progress {
-        width: 100%;
-        height: 15px; /* Smaller progress bars */
-        border-radius: 5px;
-    }
-    progress::-webkit-progress-bar {
-        background-color: #eee;
-        border-radius: 5px;
-    }
-    progress::-webkit-progress-value {
-        background-color: #5cb85c;
-        border-radius: 5px;
-    }
-    progress::-moz-progress-bar {
-        background-color: #5cb85c;
-        border-radius: 5px;
-    }
-    .nutpie .progress-cell {
-        width: 100%;
-    }
-
-    .nutpie p strong { font-size: 16px; font-weight: bold; }
-
-    @media (prefers-color-scheme: dark) {
-        .nutpie {
-            //color: #ddd;
-            //background-color: #1e1e1e;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-        .nutpie table, .nutpie th, .nutpie td {
-            border-color: #555;
-            color: #ccc;
-        }
-        .nutpie th {
-            background-color: #2a2a2a;
-        }
-        .nutpie progress::-webkit-progress-bar {
-            background-color: #444;
-        }
-        .nutpie progress::-webkit-progress-value {
-            background-color: #3178c6;
-        }
-        .nutpie progress::-moz-progress-bar {
-            background-color: #3178c6;
-        }
-    }
-</style>
-</div><div class="output text_html">
-<div class="nutpie">
-    <p><strong>Sampler Progress</strong></p>
-    <p>Total Chains: <span id="total-chains">4</span></p>
-    <p>Active Chains: <span id="active-chains">0</span></p>
-    <p>
-        Finished Chains:
-        <span id="active-chains">4</span>
-    </p>
-    <p>Sampling for 45 seconds</p>
-    <p>
-        Estimated Time to Completion:
-        <span id="eta">now</span>
-    </p>
-
-    <progress
-        id="total-progress-bar"
-        max="4000"
-        value="4000">
-    </progress>
-    <table>
-        <thead>
-            <tr>
-                <th>Progress</th>
-                <th>Draws</th>
-                <th>Divergences</th>
-                <th>Step Size</th>
-                <th>Gradients/Draw</th>
-            </tr>
-        </thead>
-        <tbody id="chain-details">
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.95</td>
-                    <td>3</td>
-                </tr>
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.79</td>
-                    <td>7</td>
-                </tr>
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.85</td>
-                    <td>3</td>
-                </tr>
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.82</td>
-                    <td>3</td>
-                </tr>
-            
-            </tr>
-        </tbody>
-    </table>
-</div>
-</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saved new idata to ordinal_model_idata.nc
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded idata from ordinal_model_idata.nc
 </pre></div>
 </div>
 </div>
@@ -1712,7 +1540,7 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/31b2173a1e4c5436f03c6106769edb5b162e6d0ddecb705133377a105e7870bf.png" src="_images/31b2173a1e4c5436f03c6106769edb5b162e6d0ddecb705133377a105e7870bf.png" />
+<img alt="_images/a4c51c10894f86ddceb0248f6b36ae936da35c40915e327d056c367372b1758b.png" src="_images/a4c51c10894f86ddceb0248f6b36ae936da35c40915e327d056c367372b1758b.png" />
 </div>
 </div>
 <p>It looks like the model does a pretty good job capturing the trends in the data.</p>
@@ -1806,7 +1634,7 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ecbf869f40f6af8ad145ba66c50f26cea05e42325cf9c616eb1f166fb8a55058.svg" src="_images/ecbf869f40f6af8ad145ba66c50f26cea05e42325cf9c616eb1f166fb8a55058.svg" />
+<img alt="_images/b56b603c8d1635cead93b1735ee91515c66e72eed64dea4f9450dcb16f3f6981.svg" src="_images/b56b603c8d1635cead93b1735ee91515c66e72eed64dea4f9450dcb16f3f6981.svg" />
 </div>
 </div>
 <p>Run that sampler…</p>
@@ -1818,182 +1646,7 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">
-<style>
-    :root {
-        --column-width-1: 40%; /* Progress column width */
-        --column-width-2: 15%; /* Chain column width */
-        --column-width-3: 15%; /* Divergences column width */
-        --column-width-4: 15%; /* Step Size column width */
-        --column-width-5: 15%; /* Gradients/Draw column width */
-    }
-
-    .nutpie {
-        max-width: 800px;
-        margin: 10px auto;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        //color: #333;
-        //background-color: #fff;
-        padding: 10px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        border-radius: 8px;
-        font-size: 14px; /* Smaller font size for a more compact look */
-    }
-    .nutpie table {
-        width: 100%;
-        border-collapse: collapse; /* Remove any extra space between borders */
-    }
-    .nutpie th, .nutpie td {
-        padding: 8px 10px; /* Reduce padding to make table more compact */
-        text-align: left;
-        border-bottom: 1px solid #888;
-    }
-    .nutpie th {
-        //background-color: #f0f0f0;
-    }
-
-    .nutpie th:nth-child(1) { width: var(--column-width-1); }
-    .nutpie th:nth-child(2) { width: var(--column-width-2); }
-    .nutpie th:nth-child(3) { width: var(--column-width-3); }
-    .nutpie th:nth-child(4) { width: var(--column-width-4); }
-    .nutpie th:nth-child(5) { width: var(--column-width-5); }
-
-    .nutpie progress {
-        width: 100%;
-        height: 15px; /* Smaller progress bars */
-        border-radius: 5px;
-    }
-    progress::-webkit-progress-bar {
-        background-color: #eee;
-        border-radius: 5px;
-    }
-    progress::-webkit-progress-value {
-        background-color: #5cb85c;
-        border-radius: 5px;
-    }
-    progress::-moz-progress-bar {
-        background-color: #5cb85c;
-        border-radius: 5px;
-    }
-    .nutpie .progress-cell {
-        width: 100%;
-    }
-
-    .nutpie p strong { font-size: 16px; font-weight: bold; }
-
-    @media (prefers-color-scheme: dark) {
-        .nutpie {
-            //color: #ddd;
-            //background-color: #1e1e1e;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-        .nutpie table, .nutpie th, .nutpie td {
-            border-color: #555;
-            color: #ccc;
-        }
-        .nutpie th {
-            background-color: #2a2a2a;
-        }
-        .nutpie progress::-webkit-progress-bar {
-            background-color: #444;
-        }
-        .nutpie progress::-webkit-progress-value {
-            background-color: #3178c6;
-        }
-        .nutpie progress::-moz-progress-bar {
-            background-color: #3178c6;
-        }
-    }
-</style>
-</div><div class="output text_html">
-<div class="nutpie">
-    <p><strong>Sampler Progress</strong></p>
-    <p>Total Chains: <span id="total-chains">4</span></p>
-    <p>Active Chains: <span id="active-chains">0</span></p>
-    <p>
-        Finished Chains:
-        <span id="active-chains">4</span>
-    </p>
-    <p>Sampling for 2 minutes</p>
-    <p>
-        Estimated Time to Completion:
-        <span id="eta">now</span>
-    </p>
-
-    <progress
-        id="total-progress-bar"
-        max="4000"
-        value="4000">
-    </progress>
-    <table>
-        <thead>
-            <tr>
-                <th>Progress</th>
-                <th>Draws</th>
-                <th>Divergences</th>
-                <th>Step Size</th>
-                <th>Gradients/Draw</th>
-            </tr>
-        </thead>
-        <tbody id="chain-details">
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.75</td>
-                    <td>7</td>
-                </tr>
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.73</td>
-                    <td>3</td>
-                </tr>
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.73</td>
-                    <td>3</td>
-                </tr>
-            
-                <tr>
-                    <td class="progress-cell">
-                        <progress
-                            max="1000"
-                            value="1000">
-                        </progress>
-                    </td>
-                    <td>1000</td>
-                    <td>0</td>
-                    <td>0.67</td>
-                    <td>3</td>
-                </tr>
-            
-            </tr>
-        </tbody>
-    </table>
-</div>
-</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saved new idata to ordinal_model2_idata.nc
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded idata from ordinal_model2_idata.nc
 </pre></div>
 </div>
 </div>
@@ -2135,7 +1788,7 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(44.982750380835746)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>44.982750380835746
 </pre></div>
 </div>
 </div>
@@ -2147,7 +1800,7 @@ This helps the sampler get started – other than that, it doesn’t affect the 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(1952.1698527435108)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1952.1698527435108
 </pre></div>
 </div>
 </div>
@@ -2275,7 +1928,7 @@ The following function encapsulates the logic.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/daca1dd2e85055479052d7db037765b5362ef90bec5b97577feb6aaabc435733.png" src="_images/daca1dd2e85055479052d7db037765b5362ef90bec5b97577feb6aaabc435733.png" />
+<img alt="_images/cc1f1092e739030c69f71614023ef30910b26c55ecff4b29105b886549e47a57.png" src="_images/cc1f1092e739030c69f71614023ef30910b26c55ecff4b29105b886549e47a57.png" />
 </div>
 </div>
 <p>We don’t expect the results to match the data perfectly, because the predictions are for a specific birth year and the data contain a mixture of birth years.</p>
@@ -2315,7 +1968,7 @@ The following function encapsulates the logic.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f32c27ff04db731e7e852f25a1ed20998fbb7026c0124eda1bb4731150699342.png" src="_images/f32c27ff04db731e7e852f25a1ed20998fbb7026c0124eda1bb4731150699342.png" />
+<img alt="_images/6388694e94fe72def48f9f2e1d293a74075b6bf77497a3c9efc18356f74db83c.png" src="_images/6388694e94fe72def48f9f2e1d293a74075b6bf77497a3c9efc18356f74db83c.png" />
 </div>
 </div>
 <p>One use of a model like this is to generate projections and counterfactuals.</p>
